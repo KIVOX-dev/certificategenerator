@@ -53,5 +53,10 @@
   "error.network": "Unable to connect.\nPlease check your internet connection and try again.",
   "error.download": "Your certificate could not be downloaded.\nPlease try again.",
   "error.TOO_MANY_REQUESTS": "Too many attempts.\nPlease wait a minute and try again.",
-  "error.generic": "Something went wrong.\nPlease try again."
+  "error.generic": "Something went wrong.\nPlease try again.",
+  "scanQr": "Scan QR Code",
+  "cancel": "Cancel",
+  "eventCode": "Event Code",
+  "eventCodePlaceholder": "Enter the event code",
+  "scanNeedsCamera": "Please allow the camera so we can scan the QR code, or type the event code instead."
 }
