@@ -17,6 +17,10 @@ export function getConfig() {
     throw new Error('DATABASE_URL must be set (MongoDB connection string).');
   }
   const appUrl = (env.APP_URL ?? 'http://localhost:3000').replace(/\/+$/, '');
+  // Printed QR codes must never point at localhost: refuse to run in production like that.
+  if (nodeEnv === 'production' && /^https?:\/\/(localhost|127\.0\.0\.1)/i.test(appUrl)) {
+    throw new Error('APP_URL must be your public https site URL in production (e.g. https://certs.example.com), not localhost.');
+  }
   return {
     nodeEnv,
     isProd: nodeEnv === 'production',
