@@ -27,7 +27,7 @@ export default function Login() {
   return (
     <form className="card login" onSubmit={submit}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/logo.png" alt="We The Leaders - Lead The Change" className="login-logo" width={280} height={61} />
+      <img src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/logo.png`} alt="We The Leaders - Lead The Change" className="login-logo" width={280} height={61} />
       <h1>Admin Login</h1>
       <label htmlFor="email">Email</label>
       <input id="email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} required />

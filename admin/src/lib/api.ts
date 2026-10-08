@@ -12,7 +12,7 @@ export async function api<T = any>(path: string, init?: RequestInit & { json?: u
     body: init?.json !== undefined ? JSON.stringify(init.json) : init?.body,
   });
   if (res.status === 401 && !path.startsWith('/auth/login')) {
-    if (typeof window !== 'undefined' && window.location.pathname !== '/login') window.location.href = '/login';
+    if (typeof window !== 'undefined' && !window.location.pathname.endsWith('/login')) window.location.href = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/login`;
   }
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
