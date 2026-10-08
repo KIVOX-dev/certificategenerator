@@ -133,3 +133,35 @@ if the app is not installed.
 backend/src/{auth,events,certificates,registrations,templates,stats,pdf,qr,storage,database,common,config}
 web/src/{app,components,lib,locales}     admin/src/{app,components,lib}     mobile/src/{screens,components,i18n}
 ```
+
+## CI/CD (GitHub Actions)
+
+`.github/workflows/ci-cd.yml` runs on every push and pull request:
+
+| Job | What it checks |
+|---|---|
+| **backend** | typecheck, 21 tests against a real MongoDB service + real Chromium (events, registration, duplicates, certificates, PDF, revoke, verification, security), build |
+| **web / admin** | typecheck, tests (web), production `next build` |
+| **mobile** | typecheck + `expo-doctor` |
+| **docker** | the API image builds |
+| **security** | gitleaks secret scan + `npm audit` (fails on critical) |
+| **deploy** | only on `main`, only if everything above passed: triggers the Render deploy hook for that exact commit |
+| **smoke** | waits for the new version to be live, then checks production: DB up, `APP_URL` is public and matches the site (so QR codes never point at localhost), `/api` proxy works, pages load, admin API rejects anonymous requests |
+
+Vercel deploys the web + admin from Git by itself (previews for pull requests, production for `main`).
+
+### One-time setup
+
+1. **Render** → service → Settings → *Auto-Deploy*: set to **Off** (GitHub Actions triggers the deploy after the tests pass).
+   Settings → *Deploy Hook*: copy the URL.
+2. **GitHub** → Settings → Secrets and variables → Actions:
+   * Secret `RENDER_DEPLOY_HOOK_URL` = the Render deploy hook URL
+   * Variables: `SITE_URL` (e.g. `https://certificategenerator-brown.vercel.app`), `API_URL` (the Render URL), optional `SMOKE_EVENT_CODE` (e.g. `CLEANUP2026`)
+3. Optional: GitHub → Settings → Environments → **production** → add *required reviewers* for a manual approval before every deploy.
+4. Optional: Settings → Branches → protect `main` and require the CI jobs to pass before merging.
+5. Render env var `APP_URL` must be your public site URL (the API refuses to start in production if it is localhost).
+
+Run the same checks locally: `npm run typecheck`, `npm test`, `npm run build` (or all: `npm run ci`).
+Check production by hand: `SITE_URL=… API_URL=… npm run smoke`.
+If certificates were ever issued with a wrong `APP_URL`: `APP_URL=https://your-site npm run fix-urls` re-renders them with the right QR code.
+Dependabot (`.github/dependabot.yml`) opens weekly update PRs, which go through the same pipeline.
