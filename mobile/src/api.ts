@@ -1,0 +1,65 @@
+export const API_URL = (process.env.EXPO_PUBLIC_API_URL || 'http://localhost:4000').replace(/\/+$/, '');
+export const APP_URL = (process.env.EXPO_PUBLIC_APP_URL || 'https://yourdomain.com').replace(/\/+$/, '');
+
+export class ApiError extends Error {
+  constructor(public code: string, public status: number) {
+    super(code);
+  }
+}
+
+export interface PublicEvent { eventCode: string; name: string; description: string; organizationName: string; open: boolean }
+export interface PublicCertificate {
+  status: 'ACTIVE' | 'REVOKED' | 'EXPIRED';
+  certificateNumber: string;
+  certificateId: string;
+  recipientName: string | null;
+  eventName: string | null;
+  organizationName: string | null;
+  certificateTitle: string | null;
+  issueDate: string | null;
+  downloadable: boolean;
+}
+export type RegisterOutcome = 'CREATED' | 'EXISTING' | 'PROCESSING';
+
+async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  let res: Response;
+  try {
+    res = await fetch(`${API_URL}${path}`, { ...init, headers: { 'Content-Type': 'application/json', ...init?.headers } });
+  } catch {
+    throw new ApiError('NETWORK', 0);
+  }
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new ApiError(body.code ?? 'GENERIC', res.status);
+  }
+  return res.json();
+}
+
+export const getEvent = (code: string) => request<PublicEvent>(`/api/events/${encodeURIComponent(code)}`);
+export const registerForEvent = (code: string, fullName: string, phone: string) =>
+  request<{ outcome: RegisterOutcome; certificate: PublicCertificate }>(`/api/events/${encodeURIComponent(code)}/register`, {
+    method: 'POST',
+    body: JSON.stringify({ fullName, phone }),
+  });
+export const getCertificate = (ref: string) => request<PublicCertificate>(`/api/certificates/${encodeURIComponent(ref)}`);
+export const pdfUrl = (id: string) => `${API_URL}/api/certificates/${encodeURIComponent(id)}/pdf`;
+export const previewUrl = (id: string) => `${API_URL}/api/certificates/${encodeURIComponent(id)}/preview`;
+
+export function errorKey(e: unknown): string {
+  const code = e instanceof ApiError ? e.code : 'GENERIC';
+  if (code === 'NETWORK') return 'error.network';
+  const known = ['INVALID_NAME', 'INVALID_PHONE', 'EVENT_NOT_FOUND', 'EVENT_CLOSED', 'CERTIFICATE_ERROR', 'TOO_MANY_REQUESTS'];
+  return known.includes(code) ? `error.${code}` : 'error.generic';
+}
+
+export function formatDate(iso: string | null): string {
+  if (!iso) return '';
+  return new Date(iso).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' });
+}
+
+/** Extracts the event code from a scanned QR value (full URL or bare code). */
+export function eventCodeFromScan(value: string): string | null {
+  const m = value.trim().match(/\/register\/([A-Za-z0-9]{4,20})\/?(?:[?#].*)?$/);
+  if (m) return m[1].toUpperCase();
+  return /^[A-Za-z0-9]{4,20}$/.test(value.trim()) ? value.trim().toUpperCase() : null;
+}

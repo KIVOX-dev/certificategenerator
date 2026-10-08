@@ -25,7 +25,7 @@ export class PdfService implements OnModuleDestroy {
         .launch({
           headless: true,
           executablePath: getConfig().puppeteerExecutablePath,
-          args: noSandbox ? ['--no-sandbox', '--disable-setuid-sandbox'] : [],
+          args: ['--disable-dev-shm-usage', '--disable-gpu', ...(noSandbox ? ['--no-sandbox', '--disable-setuid-sandbox'] : [])],
         })
         .then((b) => {
           b.on('disconnected', () => {

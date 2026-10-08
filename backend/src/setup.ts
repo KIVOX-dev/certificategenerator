@@ -8,7 +8,7 @@ import { getConfig } from './config/config';
 /** Shared by main.ts and the e2e tests so tests exercise the real pipeline. Validation is per-route via Zod pipes. */
 export function configureApp(app: INestApplication) {
   const cfg = getConfig();
-  if (cfg.trustProxy) (app as any).set('trust proxy', 1);
+  if (cfg.trustProxy) (app as any).set('trust proxy', cfg.trustProxy);
   app.setGlobalPrefix('api');
   app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
   app.use(compression());

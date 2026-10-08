@@ -2,6 +2,7 @@ import { Body, Controller, Get, HttpCode, Param, Post, Query, Res, UseGuards } f
 import { Throttle } from '@nestjs/throttler';
 import { z } from 'zod';
 import { AdminGuard } from '../auth/admin.guard';
+import { getConfig } from '../config/config';
 import { zodBody } from '../common/zod.pipe';
 import { CertificatesService } from './certificates.service';
 
@@ -24,25 +25,25 @@ export class PublicCertificatesController {
 
   @Post('events/:eventCode/register')
   @HttpCode(200)
-  @Throttle({ default: { limit: 10, ttl: 60_000 } })
+  @Throttle({ default: { limit: () => getConfig().rateLimit.register, ttl: 60_000 } })
   register(@Param('eventCode') code: string, @Body(zodBody(registerSchema)) dto: z.infer<typeof registerSchema>) {
     return this.certs.register(code, dto);
   }
 
   @Get('certificates/:ref')
-  @Throttle({ default: { limit: 60, ttl: 60_000 } })
+  @Throttle({ default: { limit: () => getConfig().rateLimit.lookup, ttl: 60_000 } })
   get(@Param('ref') ref: string) {
     return this.certs.publicByRef(ref);
   }
 
   @Get('certificates/:ref/pdf')
-  @Throttle({ default: { limit: 30, ttl: 60_000 } })
+  @Throttle({ default: { limit: () => getConfig().rateLimit.lookup, ttl: 60_000 } })
   async pdf(@Param('ref') ref: string, @Res() res: any) {
     send(res, await this.certs.fileByRef(ref, 'pdf'), true);
   }
 
   @Get('certificates/:ref/preview')
-  @Throttle({ default: { limit: 60, ttl: 60_000 } })
+  @Throttle({ default: { limit: () => getConfig().rateLimit.lookup, ttl: 60_000 } })
   async preview(@Param('ref') ref: string, @Res() res: any) {
     send(res, await this.certs.fileByRef(ref, 'preview'), false);
   }

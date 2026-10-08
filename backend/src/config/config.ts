@@ -25,7 +25,15 @@ export function getConfig() {
     apiUrl: (env.API_URL ?? 'http://localhost:4000').replace(/\/+$/, ''),
     appUrl,
     corsOrigins: (env.CORS_ORIGINS ?? '').split(',').map((s) => s.trim()).filter(Boolean),
-    trustProxy: env.TRUST_PROXY === 'true',
+    // Number of reverse proxies in front of the API (Vercel + Render = 2). 'true' = 1, unset/false = 0.
+    trustProxy: env.TRUST_PROXY === 'true' ? 1 : Number(env.TRUST_PROXY) > 0 ? Math.floor(Number(env.TRUST_PROXY)) : 0,
+    // Per-IP limits per minute. Events share one Wi-Fi/mobile IP, so the registration limit is generous.
+    rateLimit: {
+      global: Number(env.RATE_LIMIT_GLOBAL ?? 300),
+      register: Number(env.RATE_LIMIT_REGISTER ?? 60),
+      lookup: Number(env.RATE_LIMIT_LOOKUP ?? 120),
+      login: Number(env.RATE_LIMIT_LOGIN ?? 8),
+    },
     jwtSecret,
     jwtExpiresIn: env.JWT_EXPIRES_IN ?? '8h',
     cookieSecure: env.COOKIE_SECURE ? env.COOKIE_SECURE === 'true' : nodeEnv === 'production',

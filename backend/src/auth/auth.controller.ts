@@ -14,7 +14,7 @@ export class AuthController {
 
   @Post('login')
   @HttpCode(200)
-  @Throttle({ default: { limit: 8, ttl: 60_000 } })
+  @Throttle({ default: { limit: () => getConfig().rateLimit.login, ttl: 60_000 } })
   async login(@Body(zodBody(loginSchema)) dto: z.infer<typeof loginSchema>, @Res({ passthrough: true }) res: any) {
     const { token, user } = await this.auth.login(dto.email, dto.password);
     res.cookie(ADMIN_COOKIE, token, {
