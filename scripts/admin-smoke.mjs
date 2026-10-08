@@ -30,6 +30,7 @@ try {
   await page.type('#password', process.env.ADMIN_PASSWORD);
   await page.click('button[type=submit]');
   await page.waitForFunction(() => document.body.innerText.includes('Total Certificates'), { timeout: 20000 });
+  await page.waitForFunction(() => ![...document.querySelectorAll('.stat b')].some((e) => e.textContent === '…'), { timeout: 20000 }).catch(() => undefined);
   const stats = await page.$$eval('.stat b', (els) => els.map((e) => e.textContent));
   if (stats.some((s) => s === '…')) fail('dashboard stats did not load');
   ok(`dashboard stats: ${stats.join(' / ')}`);
