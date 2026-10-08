@@ -157,7 +157,8 @@ describe('DownloadButton', () => {
   it('prepares, then confirms the download', async () => {
     URL.createObjectURL = vi.fn(() => 'blob:x');
     URL.revokeObjectURL = vi.fn();
-    fetchMock.mockReturnValue(Promise.resolve(new Response(new Blob(['%PDF-']), { status: 200 })));
+    // A plain object: jsdom's Blob has no stream(), which new Response(blob) needs on some Node versions.
+    fetchMock.mockReturnValue(Promise.resolve({ ok: true, status: 200, blob: () => Promise.resolve(new Blob(['%PDF-'])) }));
     render(<DownloadButton certificateId="abcd" certificateNumber="CERT-2026-000001" />);
     await userEvent.click(screen.getByRole('button', { name: /download certificate/i }));
     expect(await screen.findByText('Your certificate is ready.')).toBeInTheDocument();

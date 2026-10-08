@@ -21,7 +21,7 @@ describe('certificate platform (e2e)', () => {
   beforeAll(async () => {
     // CI provides a real MongoDB service (TEST_DATABASE_URL); locally an in-memory server is started.
     if (process.env.TEST_DATABASE_URL) {
-      const base = process.env.TEST_DATABASE_URL.replace(//+$/, '');
+      const base = process.env.TEST_DATABASE_URL.replace(/\/+$/, '');
       process.env.DATABASE_URL = base + '/certs_test_' + Date.now();
     } else {
       mongo = await MongoMemoryServer.create();
