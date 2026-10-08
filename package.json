@@ -14,7 +14,11 @@
     "dev:admin": "npm run dev -w admin",
     "seed": "npm run seed -w backend",
     "test": "npm test -w backend && npm test -w web",
-    "build": "npm run build -w backend && npm run build -w web && npm run build -w admin"
+    "build": "npm run build -w backend && npm run build -w web && npm run build -w admin",
+    "typecheck": "npm exec -w backend -- tsc --noEmit -p . && npm exec -w web -- tsc --noEmit && npm exec -w admin -- tsc --noEmit",
+    "ci": "npm run typecheck && npm test && npm run build",
+    "fix-urls": "npm run fix-urls -w backend",
+    "smoke": "node scripts/smoke-prod.mjs"
   },
   "devDependencies": {
     "jpeg-js": "^0.4.4",
@@ -22,5 +26,8 @@
     "pngjs": "^7.0.0",
     "puppeteer": "^25.13.0",
     "sharp": "^0.35.5"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

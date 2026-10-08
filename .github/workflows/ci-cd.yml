@@ -1,0 +1,178 @@
+name: CI/CD
+
+# Every push / pull request is built and tested. A push to `main` that passes everything is deployed:
+#   API      -> Render  (deploy hook, triggered here AFTER the checks pass; turn Render auto-deploy off)
+#   Web+Admin-> Vercel  (Git integration; previews for PRs, production for main)
+# then a smoke test waits for the new version to be live and verifies production end to end.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: 22
+
+jobs:
+  backend:
+    name: Backend - typecheck, test, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      mongo:
+        image: mongo:7
+        ports: ['27017:27017']
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.runCommand({ping:1})'"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      TEST_DATABASE_URL: mongodb://127.0.0.1:27017
+      PUPPETEER_NO_SANDBOX: 'true'
+      PUPPETEER_SKIP_DOWNLOAD: 'true' # Chrome is installed (and cached) by the explicit step below
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: npm }
+      - run: npm ci
+      - name: Cache Chrome for Puppeteer
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/puppeteer
+          key: puppeteer-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      - run: npx puppeteer browsers install chrome
+        working-directory: backend
+      - run: npx tsc --noEmit -p .
+        working-directory: backend
+      - name: Tests (events, registration, duplicates, certificates, PDF, revoke, verification, security)
+        run: npx jest --runInBand --forceExit
+        working-directory: backend
+      - run: npm run build -w backend
+
+  web:
+    name: Web - typecheck, test, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: npm }
+      - run: npm ci
+      - run: npx tsc --noEmit
+        working-directory: web
+      - run: npx vitest run
+        working-directory: web
+      - run: npm run build -w web
+        env:
+          API_URL: https://api.example.com
+
+  admin:
+    name: Admin - typecheck, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: npm }
+      - run: npm ci
+      - run: npx tsc --noEmit
+        working-directory: admin
+      - run: npm run build -w admin
+        env:
+          API_URL: https://api.example.com
+
+  mobile:
+    name: Mobile - typecheck, Expo doctor
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npx --yes expo-doctor
+
+  docker:
+    name: API image builds
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  security:
+    name: Security - secrets and dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Scan for committed secrets
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: npm }
+      - run: npm ci --ignore-scripts
+      - name: Production dependency audit (fails on critical)
+        run: npm audit --omit=dev --audit-level=critical
+
+  deploy:
+    name: Deploy API to Render
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [backend, web, admin, mobile, docker, security]
+    runs-on: ubuntu-latest
+    environment: production # add required reviewers in Settings -> Environments for a manual approval gate
+    timeout-minutes: 5
+    steps:
+      - name: Trigger Render deploy (this exact commit)
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "::warning::RENDER_DEPLOY_HOOK_URL secret is not set - skipping the API deploy trigger."
+            exit 0
+          fi
+          curl --fail --silent --show-error -X POST "${RENDER_DEPLOY_HOOK_URL}&ref=${GITHUB_SHA}"
+          echo "Render deploy requested for ${GITHUB_SHA}"
+
+  smoke:
+    name: Production smoke test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}' }
+      - name: Wait for the new version and verify production
+        env:
+          SITE_URL: ${{ vars.SITE_URL }} # e.g. https://certificategenerator-brown.vercel.app
+          API_URL: ${{ vars.API_URL }} # e.g. https://certificategenerator-aheq.onrender.com
+          SMOKE_EVENT_CODE: ${{ vars.SMOKE_EVENT_CODE }} # optional, e.g. CLEANUP2026
+          EXPECT_COMMIT: ${{ github.sha }}
+        run: node scripts/smoke-prod.mjs
