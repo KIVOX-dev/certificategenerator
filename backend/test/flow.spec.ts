@@ -19,8 +19,14 @@ describe('certificate platform (e2e)', () => {
   let certNumber: string;
 
   beforeAll(async () => {
-    mongo = await MongoMemoryServer.create();
-    process.env.DATABASE_URL = mongo.getUri('certs_test');
+    // CI provides a real MongoDB service (TEST_DATABASE_URL); locally an in-memory server is started.
+    if (process.env.TEST_DATABASE_URL) {
+      const base = process.env.TEST_DATABASE_URL.replace(//+$/, '');
+      process.env.DATABASE_URL = base + '/certs_test_' + Date.now();
+    } else {
+      mongo = await MongoMemoryServer.create();
+      process.env.DATABASE_URL = mongo.getUri('certs_test');
+    }
     process.env.JWT_SECRET = 'test-secret-test-secret-test-secret-123';
     process.env.APP_URL = 'https://example.test';
     process.env.DISABLE_RATE_LIMIT = 'true';
@@ -38,6 +44,10 @@ describe('certificate platform (e2e)', () => {
   });
 
   afterAll(async () => {
+    if (process.env.TEST_DATABASE_URL) {
+      const { getConnectionToken } = await import('@nestjs/mongoose');
+      await app?.get<any>(getConnectionToken())?.dropDatabase?.();
+    }
     await app?.close();
     await mongo?.stop();
   });
@@ -57,6 +67,14 @@ describe('certificate platform (e2e)', () => {
       expect(normalizeName('')).toBeNull();
       expect(normalizeName('A')).toBeNull();
       expect(normalizeName('<script>')).toBeNull();
+    });
+  });
+
+  describe('health', () => {
+    it('reports database, app url and commit without secrets', async () => {
+      const res = await request(http).get('/api/health').expect(200);
+      expect(res.body).toMatchObject({ ok: true, database: 'up', appUrl: 'https://example.test' });
+      expect(JSON.stringify(res.body)).not.toMatch(/secret|password|mongodb/i);
     });
   });
 
