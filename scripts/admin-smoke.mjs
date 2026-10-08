@@ -12,7 +12,8 @@ try {
   await page.setViewport({ width: 1280, height: 800 });
   const errors = [];
   page.on('pageerror', (e) => errors.push(String(e)));
-  page.on('console', (m) => m.type() === 'error' && !/401|favicon/.test(m.text()) && errors.push(m.text()));
+  page.on('console', (m) => m.type() === 'error' && !/401/.test(m.text()) && errors.push(m.text()));
+  page.on('response', (r) => r.status() === 404 && errors.push('404 ' + r.url()));
 
   await page.goto(`${ADMIN}`, { waitUntil: 'networkidle0' });
   if (!page.url().endsWith('/admin/login')) fail(`unauthenticated visit should redirect to login, got ${page.url()}`);
