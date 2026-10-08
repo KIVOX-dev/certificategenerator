@@ -171,8 +171,8 @@ jobs:
         with: { node-version: '${{ env.NODE_VERSION }}' }
       - name: Wait for the new version and verify production
         env:
-          SITE_URL: ${{ vars.SITE_URL }} # e.g. https://certificategenerator-brown.vercel.app
-          API_URL: ${{ vars.API_URL }} # e.g. https://certificategenerator-aheq.onrender.com
-          SMOKE_EVENT_CODE: ${{ vars.SMOKE_EVENT_CODE }} # optional, e.g. CLEANUP2026
+          SITE_URL: ${{ vars.SITE_URL || 'https://certificategenerator-brown.vercel.app' }} # override with a repo variable if the domain changes
+          API_URL: ${{ vars.API_URL || 'https://certificategenerator-aheq.onrender.com' }}
+          SMOKE_EVENT_CODE: ${{ vars.SMOKE_EVENT_CODE || 'CLEANUP2026' }}
           EXPECT_COMMIT: ${{ github.sha }}
         run: node scripts/smoke-prod.mjs
