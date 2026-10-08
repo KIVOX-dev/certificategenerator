@@ -3,7 +3,7 @@ services:
   - type: web
     name: certificates-api
     runtime: docker
-    dockerfilePath: ./backend/Dockerfile
+    dockerfilePath: ./Dockerfile
     dockerContext: .
     plan: starter            # Chromium needs RAM; free (512 MB, sleeps) is not recommended
     healthCheckPath: /api/health

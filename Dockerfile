@@ -1,4 +1,4 @@
-# Build context is the repository root (see render.yaml): docker build -f backend/Dockerfile .
+# Build context is the repository root: docker build -t certificates-api .
 FROM node:22-bookworm-slim AS deps
 WORKDIR /app
 ENV PUPPETEER_SKIP_DOWNLOAD=true
