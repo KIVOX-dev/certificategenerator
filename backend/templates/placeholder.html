@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{certificateTitle}}</title>
+<!--
+  PLACEHOLDER CERTIFICATE TEMPLATE.
+  Placeholders ({{name}}) are replaced with HTML-escaped values.
+  Available: certificateTitle, recipientName, eventName, eventDescription,
+  organizationName, issueDate, certificateNumber, verificationUrl, qrDataUrl.
+  Page size: A4 landscape (297mm x 210mm).
+-->
+<style>
+  @page { size: 297mm 210mm; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 297mm; height: 210mm; }
+  body { font-family: Georgia, 'Times New Roman', serif; color: #1b2a49; background: #fff; }
+  .page { position: relative; width: 297mm; height: 210mm; padding: 10mm; }
+  .frame { position: relative; width: 100%; height: 100%; border: 3mm solid #1b2a49; padding: 2mm; }
+  .frame-inner { width: 100%; height: 100%; border: 0.6mm solid #b8902e; display: flex; flex-direction: column; align-items: center; padding: 11mm 18mm 8mm; text-align: center; }
+  .org { font-size: 5.2mm; letter-spacing: 1.2mm; text-transform: uppercase; color: #b8902e; font-weight: bold; }
+  h1 { margin-top: 5mm; font-size: 13mm; letter-spacing: 1.2mm; text-transform: uppercase; color: #1b2a49; }
+  .presented { margin-top: 7mm; font-size: 5mm; font-style: italic; color: #4a5568; }
+  .name { margin-top: 4mm; font-size: 14mm; font-weight: bold; text-transform: uppercase; border-bottom: 0.5mm solid #b8902e; padding: 0 12mm 2mm; max-width: 235mm; line-height: 1.15; }
+  .for { margin-top: 6mm; font-size: 5mm; font-style: italic; color: #4a5568; }
+  .event { margin-top: 3mm; font-size: 9mm; font-weight: bold; text-transform: uppercase; color: #1b2a49; max-width: 235mm; line-height: 1.2; }
+  .desc { margin-top: 3mm; font-size: 4.2mm; color: #4a5568; max-width: 210mm; }
+  .footer { margin-top: auto; width: 100%; display: flex; justify-content: space-between; align-items: flex-end; text-align: left; }
+  .footer .col { font-size: 4mm; line-height: 1.5; }
+  .label { font-size: 3.2mm; text-transform: uppercase; letter-spacing: 0.4mm; color: #7a6a3a; }
+  .value { font-size: 4.6mm; font-weight: bold; }
+  .qr { text-align: center; }
+  .qr img { width: 27mm; height: 27mm; display: block; margin: 0 auto 1mm; }
+  .qr .verify { font-size: 3mm; color: #4a5568; }
+</style>
+</head>
+<body>
+<div class="page"><div class="frame"><div class="frame-inner">
+  <div class="org">{{organizationName}}</div>
+  <h1>{{certificateTitle}}</h1>
+  <div class="presented">This certificate is proudly presented to</div>
+  <div class="name">{{recipientName}}</div>
+  <div class="for">for successfully completing</div>
+  <div class="event">{{eventName}}</div>
+  <div class="desc">{{eventDescription}}</div>
+  <div class="footer">
+    <div class="col"><div class="label">Issued by</div><div class="value">{{organizationName}}</div></div>
+    <div class="qr"><img src="{{qrDataUrl}}" alt="QR code"><div class="verify">Verify this certificate online</div></div>
+    <div class="col" style="text-align:right"><div class="label">Date</div><div class="value">{{issueDate}}</div><div class="label" style="margin-top:2mm">Certificate No</div><div class="value">{{certificateNumber}}</div></div>
+  </div>
+</div></div></div>
+</body>
+</html>

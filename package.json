@@ -1,0 +1,26 @@
+{
+  "name": "certificate-platform",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "backend",
+    "web",
+    "admin"
+  ],
+  "scripts": {
+    "dev:db": "node scripts/dev-db.mjs",
+    "dev:backend": "npm run start:dev -w backend",
+    "dev:web": "npm run dev -w web",
+    "dev:admin": "npm run dev -w admin",
+    "seed": "npm run seed -w backend",
+    "test": "npm test -w backend && npm test -w web",
+    "build": "npm run build -w backend && npm run build -w web && npm run build -w admin"
+  },
+  "devDependencies": {
+    "jpeg-js": "^0.4.4",
+    "jsqr": "^1.4.0",
+    "pngjs": "^7.0.0",
+    "puppeteer": "^25.13.0",
+    "sharp": "^0.35.5"
+  }
+}

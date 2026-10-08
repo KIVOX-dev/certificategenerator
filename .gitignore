@@ -1,0 +1,9 @@
+node_modules
+dist
+.next
+.env
+.env.local
+backend/storage-data
+.dev-db
+*.log
+.expo
