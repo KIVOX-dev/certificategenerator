@@ -14,7 +14,7 @@ export default function Events() {
   return (
     <>
       <h1>Events</h1>
-      <div className="row noprint" style={{ marginBottom: 12 }}>
+      <div className="row noprint mb-12">
         <input aria-label="Search events" placeholder="Search events..." value={q} onChange={(e) => setQ(e.target.value)} />
         <div><Link className="btn" href="/events/new">Create event</Link></div>
       </div>

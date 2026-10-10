@@ -158,7 +158,7 @@ describe('certificate platform (e2e)', () => {
       const res = await request(http).post(`/api/events/${code}/register`).send(body).expect(200);
       expect(res.body.outcome).toBe('CREATED');
       const c = res.body.certificate;
-      expect(c.certificateNumber).toMatch(/^CERT-\d{4}-000001$/);
+      expect(c.certificateNumber).toMatch(/^WTL-[A-Z0-9]{2,6}-00001$/);
       expect(c.recipientName).toBe('Ramesh Kumar');
       expect(c.status).toBe('ACTIVE');
       expect(JSON.stringify(res.body)).not.toMatch(/9876543210|phone/i);

@@ -19,7 +19,7 @@ export default function Registrations() {
   return (
     <>
       <h1>Registrations</h1>
-      <input aria-label="Search registrations" placeholder="Search by name or phone..." value={q} onChange={(e) => { setQ(e.target.value); setPage(1); }} style={{ marginBottom: 12 }} />
+      <input aria-label="Search registrations" placeholder="Search by name or phone..." value={q} onChange={(e) => { setQ(e.target.value); setPage(1); }} className="mb-12" />
       <div className="table-wrap"><table>
         <thead><tr><th>Name</th><th>Phone</th><th>Event</th><th>Certificate</th><th>Date</th><th>Status</th><th></th></tr></thead>
         <tbody>

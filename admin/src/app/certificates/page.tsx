@@ -24,7 +24,7 @@ export default function Certificates() {
   return (
     <>
       <h1>Certificates</h1>
-      <div className="row noprint" style={{ marginBottom: 12 }}>
+      <div className="row noprint mb-12">
         <input aria-label="Search certificates" placeholder="Search certificates... (name, phone, certificate number, event)" value={q} onChange={(e) => { setQ(e.target.value); setPage(1); }} />
         <select aria-label="Status" value={status} onChange={(e) => { setStatus(e.target.value); setPage(1); }}>
           <option value="">All statuses</option><option>ACTIVE</option><option>REVOKED</option><option>EXPIRED</option>
@@ -38,7 +38,7 @@ export default function Certificates() {
             <tr key={c.id}>
               <td>{c.certificateNumber}</td><td>{c.recipientName}</td><td>{c.phone}</td><td>{c.eventName}</td><td>{fmtDate(c.issuedAt)}</td>
               <td><span className={`badge ${c.status}`}>{c.status}</span></td>
-              <td style={{ whiteSpace: 'nowrap' }}>
+              <td className="nowrap">
                 <a href={`/api/admin/certificates/${c.id}/preview`} target="_blank" rel="noopener">View</a> ·{' '}
                 <a href={`/api/admin/certificates/${c.id}/pdf`}>Download</a> ·{' '}
                 {c.storedStatus === 'REVOKED'

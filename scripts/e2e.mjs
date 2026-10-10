@@ -83,7 +83,7 @@ try {
   await page.waitForFunction(() => document.body.innerText.includes('Your certificate is ready.'), { timeout: 30000 });
   await new Promise((r) => setTimeout(r, 1500));
   const files = readdirSync(downloadDir).filter((f) => f.endsWith('.pdf'));
-  assert(files.length === 1 && /^Certificate-CERT-\d{4}-\d{6}\.pdf$/.test(files[0]), `PDF downloaded (${files[0]})`);
+  assert(files.length === 1 && /^Certificate-WTL-[A-Z0-9]+-\d{5}\.pdf$/.test(files[0]), `PDF downloaded (${files[0]})`);
   assert(readFileSync(join(downloadDir, files[0])).subarray(0, 5).toString() === '%PDF-', 'downloaded file is a real PDF');
 
   // 4. "Scan" the certificate QR from the preview image and verify
@@ -99,7 +99,7 @@ try {
   await verify.goto(qr.data.replace(/^https?:\/\/[^/]+/, WEB), { waitUntil: 'networkidle0' });
   await verify.waitForFunction(() => document.body.innerText.includes('VALID CERTIFICATE'));
   const vtext = await verify.$eval('main', (m) => m.innerText);
-  assert(/Ramesh Kumar/i.test(vtext) && /CERT-\d{4}-\d{6}/.test(vtext) && !/9876543210/.test(vtext), 'verification page shows VALID CERTIFICATE, name, number, no phone');
+  assert(/Ramesh Kumar/i.test(vtext) && /WTL-[A-Z0-9]+-\d{5}/.test(vtext) && !/9876543210/.test(vtext), 'verification page shows VALID CERTIFICATE, name, number, no phone');
 
   // 5. Duplicate -> existing certificate
   await page.bringToFront();

@@ -82,7 +82,7 @@ export default function Settings() {
       <h1>Settings</h1>
 
       <div className="card">
-        <h2 style={{ marginTop: 0 }}>Public site address</h2>
+        <h2 className="mt-0">Public site address</h2>
         <p>
           Every QR code and link is built from this address: the event registration QR and the verification QR printed on each
           certificate. It must be the public https address of your participant website.
@@ -100,7 +100,7 @@ export default function Settings() {
         )}
         <label htmlFor="siteUrl">Website address</label>
         <input id="siteUrl" value={input} onChange={(e) => setInput(e.target.value)} placeholder="https://your-site.vercel.app" />
-        <p style={{ marginTop: 12 }}>
+        <p className="mt-12">
           <button disabled={busy || !input} onClick={() => save(input)}>Save address</button>
           {here && !looksLocal(here) && input !== here && (
             <button className="secondary" disabled={busy} onClick={() => save(here)}>
@@ -110,7 +110,7 @@ export default function Settings() {
         </p>
 
         {site && site.count > 0 && (
-          <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
+          <div className="section-divider">
             <p>
               <b>{site.count}</b> issued certificate{site.count === 1 ? '' : 's'} still carry a QR code for a different address.
               Fixing re-creates their PDF with the correct QR (same certificate number and verification link).

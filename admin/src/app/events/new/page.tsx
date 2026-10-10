@@ -50,7 +50,7 @@ export default function NewEvent() {
           <div><label htmlFor="eventCode">Custom event code (optional)</label><input id="eventCode" name="eventCode" pattern="[A-Za-z0-9]{4,20}" placeholder="auto-generated" /></div>
         </div>
         <label htmlFor="certificateCode">Certificate number code (2-6 letters, e.g. CSTN gives WTL-CSTN-00001)</label><input id="certificateCode" name="certificateCode" pattern="[A-Za-z0-9]{2,6}" maxLength={6} placeholder="auto from event code" />
-        <label><input type="checkbox" name="allowDuplicates" style={{ width: 'auto' }} /> Allow more than one certificate per phone number</label>
+        <label><input type="checkbox" name="allowDuplicates" className="check" /> Allow more than one certificate per phone number</label>
         {error && <p role="alert" className="error">{error}</p>}
         <p><button disabled={busy}>Create event</button></p>
       </form>

@@ -35,13 +35,13 @@ export default function EventDetail() {
         {msg && <p role="status" className="ok">{msg}</p>}
       </div>
       <div className="card">
-        <h2 style={{ marginTop: 0 }}>Scan to get your certificate</h2>
+        <h2 className="mt-0">Scan to get your certificate</h2>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="qr" src={ev.qrCodeDataUrl} alt={`QR code for ${ev.registrationUrl}`} />
         <p>{ev.name}</p>
       </div>
       <div className="card noprint">
-        <h2 style={{ marginTop: 0 }}>Registration status</h2>
+        <h2 className="mt-0">Registration status</h2>
         {['DRAFT', 'ACTIVE', 'CLOSED', 'ARCHIVED'].map((s) => (
           <button key={s} className={s === ev.status ? '' : 'secondary'} onClick={() => setStatus(s)}>{s}</button>
         ))}

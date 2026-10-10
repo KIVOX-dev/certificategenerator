@@ -56,7 +56,7 @@ export default function Templates() {
         <label htmlFor="ttype">Type</label>
         <select id="ttype" value={type} onChange={(e) => setType(e.target.value as any)}><option>HTML</option><option>IMAGE</option></select>
         <label htmlFor="tdata">{type === 'HTML' ? 'HTML source' : 'JSON specification'}</label>
-        <textarea id="tdata" name="templateData" rows={12} required key={type} defaultValue={type === 'IMAGE' ? IMAGE_EXAMPLE : ''} style={{ fontFamily: 'monospace' }} />
+        <textarea id="tdata" name="templateData" rows={12} required key={type} defaultValue={type === 'IMAGE' ? IMAGE_EXAMPLE : ''} className="mono" />
         {error && <p role="alert" className="error">{error}</p>}
         <p><button>Add template</button></p>
       </form>
