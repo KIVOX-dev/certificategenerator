@@ -33,12 +33,12 @@ async function seed() {
   const ensureEvent = async (data: Partial<Event> & { eventCode: string }) =>
     (await events.findOne({ eventCode: data.eventCode })) ?? events.create(data);
   await ensureEvent({
-    eventCode: 'FIRSTAID2026', name: 'First Aid Training Program', organizationName: 'ABC Foundation',
+    eventCode: 'FIRSTAID2026', certificateCode: 'FAID', name: 'First Aid Training Program', organizationName: 'ABC Foundation',
     description: 'Basic life support and first aid skills.', issueDate: new Date('2026-10-08T00:00:00+05:30'),
     status: 'ACTIVE', templateId: placeholder._id,
   });
   await ensureEvent({
-    eventCode: 'CLEANUP2026', name: 'Community Street Clean-Up Drive', organizationName: 'We The Leaders',
+    eventCode: 'CLEANUP2026', certificateCode: 'CSTN', name: 'Community Street Clean-Up Drive', organizationName: 'We The Leaders',
     certificateTitle: 'Certificate of Participation', issueDate: new Date('2026-10-08T00:00:00+05:30'),
     status: 'ACTIVE', templateId: volunteer._id,
   });

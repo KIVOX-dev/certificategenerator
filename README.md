@@ -24,7 +24,7 @@ Certificate data ──▶ Template (HTML or IMAGE) ──▶ Chromium ──▶
 * Duplicate phone for the same event → "We found an existing certificate…" + **View my certificate**
   (per-event option *Allow more than one certificate per phone* for admins). The same phone can still register for other events.
 * Event QR (registration) and certificate QR (verification) are separate. Certificate URLs use an unguessable id;
-  the human number `CERT-2026-000001` also works.
+  the human number `WTL-CSTN-00001` (prefix `CERT_PREFIX`, per-event certificate code, running number) also works.
 
 ## Requirements
 

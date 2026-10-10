@@ -14,7 +14,7 @@ import { QrService } from '../src/qr/qr.service';
   const { pdf: p, preview } = await pdf.render(
     {
       certificateTitle: 'Certificate of Participation', recipientName: process.argv[3] ?? 'Ramesh Kumar', eventName: 'Community Street Clean-Up Drive',
-      eventDescription: '', organizationName: 'We The Leaders', issueDate: '08 October 2026', certificateNumber: 'CERT-2026-000001',
+      eventDescription: '', organizationName: 'We The Leaders', issueDate: '08 October 2026', certificateNumber: 'WTL-CSTN-00001',
       verificationUrl: 'https://example.com/certificate/kcsrsgg8z3cd8d55', qrDataUrl: qr,
     },
     { type: 'IMAGE', templateData: buildVolunteerTemplate() },

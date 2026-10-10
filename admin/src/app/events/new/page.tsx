@@ -18,7 +18,7 @@ export default function NewEvent() {
       name: get('name'), organizationName: get('organizationName'), status: get('status'),
       allowDuplicates: f.get('allowDuplicates') === 'on',
     };
-    for (const k of ['description', 'certificateTitle', 'issueDate', 'expiryDate', 'templateId', 'eventCode']) if (get(k)) json[k] = get(k);
+    for (const k of ['description', 'certificateTitle', 'issueDate', 'expiryDate', 'templateId', 'eventCode', 'certificateCode']) if (get(k)) json[k] = get(k);
     setBusy(true);
     setError('');
     try {
@@ -49,6 +49,7 @@ export default function NewEvent() {
             <select id="templateId" name="templateId" defaultValue=""><option value="">Default template</option>{templates.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}</select></div>
           <div><label htmlFor="eventCode">Custom event code (optional)</label><input id="eventCode" name="eventCode" pattern="[A-Za-z0-9]{4,20}" placeholder="auto-generated" /></div>
         </div>
+        <label htmlFor="certificateCode">Certificate number code (2-6 letters, e.g. CSTN gives WTL-CSTN-00001)</label><input id="certificateCode" name="certificateCode" pattern="[A-Za-z0-9]{2,6}" maxLength={6} placeholder="auto from event code" />
         <label><input type="checkbox" name="allowDuplicates" style={{ width: 'auto' }} /> Allow more than one certificate per phone number</label>
         {error && <p role="alert" className="error">{error}</p>}
         <p><button disabled={busy}>Create event</button></p>

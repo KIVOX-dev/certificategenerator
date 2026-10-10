@@ -14,6 +14,8 @@ const base = {
   status: z.enum(EVENT_STATUSES),
   templateId: objectId,
   allowDuplicates: z.boolean(),
+  /** 2-6 letters/digits in the certificate number: WTL-<code>-00001. */
+  certificateCode: z.string().trim().regex(/^[A-Za-z0-9]{2,6}$/, 'Use 2-6 letters or digits'),
 };
 
 export const createEventSchema = z
@@ -26,6 +28,7 @@ export const createEventSchema = z
     status: base.status.optional(),
     templateId: base.templateId.optional(),
     allowDuplicates: base.allowDuplicates.optional(),
+    certificateCode: base.certificateCode.optional(),
     /** Optional custom code (letters/digits), e.g. FIRSTAID2026. Generated when omitted. */
     eventCode: z.string().regex(/^[A-Za-z0-9]{4,20}$/).optional(),
   })

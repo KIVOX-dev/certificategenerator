@@ -50,7 +50,7 @@ try {
 
   await page.goto(`${ADMIN}/certificates`, { waitUntil: 'networkidle0' });
   await page.type('input[aria-label="Search certificates"]', 'Ramesh');
-  await page.waitForFunction(() => document.body.innerText.includes('CERT-2026-000001'));
+  await page.waitForFunction(() => document.body.innerText.includes('WTL-FAID-00001'));
   ok('certificate search by name works');
   await page.goto(`${ADMIN}/registrations`, { waitUntil: 'networkidle0' });
   await page.waitForFunction(() => /\+91\d{10}/.test(document.body.innerText));

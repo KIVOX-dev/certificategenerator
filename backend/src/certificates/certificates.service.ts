@@ -5,7 +5,7 @@ import { AppException } from '../common/app.exception';
 import { escapeRegex, generateCertificateId } from '../common/ids';
 import { normalizeName } from '../common/name';
 import { normalizeIndianPhone } from '../common/phone';
-import { Certificate, CertificateDoc, Counter, Event, Registration, Template } from '../database/schemas';
+import { Certificate, CertificateDoc, Counter, Event, EventDoc, Registration, Template } from '../database/schemas';
 import { EventsService } from '../events/events.service';
 import { CertificateRenderData } from '../pdf/template-renderers';
 import { PdfService, TemplateSource } from '../pdf/pdf.service';
@@ -74,7 +74,7 @@ export class CertificatesService {
       singleKey: event.allowDuplicates ? undefined : String(registration._id),
       registrationId: registration._id,
       eventId: event._id,
-      certificateNumber: await this.nextNumber(now),
+      certificateNumber: await this.nextNumber(event),
       certificateId,
       recipientName: registration.fullName === fullName || !event.allowDuplicates ? registration.fullName : fullName,
       normalizedPhone,
@@ -104,10 +104,12 @@ export class CertificatesService {
     }
   }
 
-  private async nextNumber(now: Date) {
-    const year = now.getFullYear();
-    const c = await this.counters.findOneAndUpdate({ _id: `cert-${year}` }, { $inc: { seq: 1 } }, { upsert: true, new: true });
-    return `CERT-${year}-${String(c.seq).padStart(6, '0')}`;
+  /** WTL-CSTN-00001: organisation prefix, per-event code, and a running number that is counted separately for each code. */
+  private async nextNumber(event: EventDoc) {
+    const prefix = (process.env.CERT_PREFIX || 'WTL').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    const code = event.certificateCode || event.eventCode.replace(/[^A-Z0-9]/g, '').slice(0, 4) || 'GEN';
+    const c = await this.counters.findOneAndUpdate({ _id: `cert-${prefix}-${code}` }, { $inc: { seq: 1 } }, { upsert: true, new: true });
+    return `${prefix}-${code}-${String(c.seq).padStart(5, '0')}`;
   }
 
   // ---------- files ----------
@@ -210,7 +212,7 @@ export class CertificatesService {
   /** Accepts the secure certificateId (used in QR codes) or the human readable number. */
   async findByRef(ref: string): Promise<CertificateDoc> {
     const r = String(ref).trim().slice(0, 60);
-    const cert = await this.certs.findOne(/^CERT-/i.test(r) ? { certificateNumber: r.toUpperCase() } : { certificateId: r.toLowerCase() });
+    const cert = await this.certs.findOne(/^[A-Z0-9]{2,8}(-[A-Z0-9]{2,8})+-d{4,}$/i.test(r) ? { certificateNumber: r.toUpperCase() } : { certificateId: r.toLowerCase() });
     if (!cert) throw new AppException('CERTIFICATE_NOT_FOUND', 'We could not find a certificate with this number.', 404);
     return cert;
   }

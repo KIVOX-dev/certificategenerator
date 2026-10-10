@@ -109,6 +109,7 @@ export class EventsService {
       status: e.status,
       templateId: e.templateId ? String(e.templateId) : null,
       allowDuplicates: e.allowDuplicates,
+      certificateCode: e.certificateCode ?? null,
       registrationUrl: `${siteUrl}/register/${encodeURIComponent(e.eventCode)}`,
       createdAt: e.createdAt,
     };

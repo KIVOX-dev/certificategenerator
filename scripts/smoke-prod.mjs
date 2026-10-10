@@ -72,7 +72,7 @@ if (EVENT) {
   const page = await get(`${SITE}/register/${EVENT}`);
   check(page.status === 200, 'registration page loads', `registration page returned ${page.status}`);
 }
-const missing = await get(`${SITE}/api/certificates/CERT-0000-000000`);
+const missing = await get(`${SITE}/api/certificates/WTL-ZZZZ-00000`);
 check(missing.status === 404 && missing.json?.code === 'CERTIFICATE_NOT_FOUND', 'unknown certificate gives a clean 404', `unknown certificate returned ${missing.status}`);
 
 // 5. admin panel is up and protected

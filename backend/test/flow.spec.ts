@@ -191,7 +191,7 @@ describe('certificate platform (e2e)', () => {
       const ev = await adminAgent.post('/api/admin/events').send({ name: 'Second Event', organizationName: 'Org', status: 'ACTIVE' }).expect(201);
       const res = await request(http).post(`/api/events/${ev.body.eventCode}/register`).send(body).expect(200);
       expect(res.body.outcome).toBe('CREATED');
-      expect(res.body.certificate.certificateNumber).toMatch(/000002$/);
+      expect(res.body.certificate.certificateNumber).toMatch(/^WTL-[A-Z0-9]{2,6}-00001$/);
     });
 
     it('handles concurrent identical submissions without duplicates', async () => {
@@ -211,7 +211,7 @@ describe('certificate platform (e2e)', () => {
     });
 
     it('returns 404 for unknown certificates', async () => {
-      const res = await request(http).get('/api/certificates/CERT-2026-999999').expect(404);
+      const res = await request(http).get('/api/certificates/WTL-CSTN-99999').expect(404);
       expect(res.body.code).toBe('CERTIFICATE_NOT_FOUND');
       await request(http).get('/api/certificates/zzzzzzzzzzzzzzzz').expect(404);
       await request(http).get('/api/certificates/%7B%22%24ne%22%3Anull%7D').expect(404);
