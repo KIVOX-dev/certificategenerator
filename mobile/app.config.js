@@ -10,7 +10,10 @@ module.exports = {
     orientation: 'portrait',
     scheme: 'certs',
     userInterfaceStyle: 'light',
+    icon: './assets/icon.png',
+    splash: { image: './assets/splash-icon.png', resizeMode: 'contain', backgroundColor: '#ffffff' },
     android: {
+      adaptiveIcon: { foregroundImage: './assets/adaptive-icon.png', backgroundColor: '#ffffff' },
       package: 'com.example.certificates',
       // Opens https://<host>/register/... and /certificate/... links directly in the app when installed.
       // The web experience always works without the app.

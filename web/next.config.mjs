@@ -17,6 +17,8 @@ export default {
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
         ],
       },
+      // The service worker must always be revalidated so updates reach phones quickly.
+      { source: '/sw.js', headers: [{ key: 'Cache-Control', value: 'no-cache, no-store, must-revalidate' }] },
     ];
   },
 };

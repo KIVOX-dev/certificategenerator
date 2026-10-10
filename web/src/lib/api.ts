@@ -62,3 +62,10 @@ export function formatDate(iso: string | null): string {
   if (!iso) return '';
   return new Date(iso).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' });
 }
+
+/** Extracts the event code from a scanned QR value (full URL or bare code). */
+export function eventCodeFromScan(value: string): string | null {
+  const m = value.trim().match(/\/register\/([A-Za-z0-9]{4,20})\/?(?:[?#].*)?$/);
+  if (m) return m[1].toUpperCase();
+  return /^[A-Za-z0-9]{4,20}$/.test(value.trim()) ? value.trim().toUpperCase() : null;
+}

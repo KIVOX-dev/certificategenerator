@@ -140,8 +140,10 @@ export function RegisterFlow({ eventCode }: { eventCode: string }) {
         <p className="lead">{t('phoneNumber')}:</p>
         <p className="big-name" data-testid="confirm-phone">{normalizeIndianPhone(phone)}</p>
         {serverError && <p role="alert" className="error">{t(serverError)}</p>}
-        <button type="button" className="btn" onClick={onConfirm}>{t('yesContinue')}</button>
-        <button type="button" className="btn secondary" onClick={() => setStep('form')}>{t('editDetails')}</button>
+        <div className="actions">
+          <button type="button" className="btn" onClick={onConfirm}>{t('yesContinue')}</button>
+          <button type="button" className="btn secondary" onClick={() => setStep('form')}>{t('editDetails')}</button>
+        </div>
       </>
     );
   }
@@ -162,6 +164,7 @@ export function RegisterFlow({ eventCode }: { eventCode: string }) {
             type="text"
             autoComplete="name"
             autoCapitalize="words"
+            enterKeyHint="next"
             placeholder={t('fullNamePlaceholder')}
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
@@ -177,6 +180,7 @@ export function RegisterFlow({ eventCode }: { eventCode: string }) {
             name="phone"
             type="tel"
             inputMode="tel"
+            enterKeyHint="go"
             autoComplete="tel"
             placeholder={t('phonePlaceholder')}
             value={phone}
@@ -186,7 +190,9 @@ export function RegisterFlow({ eventCode }: { eventCode: string }) {
           />
           {errors.phone && <p id="phone-error" role="alert" className="error">{t(`error.${errors.phone}`)}</p>}
         </div>
-        <button type="submit" className="btn">{t('continue')}</button>
+        <div className="actions">
+          <button type="submit" className="btn">{t('continue')}</button>
+        </div>
       </form>
     </>
   );

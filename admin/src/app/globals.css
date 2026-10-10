@@ -34,3 +34,23 @@ button:disabled { opacity:.6; }
 @media print { nav.side, .noprint { display:none !important } .content { padding:0 } body { background:#fff } }
 .login-logo { display: block; width: 280px; max-width: 100%; height: auto; margin: 4px auto 18px; }
 .login h1 { text-align: center; }
+.charts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:16px; }
+.charts .card { margin-bottom:0; }
+.charts .wide { grid-column:1 / -1; }
+.charts h2 { font-size:16px; margin:0 0 12px; }
+.chart { width:100%; height:auto; display:block; }
+.axis { font-size:11px; fill:#4b5563; }
+.donut { display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+.donut svg { width:150px; height:150px; flex-shrink:0; }
+.donut-total { font-size:26px; font-weight:700; fill:#111827; }
+.legend { list-style:none; margin:0; padding:0; flex:1 1 140px; }
+.legend li { display:flex; align-items:center; gap:8px; padding:4px 0; }
+.legend i { width:12px; height:12px; border-radius:3px; flex-shrink:0; }
+.legend b { margin-left:auto; }
+.hbars { list-style:none; margin:0; padding:0; }
+.hbars li { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) auto; gap:10px; align-items:center; padding:5px 0; }
+.hb-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:14px; }
+.hb-track { height:10px; background:#e5e7eb; border-radius:99px; overflow:hidden; }
+.hb-track span { display:block; height:100%; background:#0b4f9c; border-radius:99px; }
+.muted { color:var(--muted); }
+@media (max-width:760px){ .charts { grid-template-columns:minmax(0,1fr); } }
