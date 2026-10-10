@@ -113,7 +113,7 @@ try {
   assert(true, 'duplicate phone shows "existing certificate" with VIEW MY CERTIFICATE');
 
   // 6. Unknown certificate
-  await verify.goto(`${WEB}/certificate/WTL-CSTN-99999`, { waitUntil: 'networkidle0' });
+  await verify.goto(`${WEB}/certificate/WTL-CUDTN-99999`, { waitUntil: 'networkidle0' });
   await verify.waitForFunction(() => document.body.innerText.includes('Certificate Not Found'));
   assert(true, 'unknown certificate shows "Certificate Not Found"');
 

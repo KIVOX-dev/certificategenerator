@@ -38,7 +38,7 @@ async function seed() {
     status: 'ACTIVE', templateId: placeholder._id,
   });
   await ensureEvent({
-    eventCode: 'CLEANUP2026', certificateCode: 'CSTN', name: 'Community Street Clean-Up Drive', organizationName: 'We The Leaders',
+    eventCode: 'CLEANUP2026', certificateCode: 'CUDTN', name: 'Community Street Clean-Up Drive', organizationName: 'We The Leaders',
     certificateTitle: 'Certificate of Participation', issueDate: new Date('2026-10-08T00:00:00+05:30'),
     status: 'ACTIVE', templateId: volunteer._id,
   });

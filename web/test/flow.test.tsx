@@ -15,7 +15,7 @@ vi.mock('next/navigation', () => ({
 const json = (body: unknown, status = 200) => Promise.resolve(new Response(JSON.stringify(body), { status }));
 const event = { eventCode: 'ABC123', name: 'First Aid Training Program', description: '', organizationName: 'ABC', open: true };
 const cert = {
-  status: 'ACTIVE', certificateNumber: 'WTL-CSTN-00001', certificateId: 'abcd', recipientName: 'Ramesh Kumar',
+  status: 'ACTIVE', certificateNumber: 'WTL-CUDTN-00001', certificateId: 'abcd', recipientName: 'Ramesh Kumar',
   eventName: 'First Aid Training Program', organizationName: 'ABC Foundation', certificateTitle: 'Certificate of Completion',
   issueDate: '2026-10-07T18:30:00.000Z', downloadable: true,
 };
@@ -129,7 +129,7 @@ describe('CertificateView', () => {
     fetchMock.mockReturnValue(json(cert));
     render(<CertificateView reference="abcd" isNew={false} />);
     expect(await screen.findByText(/valid certificate/i)).toBeInTheDocument();
-    expect(screen.getByText('WTL-CSTN-00001')).toBeInTheDocument();
+    expect(screen.getByText('WTL-CUDTN-00001')).toBeInTheDocument();
     expect(screen.getByText('08 October 2026')).toBeInTheDocument();
     expect(document.body.textContent).not.toMatch(/\d{10}/);
   });
@@ -159,7 +159,7 @@ describe('DownloadButton', () => {
     URL.revokeObjectURL = vi.fn();
     // A plain object: jsdom's Blob has no stream(), which new Response(blob) needs on some Node versions.
     fetchMock.mockReturnValue(Promise.resolve({ ok: true, status: 200, blob: () => Promise.resolve(new Blob(['%PDF-'])) }));
-    render(<DownloadButton certificateId="abcd" certificateNumber="WTL-CSTN-00001" />);
+    render(<DownloadButton certificateId="abcd" certificateNumber="WTL-CUDTN-00001" />);
     await userEvent.click(screen.getByRole('button', { name: /download certificate/i }));
     expect(await screen.findByText('Your certificate is ready.')).toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledWith('/api/certificates/abcd/pdf');
@@ -167,7 +167,7 @@ describe('DownloadButton', () => {
 
   it('shows a plain error when the download fails', async () => {
     fetchMock.mockReturnValue(Promise.resolve(new Response('', { status: 500 })));
-    render(<DownloadButton certificateId="abcd" certificateNumber="WTL-CSTN-00001" />);
+    render(<DownloadButton certificateId="abcd" certificateNumber="WTL-CUDTN-00001" />);
     await userEvent.click(screen.getByRole('button', { name: /download certificate/i }));
     expect(await screen.findByRole('alert')).toHaveTextContent('could not be downloaded');
   });

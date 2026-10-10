@@ -25,7 +25,7 @@ export class Event {
   @Prop({ default: '', maxlength: 1000 }) description: string;
   @Prop({ required: true, trim: true, maxlength: 200 }) organizationName: string;
   @Prop({ default: 'Certificate of Completion', maxlength: 100 }) certificateTitle: string;
-  /** Short code used in certificate numbers, e.g. CSTN -> WTL-CSTN-00001. Derived from the event code when empty. */
+  /** Short code used in certificate numbers, e.g. CUDTN -> WTL-CUDTN-00001. Derived from the event code when empty. */
   @Prop({ uppercase: true, trim: true, maxlength: 6 }) certificateCode?: string;
   @Prop() issueDate?: Date;
   @Prop() expiryDate?: Date;
@@ -59,7 +59,7 @@ RegistrationSchema.index({ fullName: 1 });
 export class Certificate {
   @Prop({ type: Types.ObjectId, ref: 'Registration', required: true, index: true }) registrationId: Types.ObjectId;
   @Prop({ type: Types.ObjectId, ref: 'Event', required: true, index: true }) eventId: Types.ObjectId;
-  /** Human readable, e.g. WTL-CSTN-00001. */
+  /** Human readable, e.g. WTL-CUDTN-00001. */
   @Prop({ required: true, unique: true }) certificateNumber: string;
   /** Unguessable public identifier used in verification URLs / QR codes. */
   @Prop({ required: true, unique: true }) certificateId: string;

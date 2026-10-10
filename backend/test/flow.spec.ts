@@ -222,7 +222,7 @@ describe('certificate platform (e2e)', () => {
     });
 
     it('returns 404 for unknown certificates', async () => {
-      const res = await request(http).get('/api/certificates/WTL-CSTN-99999').expect(404);
+      const res = await request(http).get('/api/certificates/WTL-CUDTN-99999').expect(404);
       expect(res.body.code).toBe('CERTIFICATE_NOT_FOUND');
       await request(http).get('/api/certificates/zzzzzzzzzzzzzzzz').expect(404);
       await request(http).get('/api/certificates/%7B%22%24ne%22%3Anull%7D').expect(404);

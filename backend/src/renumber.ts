@@ -7,12 +7,12 @@ import { CertificatesService } from './certificates/certificates.service';
 import { Certificate, Event } from './database/schemas';
 
 /**
- * Gives certificates issued under the old format (CERT-2026-000005) the current one (WTL-CSTN-00001),
+ * Gives certificates issued under the old format (CERT-2026-000005) the current one (WTL-CUDTN-00001),
  * in the order they were issued. Run `npm run regenerate-all -- --yes` afterwards so the PDFs show the new number.
  * Usage:  npm run renumber            (prints the plan)
  *         npm run renumber -- --yes   (does it)
  */
-const SEED_CODES: Record<string, string> = { FIRSTAID2026: 'FAID', CLEANUP2026: 'CSTN' };
+const SEED_CODES: Record<string, string> = { FIRSTAID2026: 'FAID', CLEANUP2026: 'CUDTN' };
 const OLD_FORMAT = /^CERT-\d{4}-\d{6}$/;
 
 async function run() {

@@ -14,7 +14,7 @@ import * as QRCode from 'qrcode';
   const { pdf: p, preview } = await pdf.render(
     {
       certificateTitle: 'Certificate of Participation', recipientName: process.argv[3] ?? 'Ramesh Kumar', eventName: 'Community Street Clean-Up Drive',
-      eventDescription: '', organizationName: 'We The Leaders', issueDate: '08 October 2026', certificateNumber: 'WTL-CSTN-00001',
+      eventDescription: '', organizationName: 'We The Leaders', issueDate: '08 October 2026', certificateNumber: 'WTL-CUDTN-00001',
       verificationUrl: 'https://certificategenerator-brown.vercel.app/certificate/kcsrsgg8z3cd8d55', qrDataUrl: qr,
     },
     { type: 'IMAGE', templateData: buildVolunteerTemplate() },
