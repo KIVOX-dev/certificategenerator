@@ -36,7 +36,12 @@ export class AuthService {
 
   async ensureAdmin(email: string, password: string, name = 'Administrator') {
     const existing = await this.users.findOne({ email: email.toLowerCase() });
-    if (existing) return existing;
+    if (existing) {
+      // Re-running the seed with a new ADMIN_NAME / ADMIN_PASSWORD updates the existing admin.
+      existing.name = name;
+      if (!(await bcrypt.compare(password, existing.passwordHash))) existing.passwordHash = await bcrypt.hash(password, 12);
+      return existing.save();
+    }
     return this.users.create({ name, email, passwordHash: await bcrypt.hash(password, 12), role: 'SUPER_ADMIN' });
   }
 }

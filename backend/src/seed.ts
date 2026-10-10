@@ -19,7 +19,7 @@ async function seed() {
   const app = await NestFactory.createApplicationContext(AppModule, { logger: ['error', 'warn'] });
   const { adminEmail: email, adminPassword: password } = cfg;
   if (!email || !password) throw new Error('Set ADMIN_EMAIL and ADMIN_PASSWORD in .env to seed the admin user.');
-  await app.get(AuthService).ensureAdmin(email, password);
+  await app.get(AuthService).ensureAdmin(email, password, cfg.adminName);
   console.log(`Admin user ready: ${email}`);
 
   const templates = app.get<Model<Template>>(getModelToken(Template.name));

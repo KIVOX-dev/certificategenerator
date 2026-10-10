@@ -53,6 +53,7 @@ export function getConfig() {
     },
     puppeteerExecutablePath: env.PUPPETEER_EXECUTABLE_PATH || undefined,
     adminEmail: env.ADMIN_EMAIL,
+    adminName: env.ADMIN_NAME || 'Administrator',
     adminPassword: env.ADMIN_PASSWORD,
   };
 }
