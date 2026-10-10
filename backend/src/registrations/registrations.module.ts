@@ -1,6 +1,6 @@
 import { Controller, Delete, Get, Injectable, Module, Param, Query, UseGuards } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, isValidObjectId, Model } from 'mongoose';
+import { FilterQuery, isValidObjectId, Model, Types } from 'mongoose';
 import { AdminGuard } from '../auth/admin.guard';
 import { AppException } from '../common/app.exception';
 import { escapeRegex } from '../common/ids';
@@ -16,7 +16,7 @@ export class RegistrationsService {
 
   async list(q: string | undefined, eventId: string | undefined, page: number, limit: number) {
     const filter: FilterQuery<Registration> = {};
-    if (eventId && isValidObjectId(eventId)) filter.eventId = eventId as any;
+    if (eventId && isValidObjectId(eventId)) filter.eventId = new Types.ObjectId(eventId) as any;
     if (q?.trim()) {
       const t = q.trim();
       const digits = t.replace(/\D/g, '');

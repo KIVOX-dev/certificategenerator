@@ -1,7 +1,7 @@
 import * as ExcelJS from 'exceljs';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, isValidObjectId, Model } from 'mongoose';
+import { FilterQuery, isValidObjectId, Model, Types } from 'mongoose';
 import { AppException } from '../common/app.exception';
 import { escapeRegex, generateCertificateId } from '../common/ids';
 import { normalizeName } from '../common/name';
@@ -290,7 +290,7 @@ export class CertificatesService {
   private adminFilter(opts: { q?: string; status?: string; eventId?: string }): FilterQuery<Certificate> {
     const filter: FilterQuery<Certificate> = {};
     if (opts.status && ['ACTIVE', 'REVOKED', 'EXPIRED'].includes(opts.status)) filter.status = opts.status as any;
-    if (opts.eventId && isValidObjectId(opts.eventId)) filter.eventId = opts.eventId as any;
+    if (opts.eventId && isValidObjectId(opts.eventId)) filter.eventId = new Types.ObjectId(opts.eventId) as any;
     if (opts.q?.trim()) {
       const q = opts.q.trim();
       const rx = new RegExp(escapeRegex(q), 'i');
