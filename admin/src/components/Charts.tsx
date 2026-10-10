@@ -19,7 +19,7 @@ export function DailyChart({ data }: { data: DayPoint[] }) {
         const v = (top / 4) * i;
         return (
           <g key={i}>
-            <line x1={L} x2={W} y1={y(v)} y2={y(v)} stroke="#e3e8ee" />
+            <line x1={L} x2={W} y1={y(v)} y2={y(v)} stroke="#eeecff" />
             <text x={L - 6} y={y(v) + 4} textAnchor="end" className="axis">{v}</text>
           </g>
         );
@@ -46,7 +46,7 @@ export function Donut({ slices }: { slices: Slice[] }) {
   return (
     <div className="donut">
       <svg viewBox="0 0 140 140" role="img" aria-label={slices.map((s) => `${s.label} ${s.value}`).join(', ')}>
-        <circle cx="70" cy="70" r={R} fill="none" stroke="#e5e7eb" strokeWidth="18" />
+        <circle cx="70" cy="70" r={R} fill="none" stroke="#eeecff" strokeWidth="18" />
         {total > 0 && slices.filter((s) => s.value > 0).map((s) => {
           const len = (s.value / total) * C;
           const el = (

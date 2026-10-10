@@ -4,13 +4,13 @@ import { mkdirSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { buildVolunteerTemplate } from '../src/pdf/builtin-templates';
 import { PdfService } from '../src/pdf/pdf.service';
-import { QrService } from '../src/qr/qr.service';
+import * as QRCode from 'qrcode';
 
 (async () => {
   const out = process.argv[2] ?? '.';
   mkdirSync(out, { recursive: true });
   const pdf = new PdfService();
-  const qr = await new QrService().verificationQr('kcsrsgg8z3cd8d55');
+  const qr = await QRCode.toDataURL('https://example.com/certificate/kcsrsgg8z3cd8d55', { errorCorrectionLevel: 'M', margin: 2, width: 400 });
   const { pdf: p, preview } = await pdf.render(
     {
       certificateTitle: 'Certificate of Participation', recipientName: process.argv[3] ?? 'Ramesh Kumar', eventName: 'Community Street Clean-Up Drive',

@@ -1,3 +1,4 @@
+import * as ExcelJS from 'exceljs';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, isValidObjectId, Model } from 'mongoose';
@@ -286,7 +287,7 @@ export class CertificatesService {
     };
   }
 
-  async adminList(opts: { q?: string; status?: string; eventId?: string; page: number; limit: number }) {
+  private adminFilter(opts: { q?: string; status?: string; eventId?: string }): FilterQuery<Certificate> {
     const filter: FilterQuery<Certificate> = {};
     if (opts.status && ['ACTIVE', 'REVOKED', 'EXPIRED'].includes(opts.status)) filter.status = opts.status as any;
     if (opts.eventId && isValidObjectId(opts.eventId)) filter.eventId = opts.eventId as any;
@@ -298,6 +299,41 @@ export class CertificatesService {
       if (digits.length >= 4) or.push({ normalizedPhone: new RegExp(escapeRegex(digits.slice(-10)) + '$') });
       filter.$or = or;
     }
+    return filter;
+  }
+
+  /** Excel workbook of every certificate matching the admin filters (same filters as the list). */
+  async adminExport(opts: { q?: string; status?: string; eventId?: string }) {
+    const items = await this.certs.find(this.adminFilter(opts)).sort({ createdAt: -1 }).limit(50_000);
+    const wb = new ExcelJS.Workbook();
+    const ws = wb.addWorksheet('Certificates');
+    ws.columns = [
+      { header: 'Certificate No', key: 'number', width: 22 },
+      { header: 'Name', key: 'name', width: 28 },
+      { header: 'Phone', key: 'phone', width: 16 },
+      { header: 'Event', key: 'event', width: 34 },
+      { header: 'Organization', key: 'org', width: 24 },
+      { header: 'Issued', key: 'issued', width: 14, style: { numFmt: 'dd mmm yyyy' } },
+      { header: 'Status', key: 'status', width: 12 },
+      { header: 'Verification link', key: 'url', width: 50 },
+    ];
+    for (const c of items) {
+      ws.addRow({
+        number: c.certificateNumber, name: c.recipientName, phone: String(c.normalizedPhone ?? ''), event: c.eventName,
+        org: c.organizationName, issued: c.issuedAt, status: this.effectiveStatus(c), url: c.verificationUrl,
+      });
+    }
+    ws.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
+    ws.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF533AFD' } };
+    ws.views = [{ state: 'frozen', ySplit: 1 }];
+    ws.autoFilter = { from: 'A1', to: 'H1' };
+    const buffer = Buffer.from(await wb.xlsx.writeBuffer());
+    const date = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+    return { buffer, filename: `certificates-${date}.xlsx`, contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' };
+  }
+
+  async adminList(opts: { q?: string; status?: string; eventId?: string; page: number; limit: number }) {
+    const filter = this.adminFilter(opts);
     const [items, total] = await Promise.all([
       this.certs.find(filter).sort({ createdAt: -1 }).skip((opts.page - 1) * opts.limit).limit(opts.limit),
       this.certs.countDocuments(filter),

@@ -84,7 +84,7 @@ Design is separated from data. Templates live in the `templates` collection (adm
 * **IMAGE** – a PNG/JPG background plus a JSON spec: page size, embedded fonts, white `masks` to cover text baked into the artwork,
   and dynamic fields positioned in % of the page (`recipientName`, `eventName`, `issueDate`, `certificateNumber`, `qr`, free `text` with `{{placeholders}}`).
   See `backend/src/pdf/builtin-templates.ts` – the supplied *We The Leaders – Certificate of Participation* design is built this way
-  (assets in `backend/templates/volunteer/`; background is mozjpeg-recompressed to keep files small).
+  (assets in `backend/templates/volunteer/`; the background is the supplied certificate design, recompressed to keep files small).
 * **HTML** – any HTML/CSS with `{{recipientName}}`, `{{eventName}}`, `{{issueDate}}`, `{{certificateNumber}}`, `{{organizationName}}`, `{{qrDataUrl}}`.
   See `backend/templates/placeholder.html`.
 

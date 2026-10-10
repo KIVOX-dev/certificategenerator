@@ -15,6 +15,24 @@ export default function Certificates() {
   );
   useEffect(() => { const id = setTimeout(load, 250); return () => clearTimeout(id); }, [load]);
 
+  async function exportExcel() {
+    setError('');
+    try {
+      const res = await fetch(`/api/admin/certificates/export?q=${encodeURIComponent(q)}&status=${status}`, { credentials: 'same-origin' });
+      if (!res.ok) throw new Error('The Excel file could not be created. Please try again.');
+      const url = URL.createObjectURL(await res.blob());
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `certificates-${new Date().toLocaleDateString('en-CA')}.xlsx`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    } catch (e: any) {
+      setError(e.message);
+    }
+  }
+
   async function act(id: string, action: 'revoke' | 'restore') {
     if (action === 'revoke' && !confirm('Revoke this certificate? It will no longer verify as valid.')) return;
     await api(`/certificates/${id}/${action}`, { method: 'POST' });
@@ -29,6 +47,7 @@ export default function Certificates() {
         <select aria-label="Status" value={status} onChange={(e) => { setStatus(e.target.value); setPage(1); }}>
           <option value="">All statuses</option><option>ACTIVE</option><option>REVOKED</option><option>EXPIRED</option>
         </select>
+        <div><button type="button" className="secondary" onClick={exportExcel}>Download Excel</button></div>
       </div>
       {error && <p className="error">{error}</p>}
       <div className="table-wrap"><table>

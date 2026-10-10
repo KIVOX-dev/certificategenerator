@@ -225,6 +225,9 @@ describe('certificate platform (e2e)', () => {
       }
       const regs = await adminAgent.get('/api/admin/registrations').expect(200);
       expect(regs.body.items[0].phone).toMatch(/^\+91/);
+      const xlsx = await adminAgent.get('/api/admin/certificates/export?status=ACTIVE').buffer(true).parse((res, cb) => { const d: Buffer[] = []; res.on('data', (c: Buffer) => d.push(c)); res.on('end', () => cb(null, Buffer.concat(d))); }).expect(200);
+      expect(xlsx.headers['content-type']).toContain('spreadsheetml');
+      expect((xlsx.body as Buffer).subarray(0, 2).toString()).toBe('PK');
       const stats = await adminAgent.get('/api/admin/stats').expect(200);
       expect(stats.body.totalCertificates).toBeGreaterThanOrEqual(3);
     });

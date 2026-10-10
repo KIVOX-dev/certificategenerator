@@ -59,6 +59,11 @@ export class AdminCertificatesController {
     return this.certs.adminList({ q, status, eventId, page: Math.max(1, +page || 1), limit: Math.min(100, Math.max(1, +limit || 20)) });
   }
 
+  @Get('export')
+  async export(@Res() res: any, @Query('q') q?: string, @Query('status') status?: string, @Query('eventId') eventId?: string) {
+    send(res, await this.certs.adminExport({ q, status, eventId }), true);
+  }
+
   @Get(':id')
   get(@Param('id') id: string) {
     return this.certs.adminGet(id);

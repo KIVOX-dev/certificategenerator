@@ -116,6 +116,7 @@ export class EventsService {
   }
 
   private async detail(e: EventDoc) {
-    return { ...this.summary(e, await this.qr.siteUrl()), qrCodeDataUrl: await this.qr.registrationQr(e.eventCode) };
+    const certificateCount = await this.certificates.countDocuments({ eventId: e._id });
+    return { ...this.summary(e, await this.qr.siteUrl()), certificateCount, qrCodeDataUrl: await this.qr.registrationQr(e.eventCode) };
   }
 }

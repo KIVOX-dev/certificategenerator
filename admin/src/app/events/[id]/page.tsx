@@ -1,10 +1,11 @@
 'use client';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { api, fmtDate } from '@/lib/api';
 
 export default function EventDetail() {
   const { id } = useParams<{ id: string }>();
+  const router = useRouter();
   const [ev, setEv] = useState<any>(null);
   const [msg, setMsg] = useState('');
 
@@ -13,6 +14,19 @@ export default function EventDetail() {
 
   async function setStatus(status: string) {
     setEv(await api(`/events/${id}`, { method: 'PUT', json: { status } }));
+  }
+  async function remove() {
+    const count = Number(ev.certificateCount) || 0;
+    if (!window.confirm(count > 0
+      ? `This event has ${count} issued certificate(s). It will be archived (closed to new registrations) so those certificates stay verifiable. Continue?`
+      : 'Delete this event permanently? This cannot be undone.')) return;
+    try {
+      const r = await api(`/events/${id}`, { method: 'DELETE' });
+      if (r.deleted) router.push('/events');
+      else { setMsg('Event archived because it has issued certificates.'); load(); }
+    } catch (e: any) {
+      setMsg(e.message);
+    }
   }
   async function copy() {
     await navigator.clipboard.writeText(ev.registrationUrl);
@@ -31,6 +45,7 @@ export default function EventDetail() {
           <button onClick={copy}>COPY REGISTRATION LINK</button>
           <a className="btn" href={ev.qrCodeDataUrl} download={`qr-${ev.eventCode}.png`}>DOWNLOAD QR CODE</a>
           <button className="secondary" onClick={() => window.print()}>Print QR code</button>
+          {ev.status !== 'ARCHIVED' && <button className="danger" onClick={remove}>Delete event</button>}
         </div>
         {msg && <p role="status" className="ok">{msg}</p>}
       </div>
