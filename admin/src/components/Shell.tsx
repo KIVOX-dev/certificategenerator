@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import { Icon } from './Icons';
+import { LogoLoader } from './LogoLoader';
 
 const links = [
   ['/', 'Dashboard', 'dashboard'],
@@ -33,7 +34,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
   }
 
   if (path === '/login') return <>{children}</>;
-  if (!user) return <div className="content">Loading…</div>;
+  if (!user) return <LogoLoader fullscreen />;
   return (
     <div className="shell">
       <header className="topbar noprint">

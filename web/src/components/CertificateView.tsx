@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ApiError, errorKey, formatDate, getCertificate, previewUrl, PublicCertificate } from '@/lib/api';
 import { t } from '@/lib/i18n';
 import { DownloadButton } from './DownloadButton';
+import { LogoLoader } from './LogoLoader';
 import { ShareButton } from './ShareButton';
 
 function StatusBadge({ kind, title, text }: { kind: 'ok' | 'bad'; title: string; text?: string }) {
@@ -51,7 +52,7 @@ export function CertificateView({ reference, isNew: isNewProp }: { reference: st
     );
   }
   if (error) return <p role="alert" className="banner bad">{t(error)}</p>;
-  if (!cert) return <p className="loading" role="status">{t('loading')}</p>;
+  if (!cert) return <LogoLoader label={t('loading')} />;
 
   if (cert.status === 'REVOKED') {
     return (

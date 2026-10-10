@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useEffect, useRef, useState } from 'react';
+import { LogoLoader } from './LogoLoader';
 import { ApiError, errorKey, getEvent, PublicCertificate, PublicEvent, registerForEvent } from '@/lib/api';
 import { t } from '@/lib/i18n';
 import { cleanName, FormErrors, normalizeIndianPhone, validateForm } from '@/lib/validation';
@@ -84,7 +85,7 @@ export function RegisterFlow({ eventCode }: { eventCode: string }) {
     </h1>
   );
 
-  if (step === 'loading') return <p className="loading" role="status">{t('loading')}</p>;
+  if (step === 'loading') return <LogoLoader label={t('loading')} />;
 
   if (step === 'invalid') {
     return (

@@ -1,6 +1,7 @@
 'use client';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { LogoLoader } from '@/components/LogoLoader';
 import { api, fmtDate } from '@/lib/api';
 
 export default function EventDetail() {
@@ -34,7 +35,7 @@ This also deletes its ${count} issued certificate(s) and all registrations. Thei
     setMsg('Registration link copied.');
   }
 
-  if (!ev) return <p>{msg || 'Loading…'}</p>;
+  if (!ev) return msg ? <p className="error">{msg}</p> : <LogoLoader />;
   return (
     <>
       <h1>{ev.name}</h1>
