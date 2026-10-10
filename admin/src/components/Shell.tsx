@@ -29,7 +29,8 @@ export function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="shell">
       <nav className="side" aria-label="Admin">
-        <h2>Certificates Admin</h2>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/logo.png`} alt="We The Leaders - Lead The Change" className="side-logo" width={200} height={44} />
         {links.map(([href, label]) => (
           <Link key={href} href={href} className={(href === '/' ? path === '/' : path.startsWith(href)) ? 'active' : ''}>{label}</Link>
         ))}

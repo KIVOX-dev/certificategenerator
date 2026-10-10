@@ -1,5 +1,6 @@
 import { LinkingOptions, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Image } from 'react-native';
 import { APP_URL } from './api';
 import { t } from './i18n';
 import CertificateScreen from './screens/CertificateScreen';
@@ -30,12 +31,13 @@ export default function Navigation() {
       <Stack.Navigator
         screenOptions={{
           headerStyle: { backgroundColor: colors.header },
-          headerTintColor: '#fff',
+          headerTintColor: colors.navy,
+          headerShadowVisible: false,
           headerTitleStyle: { fontSize: 20 },
           contentStyle: { backgroundColor: colors.bg },
         }}
       >
-        <Stack.Screen name="Home" component={HomeScreen} options={{ title: t('tagline') }} />
+        <Stack.Screen name="Home" component={HomeScreen} options={{ headerTitle: () => <Image source={require('../assets/logo.png')} style={{ width: 168, height: 37 }} resizeMode="contain" accessibilityLabel="We The Leaders - Lead The Change" /> }} />
         <Stack.Screen name="Register" component={RegisterScreen} options={{ title: t('getCertificate') }} />
         <Stack.Screen name="Confirm" component={ConfirmScreen} options={{ title: t('checkName') }} />
         <Stack.Screen name="Certificate" component={CertificateScreen} options={{ title: t('certificateTitle') }} />

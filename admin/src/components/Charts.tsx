@@ -19,14 +19,14 @@ export function DailyChart({ data }: { data: DayPoint[] }) {
         const v = (top / 4) * i;
         return (
           <g key={i}>
-            <line x1={L} x2={W} y1={y(v)} y2={y(v)} stroke="#e5e7eb" />
+            <line x1={L} x2={W} y1={y(v)} y2={y(v)} stroke="#e3e8ee" />
             <text x={L - 6} y={y(v) + 4} textAnchor="end" className="axis">{v}</text>
           </g>
         );
       })}
       {data.map((d, i) => (
         <g key={d.date}>
-          <rect x={L + i * bw + bw * 0.15} y={y(d.count)} width={bw * 0.7} height={H - B - y(d.count)} rx={2} fill="#0b4f9c">
+          <rect x={L + i * bw + bw * 0.15} y={y(d.count)} width={bw * 0.7} height={H - B - y(d.count)} rx={2} fill="#533afd">
             <title>{`${shortDate(d.date)}: ${d.count}`}</title>
           </rect>
           {i % 5 === 0 || i === data.length - 1 ? (

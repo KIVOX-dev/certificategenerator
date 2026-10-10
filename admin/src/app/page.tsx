@@ -38,9 +38,9 @@ export default function Dashboard() {
           <section className="card">
             <h2>Certificate status</h2>
             <Donut slices={[
-              { label: 'Active', value: stats.activeCertificates, color: '#0a7a3d' },
-              { label: 'Revoked', value: stats.revokedCertificates, color: '#b42318' },
-              { label: 'Expired', value: stats.expiredCertificates, color: '#b7791f' },
+              { label: 'Active', value: stats.activeCertificates, color: '#1f7a54' },
+              { label: 'Revoked', value: stats.revokedCertificates, color: '#b2372b' },
+              { label: 'Expired', value: stats.expiredCertificates, color: '#9b6829' },
             ]} />
           </section>
           <section className="card">

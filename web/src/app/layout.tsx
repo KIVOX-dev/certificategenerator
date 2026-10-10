@@ -17,7 +17,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: 'cover',
   interactiveWidget: 'resizes-content',
-  themeColor: '#0a0f1a',
+  themeColor: '#ffffff',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -26,7 +26,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <RegisterServiceWorker />
         <header className="brand">
-          <span className="tagline" lang="ta">{t('tagline')}</span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="We The Leaders - Lead The Change" width={224} height={49} className="brand-logo" />
         </header>
         <main>
           <div className="page-card">{children}</div>
