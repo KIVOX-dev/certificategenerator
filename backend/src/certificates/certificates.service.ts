@@ -106,7 +106,7 @@ export class CertificatesService {
   }
 
   /** WTL-CSTN-00001: organisation prefix, per-event code, and a running number that is counted separately for each code. */
-  private async nextNumber(event: EventDoc) {
+  async nextNumber(event: EventDoc) {
     const prefix = (process.env.CERT_PREFIX || 'WTL').toUpperCase().replace(/[^A-Z0-9]/g, '');
     const code = event.certificateCode || event.eventCode.replace(/[^A-Z0-9]/g, '').slice(0, 4) || 'GEN';
     const c = await this.counters.findOneAndUpdate({ _id: `cert-${prefix}-${code}` }, { $inc: { seq: 1 } }, { upsert: true, new: true });

@@ -7,6 +7,7 @@
     "start": "node dist/main.js",
     "start:dev": "nest start --watch",
     "seed": "ts-node -r tsconfig-paths/register src/seed.ts",
+    "renumber": "ts-node -r tsconfig-paths/register src/renumber.ts",
     "regenerate-all": "ts-node -r tsconfig-paths/register src/regenerate-all.ts",
     "fix-urls": "ts-node -r tsconfig-paths/register src/fix-urls.ts",
     "test": "jest --runInBand --forceExit"
