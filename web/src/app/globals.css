@@ -11,8 +11,8 @@
   --field: #ffffff;
   --ok: #1f7a54;
   --ok-bg: #e9f5ef;
-  --bad: #b2372b;
-  --bad-bg: #fbedeb;
+  --bad: #e5132b;
+  --bad-bg: #fde8ea;
   --warn: #9b6829;
   --warn-bg: #fbf4e5;
   --header: #ffffff;
@@ -181,7 +181,7 @@ input[aria-invalid='true'] { border-color: var(--bad); background: var(--bad-bg)
 /* ---- verification result ---- */
 .verify { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 14px; border: 1px solid; margin: 4px 0 20px; }
 .verify.ok { background: #f2faf6; border-color: #cde8d9; color: var(--ok); }
-.verify.bad { background: #fdf3f1; border-color: #f1cfca; color: var(--bad); }
+.verify.bad { background: #fde8ea; border-color: #f9c2c8; color: var(--bad); }
 .verify-icon { flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; color: #fff; }
 .verify.ok .verify-icon { background: var(--ok); }
 .verify.bad .verify-icon { background: var(--bad); }
