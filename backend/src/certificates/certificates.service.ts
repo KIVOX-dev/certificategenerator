@@ -213,7 +213,7 @@ export class CertificatesService {
   /** Accepts the secure certificateId (used in QR codes) or the human readable number. */
   async findByRef(ref: string): Promise<CertificateDoc> {
     const r = String(ref).trim().slice(0, 60);
-    const cert = await this.certs.findOne(/^[A-Z0-9]{2,8}(-[A-Z0-9]{2,8})+-d{4,}$/i.test(r) ? { certificateNumber: r.toUpperCase() } : { certificateId: r.toLowerCase() });
+    const cert = await this.certs.findOne(/^[A-Z0-9]{2,8}(-[A-Z0-9]{2,8})+-\d{4,}$/i.test(r) ? { certificateNumber: r.toUpperCase() } : { certificateId: r.toLowerCase() });
     if (!cert) throw new AppException('CERTIFICATE_NOT_FOUND', 'We could not find a certificate with this number.', 404);
     return cert;
   }
