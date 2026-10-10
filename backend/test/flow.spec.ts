@@ -194,6 +194,17 @@ describe('certificate platform (e2e)', () => {
       expect(res.body.certificate.certificateNumber).toMatch(/^WTL-[A-Z0-9]{2,6}-00001$/);
     });
 
+    it('deletes an event together with its certificates', async () => {
+      const ev = await adminAgent.post('/api/admin/events').send({ name: 'To Delete', organizationName: 'Org', status: 'ACTIVE' }).expect(201);
+      const reg = await request(http).post(`/api/events/${ev.body.eventCode}/register`).send(body).expect(200);
+      const id = reg.body.certificate.certificateId;
+      await request(http).get(`/api/certificates/${id}`).expect(200);
+      const del = await adminAgent.delete(`/api/admin/events/${ev.body.id}`).expect(200);
+      expect(del.body).toMatchObject({ deleted: true, certificates: 1 });
+      await request(http).get(`/api/certificates/${id}`).expect(404);
+      await adminAgent.get(`/api/admin/events/${ev.body.id}`).expect(404);
+    });
+
     it('handles concurrent identical submissions without duplicates', async () => {
       const ev = await adminAgent.post('/api/admin/events').send({ name: 'Race Event', organizationName: 'Org', status: 'ACTIVE' }).expect(201);
       const rs = await Promise.all([1, 2, 3].map(() => request(http).post(`/api/events/${ev.body.eventCode}/register`).send({ fullName: 'Race Runner', phone: '9123456780' })));

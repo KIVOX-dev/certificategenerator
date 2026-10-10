@@ -16,11 +16,13 @@ export default function Events() {
   async function remove(e: any) {
     const count = Number(e.certificateCount) || 0;
     if (!window.confirm(count > 0
-      ? `"${e.name}" has ${count} issued certificate(s). It will be archived (closed to new registrations) so those certificates stay verifiable. Continue?`
+      ? `Delete "${e.name}" permanently?
+
+This also deletes its ${count} issued certificate(s) and all registrations. Their QR codes will stop working. This cannot be undone.`
       : `Delete "${e.name}" permanently? This cannot be undone.`)) return;
     try {
       const r = await api(`/events/${e.id}`, { method: 'DELETE' });
-      setMsg(r.deleted ? `"${e.name}" was deleted.` : `"${e.name}" was archived because it has issued certificates.`);
+      setMsg(`"${e.name}" was deleted${r.certificates ? ` along with ${r.certificates} certificate(s)` : ''}.`);
       load();
     } catch (err: any) {
       setMsg(err.message);
@@ -44,7 +46,7 @@ export default function Events() {
               <td><span className={`badge ${e.status}`}>{e.status}</span></td><td>{e.certificateCount}</td>
               <td className="nowrap">
                 <Link href={`/events/${e.id}`}>View event</Link>{' '}
-                {e.status !== 'ARCHIVED' && <button type="button" className="link-danger" onClick={() => remove(e)} aria-label={`Delete ${e.name}`}>Delete</button>}
+                <button type="button" className="link-danger" onClick={() => remove(e)} aria-label={`Delete ${e.name}`}>Delete</button>
               </td>
             </tr>
           ))}

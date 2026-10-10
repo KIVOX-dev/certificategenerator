@@ -18,12 +18,13 @@ export default function EventDetail() {
   async function remove() {
     const count = Number(ev.certificateCount) || 0;
     if (!window.confirm(count > 0
-      ? `This event has ${count} issued certificate(s). It will be archived (closed to new registrations) so those certificates stay verifiable. Continue?`
+      ? `Delete this event permanently?
+
+This also deletes its ${count} issued certificate(s) and all registrations. Their QR codes will stop working. This cannot be undone.`
       : 'Delete this event permanently? This cannot be undone.')) return;
     try {
-      const r = await api(`/events/${id}`, { method: 'DELETE' });
-      if (r.deleted) router.push('/events');
-      else { setMsg('Event archived because it has issued certificates.'); load(); }
+      await api(`/events/${id}`, { method: 'DELETE' });
+      router.push('/events');
     } catch (e: any) {
       setMsg(e.message);
     }
@@ -45,7 +46,7 @@ export default function EventDetail() {
           <button onClick={copy}>COPY REGISTRATION LINK</button>
           <a className="btn" href={ev.qrCodeDataUrl} download={`qr-${ev.eventCode}.png`}>DOWNLOAD QR CODE</a>
           <button className="secondary" onClick={() => window.print()}>Print QR code</button>
-          {ev.status !== 'ARCHIVED' && <button className="danger" onClick={remove}>Delete event</button>}
+          <button className="danger" onClick={remove}>Delete event</button>
         </div>
         {msg && <p role="status" className="ok">{msg}</p>}
       </div>

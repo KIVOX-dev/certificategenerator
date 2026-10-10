@@ -5,6 +5,7 @@ import { AppException } from '../common/app.exception';
 import { escapeRegex, generateEventCode } from '../common/ids';
 import { Certificate, Event, EventDoc, Registration } from '../database/schemas';
 import { QrService } from '../qr/qr.service';
+import { StorageService } from '../storage/storage.service';
 
 @Injectable()
 export class EventsService {
@@ -13,6 +14,7 @@ export class EventsService {
     @InjectModel(Registration.name) private registrations: Model<Registration>,
     @InjectModel(Certificate.name) private certificates: Model<Certificate>,
     private qr: QrService,
+    private storage: StorageService,
   ) {}
 
   findByCode(code: string) {
@@ -53,17 +55,20 @@ export class EventsService {
     return this.detail(doc);
   }
 
-  /** Events with certificates are archived instead of deleted so issued certificates stay verifiable. */
+  /**
+   * Permanently deletes the event together with its registrations and issued certificates (and their stored files).
+   * QR codes printed on those certificates stop verifying.
+   */
   async remove(id: string) {
     const doc = await this.getDoc(id);
-    if (await this.certificates.exists({ eventId: doc._id })) {
-      doc.status = 'ARCHIVED';
-      await doc.save();
-      return { deleted: false, archived: true };
+    const issued = await this.certificates.find({ eventId: doc._id }, { pdfKey: 1, previewKey: 1 }).lean();
+    for (const c of issued) {
+      for (const key of [c.pdfKey, c.previewKey]) if (key) await this.storage.remove(key).catch(() => undefined);
     }
+    await this.certificates.deleteMany({ eventId: doc._id });
     await this.registrations.deleteMany({ eventId: doc._id });
     await doc.deleteOne();
-    return { deleted: true, archived: false };
+    return { deleted: true, certificates: issued.length };
   }
 
   async list(q?: string, page = 1, limit = 20) {
