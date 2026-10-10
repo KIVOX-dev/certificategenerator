@@ -128,7 +128,7 @@ describe('CertificateView', () => {
   it('shows a valid certificate on the public page, with no phone number', async () => {
     fetchMock.mockReturnValue(json(cert));
     render(<CertificateView reference="abcd" isNew={false} />);
-    expect(await screen.findByText(/VALID CERTIFICATE/)).toBeInTheDocument();
+    expect(await screen.findByText(/valid certificate/i)).toBeInTheDocument();
     expect(screen.getByText('WTL-CSTN-00001')).toBeInTheDocument();
     expect(screen.getByText('08 October 2026')).toBeInTheDocument();
     expect(document.body.textContent).not.toMatch(/\d{10}/);
@@ -143,7 +143,7 @@ describe('CertificateView', () => {
     fetchMock.mockReturnValueOnce(json({ ...cert, status: 'REVOKED', recipientName: null }));
     const r = render(<CertificateView reference="x" isNew={false} />);
     expect(await screen.findByRole('heading', { name: 'Certificate Revoked' })).toBeInTheDocument();
-    expect(screen.queryByText(/VALID CERTIFICATE/)).toBeNull();
+    expect(screen.queryByText(/^valid certificate$/i)).toBeNull();
     r.unmount();
 
     fetchMock.mockReturnValueOnce(json({ ...cert, status: 'EXPIRED' }));

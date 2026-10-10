@@ -6,20 +6,24 @@ import { api, fmtDate } from '@/lib/api';
 export default function Certificates() {
   const [q, setQ] = useState('');
   const [status, setStatus] = useState('');
+  const [eventId, setEventId] = useState('');
+  const [events, setEvents] = useState<{ id: string; name: string }[]>([]);
   const [page, setPage] = useState(1);
   const [data, setData] = useState<{ items: any[]; total: number; limit: number } | null>(null);
   const [error, setError] = useState('');
 
+  useEffect(() => { api('/events?limit=100').then((r) => setEvents(r.items)).catch(() => undefined); }, []);
+
   const load = useCallback(
-    () => api(`/certificates?q=${encodeURIComponent(q)}&status=${status}&page=${page}`).then(setData).catch((e) => setError(e.message)),
-    [q, status, page],
+    () => api(`/certificates?q=${encodeURIComponent(q)}&status=${status}&eventId=${eventId}&page=${page}`).then(setData).catch((e) => setError(e.message)),
+    [q, status, eventId, page],
   );
   useEffect(() => { const id = setTimeout(load, 250); return () => clearTimeout(id); }, [load]);
 
   async function exportExcel() {
     setError('');
     try {
-      const res = await fetch(`/api/admin/certificates/export?q=${encodeURIComponent(q)}&status=${status}`, { credentials: 'same-origin' });
+      const res = await fetch(`/api/admin/certificates/export?q=${encodeURIComponent(q)}&status=${status}&eventId=${eventId}`, { credentials: 'same-origin' });
       if (!res.ok) throw new Error('The Excel file could not be created. Please try again.');
       const url = URL.createObjectURL(await res.blob());
       const a = document.createElement('a');
@@ -47,6 +51,9 @@ export default function Certificates() {
         <input aria-label="Search certificates" placeholder="Search certificates... (name, phone, certificate number, event)" value={q} onChange={(e) => { setQ(e.target.value); setPage(1); }} />
         <select aria-label="Status" value={status} onChange={(e) => { setStatus(e.target.value); setPage(1); }}>
           <option value="">All statuses</option><option>ACTIVE</option><option>REVOKED</option><option>EXPIRED</option>
+        </select>
+        <select aria-label="Event" value={eventId} onChange={(e) => { setEventId(e.target.value); setPage(1); }}>
+          <option value="">All events</option>{events.map((ev) => <option key={ev.id} value={ev.id}>{ev.name}</option>)}
         </select>
         <div><button type="button" className="flow" onClick={exportExcel}>Download Excel <Icon name="download" size={18} /></button></div>
       </div>

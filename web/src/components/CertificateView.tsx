@@ -6,6 +6,22 @@ import { t } from '@/lib/i18n';
 import { DownloadButton } from './DownloadButton';
 import { ShareButton } from './ShareButton';
 
+function StatusBadge({ kind, title, text }: { kind: 'ok' | 'bad'; title: string; text?: string }) {
+  return (
+    <div className={`verify ${kind}`} role="status">
+      <span className="verify-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+          {kind === 'ok' ? <path d="M5 12.5l4.5 4.5L19 7.5" /> : <path d="M6 6l12 12M18 6L6 18" />}
+        </svg>
+      </span>
+      <span className="verify-text">
+        <strong>{title}</strong>
+        {text && <span>{text}</span>}
+      </span>
+    </div>
+  );
+}
+
 export function CertificateView({ reference, isNew: isNewProp }: { reference: string; isNew?: boolean }) {
   const params = useSearchParams();
   const isNew = isNewProp ?? params.get('new') === '1';
@@ -29,7 +45,7 @@ export function CertificateView({ reference, isNew: isNewProp }: { reference: st
     return (
       <>
         <h1 ref={heading} tabIndex={-1}>{t('certificateNotFound')}</h1>
-        <p className="banner bad">✗ {t('certificateNotFoundText')}</p>
+        <StatusBadge kind="bad" title={t('certificateNotFoundText')} />
         <p className="lead">{t('certificateNotFoundHint')}</p>
       </>
     );
@@ -41,8 +57,8 @@ export function CertificateView({ reference, isNew: isNewProp }: { reference: st
     return (
       <>
         <h1 ref={heading} tabIndex={-1}>{t('certificateRevoked')}</h1>
-        <p className="banner bad">✗ {t('certificateRevokedText')}</p>
-        <dl className="card"><dt>{t('certificateNumber')}</dt><dd>{cert.certificateNumber}</dd></dl>
+        <StatusBadge kind="bad" title={t('certificateRevoked')} text={t('certificateRevokedText')} />
+        <dl className="details"><div><dt>{t('certificateNumber')}</dt><dd>{cert.certificateNumber}</dd></div></dl>
       </>
     );
   }
@@ -51,7 +67,7 @@ export function CertificateView({ reference, isNew: isNewProp }: { reference: st
   const preview = (
     <a className="preview-link" href={previewUrl(cert.certificateId)} target="_blank" rel="noopener">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img className="preview" src={previewUrl(cert.certificateId)} alt={t('certificatePreviewAlt')} />
+      <img className="preview" src={previewUrl(cert.certificateId)} alt={t('certificatePreviewAlt')} decoding="async" />
     </a>
   );
 
@@ -59,36 +75,41 @@ export function CertificateView({ reference, isNew: isNewProp }: { reference: st
     <>
       {isNew && !expired ? (
         <>
-          <h1 ref={heading} tabIndex={-1} className="success">✓ {t("certificateReady")}</h1>
+          <h1 ref={heading} tabIndex={-1}>{t('certificateReady')}</h1>
           <p className="lead">{t('issuedTo')}</p>
-          <p className="big-name">{cert.recipientName}</p>
         </>
       ) : (
         <>
           <h1 ref={heading} tabIndex={-1}>{t('certificateTitle')}</h1>
           {expired ? (
-            <p className="banner bad">✗ {t('certificateExpired')}. {t('certificateExpiredText')}</p>
+            <StatusBadge kind="bad" title={t('certificateExpired')} text={t('certificateExpiredText')} />
           ) : (
-            <p className="banner ok" role="status"><span className="status-title">✓ {t('validCertificate').toUpperCase()}</span></p>
+            <StatusBadge kind="ok" title={t('validCertificate')} text={t('verifiedBy')} />
           )}
-          <p className="big-name">{cert.recipientName}</p>
         </>
       )}
+
+      <div className="recipient">
+        <span className="label">{t('issuedToLabel')}</span>
+        <p className="recipient-name">{cert.recipientName}</p>
+      </div>
 
       {!expired && (
         <>
           {preview}
           <p className="hint">{t('openLarge')}</p>
-          <DownloadButton certificateId={cert.certificateId} certificateNumber={cert.certificateNumber} />
-          <ShareButton certificateId={cert.certificateId} certificateNumber={cert.certificateNumber} title={cert.eventName ?? t('certificateTitle')} />
+          <div className="actions-inline">
+            <DownloadButton certificateId={cert.certificateId} certificateNumber={cert.certificateNumber} />
+            <ShareButton certificateId={cert.certificateId} certificateNumber={cert.certificateNumber} title={cert.eventName ?? t('certificateTitle')} />
+          </div>
         </>
       )}
 
-      <dl className="card">
-        <dt>{t('certificateNumber')}</dt><dd>{cert.certificateNumber}</dd>
-        <dt>{t('course')}</dt><dd>{cert.eventName}</dd>
-        <dt>{t('issued')}</dt><dd>{formatDate(cert.issueDate)}</dd>
-        <dt>{t('organization')}</dt><dd>{cert.organizationName}</dd>
+      <dl className="details">
+        <div><dt>{t('certificateNumber')}</dt><dd>{cert.certificateNumber}</dd></div>
+        <div><dt>{t('course')}</dt><dd>{cert.eventName}</dd></div>
+        <div><dt>{t('issued')}</dt><dd>{formatDate(cert.issueDate)}</dd></div>
+        <div><dt>{t('organization')}</dt><dd>{cert.organizationName}</dd></div>
       </dl>
     </>
   );

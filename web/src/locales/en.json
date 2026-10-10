@@ -59,5 +59,7 @@
   "eventCode": "Event Code",
   "eventCodePlaceholder": "Enter the event code",
   "scanNeedsCamera": "Please allow the camera so we can scan the QR code, or type the event code instead.",
-  "scanHint": "Point the camera at the QR code"
+  "scanHint": "Point the camera at the QR code",
+  "verifiedBy": "Verified by We The Leaders",
+  "issuedToLabel": "Issued to"
 }
