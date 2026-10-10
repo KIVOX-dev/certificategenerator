@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { getConfig } from '../config/config';
 import {
   Certificate, CertificateSchema, Counter, CounterSchema, Event, EventSchema,
-  Registration, RegistrationSchema, Template, TemplateSchema, User, UserSchema,
+  Registration, RegistrationSchema, Setting, SettingSchema, Template, TemplateSchema, User, UserSchema,
 } from './schemas';
 
 const models = MongooseModule.forFeature([
@@ -13,6 +13,7 @@ const models = MongooseModule.forFeature([
   { name: Certificate.name, schema: CertificateSchema },
   { name: Template.name, schema: TemplateSchema },
   { name: Counter.name, schema: CounterSchema },
+  { name: Setting.name, schema: SettingSchema },
 ]);
 
 @Global()

@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import { SkipThrottle } from '@nestjs/throttler';
 import { Connection } from 'mongoose';
-import { getConfig } from './config/config';
+import { QrService } from './qr/qr.service';
 
 /**
  * Used by Render's health check and by the post-deploy smoke test (scripts/smoke-prod.mjs).
@@ -12,14 +12,14 @@ import { getConfig } from './config/config';
 @Controller('health')
 @SkipThrottle()
 export class HealthController {
-  constructor(@InjectConnection() private db: Connection) {}
+  constructor(@InjectConnection() private db: Connection, private qr: QrService) {}
 
   @Get()
-  health() {
+  async health() {
     return {
       ok: true,
       database: this.db.readyState === 1 ? 'up' : 'down',
-      appUrl: getConfig().appUrl,
+      appUrl: await this.qr.siteUrl(),
       commit: process.env.RENDER_GIT_COMMIT || process.env.GIT_COMMIT || null,
     };
   }

@@ -70,6 +70,14 @@ describe('certificate platform (e2e)', () => {
     });
   });
 
+  describe('root', () => {
+    it('answers the bare API address with a friendly message', async () => {
+      const res = await request(http).get('/').expect(200);
+      expect(res.body).toMatchObject({ status: 'running', health: '/api/health' });
+      await request(http).get('/nothing-here').expect(404);
+    });
+  });
+
   describe('health', () => {
     it('reports database, app url and commit without secrets', async () => {
       const res = await request(http).get('/api/health').expect(200);
@@ -245,6 +253,59 @@ describe('certificate platform (e2e)', () => {
       const reg = await request(http).post(`/api/events/${ev.body.eventCode}/register`).send({ fullName: 'Old Timer', phone: '9000000002' }).expect(200);
       const res = await request(http).get(`/api/certificates/${reg.body.certificate.certificateId}`).expect(200);
       expect(res.body.status).toBe('EXPIRED');
+    });
+  });
+
+  describe('public site URL setting', () => {
+    it('requires an admin', async () => {
+      await request(http).get('/api/admin/settings').expect(401);
+      await request(http).put('/api/admin/settings/site-url').send({ siteUrl: 'https://x.example.org' }).expect(401);
+      await request(http).post('/api/admin/settings/fix-certificate-urls').expect(401);
+    });
+
+    it('starts from the environment value', async () => {
+      const res = await adminAgent.get('/api/admin/settings').expect(200);
+      expect(res.body).toMatchObject({ siteUrl: 'https://example.test', source: 'environment', count: 0 });
+    });
+
+    it('rejects unsafe or invalid addresses', async () => {
+      for (const siteUrl of ['not a url', 'http://evil.example.com', 'javascript:alert(1)', 'ftp://files.example.com']) {
+        await adminAgent.put('/api/admin/settings/site-url').send({ siteUrl }).expect(400);
+      }
+    });
+
+    it('overrides APP_URL, updates links/QR codes, and repairs old certificates', async () => {
+      const set = await adminAgent.put('/api/admin/settings/site-url').send({ siteUrl: 'https://certs.example.org/anything/' }).expect(200);
+      expect(set.body).toMatchObject({ siteUrl: 'https://certs.example.org', source: 'database' });
+      expect(set.body.count).toBeGreaterThan(0); // certificates issued earlier still carry the old address
+
+      const health = await request(http).get('/api/health').expect(200);
+      expect(health.body.appUrl).toBe('https://certs.example.org');
+
+      const ev = await adminAgent.get(`/api/admin/events/${eventId}`).expect(200);
+      expect(ev.body.registrationUrl).toBe(`https://certs.example.org/register/${ev.body.eventCode}`);
+
+      const fixed = await adminAgent.post('/api/admin/settings/fix-certificate-urls').expect(200);
+      expect(fixed.body.count).toBeGreaterThan(0);
+      let left = 1;
+      for (let i = 0; i < 90 && left > 0; i++) {
+        await new Promise((r) => setTimeout(r, 1000));
+        left = (await adminAgent.get('/api/admin/settings').expect(200)).body.count;
+      }
+      expect(left).toBe(0);
+
+      const list = await adminAgent.get('/api/admin/certificates').expect(200);
+      expect(list.body.items.every((c: any) => c.verificationUrl.startsWith('https://certs.example.org/certificate/'))).toBe(true);
+      // same secure id and number, still downloadable
+      await request(http).get(`/api/certificates/${certId}`).expect(200);
+    });
+
+    it('issues new certificates with the new address', async () => {
+      const ev = await adminAgent.post('/api/admin/events').send({ name: 'After Fix', organizationName: 'Org', status: 'ACTIVE' }).expect(201);
+      expect(ev.body.registrationUrl.startsWith('https://certs.example.org/register/')).toBe(true);
+      await request(http).post(`/api/events/${ev.body.eventCode}/register`).send({ fullName: 'New Person', phone: '9000000077' }).expect(200);
+      const list = await adminAgent.get('/api/admin/certificates').query({ q: 'New Person' }).expect(200);
+      expect(list.body.items[0].verificationUrl.startsWith('https://certs.example.org/certificate/')).toBe(true);
     });
   });
 });

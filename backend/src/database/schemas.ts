@@ -112,3 +112,11 @@ export class Counter {
   @Prop({ default: 0 }) seq: number;
 }
 export const CounterSchema = SchemaFactory.createForClass(Counter);
+
+/** Runtime settings editable from the admin panel (e.g. the public site URL). */
+@Schema({ timestamps: true })
+export class Setting {
+  @Prop({ required: true }) _id: string;
+  @Prop({ required: true }) value: string;
+}
+export const SettingSchema = SchemaFactory.createForClass(Setting);

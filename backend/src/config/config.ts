@@ -17,9 +17,10 @@ export function getConfig() {
     throw new Error('DATABASE_URL must be set (MongoDB connection string).');
   }
   const appUrl = (env.APP_URL ?? 'http://localhost:3000').replace(/\/+$/, '');
-  // Printed QR codes must never point at localhost: refuse to run in production like that.
+  // Printed QR codes must never point at localhost. The public site URL can be corrected without redeploying:
+  // admin panel -> Settings -> Public site URL (stored in the database, overrides APP_URL).
   if (nodeEnv === 'production' && /^https?:\/\/(localhost|127\.0\.0\.1)/i.test(appUrl)) {
-    throw new Error('APP_URL must be your public https site URL in production (e.g. https://certs.example.com), not localhost.');
+    console.warn('WARNING: APP_URL is localhost in production. Set it to your public site URL (env var or admin Settings).');
   }
   return {
     nodeEnv,

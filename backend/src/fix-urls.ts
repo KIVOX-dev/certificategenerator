@@ -19,14 +19,15 @@ async function run() {
   const certs = app.get<Model<Certificate>>(getModelToken(Certificate.name));
   const service = app.get(CertificatesService);
   const qr = app.get(QrService);
-  console.log(`Target site: ${cfg.appUrl}`);
+  console.log(`Target site: ${await qr.siteUrl()} (APP_URL env: ${cfg.appUrl})`);
 
   const all = await certs.find({});
-  const stale = all.filter((c) => c.verificationUrl !== qr.verificationUrl(c.certificateId));
+  const stale: typeof all = [];
+  for (const c of all) if (c.verificationUrl !== (await qr.verificationUrl(c.certificateId))) stale.push(c);
   console.log(`${stale.length} of ${all.length} certificates need fixing`);
   let fixed = 0;
   for (const c of stale) {
-    c.verificationUrl = qr.verificationUrl(c.certificateId);
+    c.verificationUrl = await qr.verificationUrl(c.certificateId);
     c.pdfStatus = 'PENDING';
     await c.save();
     try {

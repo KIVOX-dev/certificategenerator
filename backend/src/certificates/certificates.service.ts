@@ -86,7 +86,7 @@ export class CertificatesService {
       templateId: event.templateId,
       expiryDate: event.expiryDate,
       issuedAt: now,
-      verificationUrl: this.qr.verificationUrl(certificateId),
+      verificationUrl: await this.qr.verificationUrl(certificateId),
       });
     } catch (e: any) {
       if (e?.code !== 11000) throw e;
@@ -156,6 +156,47 @@ export class CertificatesService {
     cert.pdfStatus = 'PENDING';
     await cert.save();
     return this.publicView(await this.ensureFiles(cert));
+  }
+
+  // ---------- site URL repair ----------
+
+  private fixing = false;
+
+  private async staleFilter() {
+    const base = await this.qr.siteUrl();
+    return { verificationUrl: { $not: new RegExp(`^${escapeRegex(base)}/certificate/`) } };
+  }
+
+  /** How many issued certificates carry a QR code that points somewhere other than the current site URL. */
+  async staleUrlCount() {
+    return { count: await this.certs.countDocuments(await this.staleFilter()), running: this.fixing };
+  }
+
+  /**
+   * Re-issues the PDF + preview (same number, same secure id) of every certificate whose QR points at an old site URL.
+   * Runs in the background; the admin panel polls staleUrlCount().
+   */
+  async fixStaleUrls() {
+    const { count } = await this.staleUrlCount();
+    if (this.fixing || count === 0) return { started: false, count, running: this.fixing };
+    this.fixing = true;
+    void (async () => {
+      try {
+        for (const c of await this.certs.find(await this.staleFilter())) {
+          try {
+            c.verificationUrl = await this.qr.verificationUrl(c.certificateId);
+            c.pdfStatus = 'PENDING';
+            await c.save();
+            await this.ensureFiles(c);
+          } catch (e) {
+            this.logger.error(`Could not repair ${c.certificateNumber}: ${e}`);
+          }
+        }
+      } finally {
+        this.fixing = false;
+      }
+    })();
+    return { started: true, count, running: true };
   }
 
   // ---------- public lookup ----------

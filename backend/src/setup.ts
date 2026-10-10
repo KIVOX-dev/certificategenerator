@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, RequestMethod } from '@nestjs/common';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
@@ -9,7 +9,7 @@ import { getConfig } from './config/config';
 export function configureApp(app: INestApplication) {
   const cfg = getConfig();
   if (cfg.trustProxy) (app as any).set('trust proxy', cfg.trustProxy);
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api', { exclude: [{ path: '/', method: RequestMethod.GET }] });
   app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
   app.use(compression());
   app.use(cookieParser());

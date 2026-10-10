@@ -77,8 +77,9 @@ export class EventsService {
       { $group: { _id: '$eventId', n: { $sum: 1 } } },
     ]);
     const byId = new Map(counts.map((c) => [String(c._id), c.n]));
+    const base = await this.qr.siteUrl();
     return {
-      items: items.map((e) => ({ ...this.summary(e), certificateCount: byId.get(String(e._id)) ?? 0 })),
+      items: items.map((e) => ({ ...this.summary(e, base), certificateCount: byId.get(String(e._id)) ?? 0 })),
       total,
       page,
       limit,
@@ -95,7 +96,7 @@ export class EventsService {
     return doc;
   }
 
-  summary(e: EventDoc) {
+  summary(e: EventDoc, siteUrl: string) {
     return {
       id: String(e._id),
       eventCode: e.eventCode,
@@ -108,12 +109,12 @@ export class EventsService {
       status: e.status,
       templateId: e.templateId ? String(e.templateId) : null,
       allowDuplicates: e.allowDuplicates,
-      registrationUrl: this.qr.registrationUrl(e.eventCode),
+      registrationUrl: `${siteUrl}/register/${encodeURIComponent(e.eventCode)}`,
       createdAt: e.createdAt,
     };
   }
 
   private async detail(e: EventDoc) {
-    return { ...this.summary(e), qrCodeDataUrl: await this.qr.registrationQr(e.eventCode) };
+    return { ...this.summary(e, await this.qr.siteUrl()), qrCodeDataUrl: await this.qr.registrationQr(e.eventCode) };
   }
 }
