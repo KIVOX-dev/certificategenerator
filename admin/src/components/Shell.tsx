@@ -46,7 +46,6 @@ export function Shell({ children }: { children: React.ReactNode }) {
         </Link>
         <span className="topbar-title">Certificates Admin</span>
         <span className="topbar-spacer" />
-        <span className="topbar-user" title={user.email}>{user.name || user.email}</span>
         <button type="button" className="icon-btn" onClick={logout} aria-label="Log out" title="Log out"><Icon name="logout" /></button>
       </header>
       <div className="body">

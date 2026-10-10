@@ -74,3 +74,9 @@ input.check { width:auto; } .section-divider { margin-top:16px; padding-top:16px
 button.link-danger { background:none; border:0; padding:0 0 0 8px; margin:0; color:var(--bad); text-decoration:underline; font-size:inherit; }
 button.link-danger:hover:not(:disabled) { background:none; color:#8a2a20; }
 button.danger:hover:not(:disabled) { background:#8a2a20; border-color:#8a2a20; }
+/* Gradient pill whose colours sweep left to right and back. */
+button.flow, .btn.flow { display:inline-flex; align-items:center; gap:8px; border:0; padding:11px 24px; font-weight:700; color:#fff;
+  background:linear-gradient(90deg,#533afd 0%,#7461ff 30%,#c9a48c 70%,#533afd 100%); background-size:300% 100%; animation:flow 4s ease-in-out infinite alternate; }
+button.flow:hover:not(:disabled), .btn.flow:hover { background:linear-gradient(90deg,#533afd 0%,#7461ff 30%,#c9a48c 70%,#533afd 100%); background-size:300% 100%; color:#fff; animation-duration:2s; }
+@keyframes flow { from { background-position:0% 50%; } to { background-position:100% 50%; } }
+@media (prefers-reduced-motion:reduce) { button.flow, .btn.flow { animation:none; } }

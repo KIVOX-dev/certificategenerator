@@ -1,5 +1,6 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
+import { Icon } from '@/components/Icons';
 import { api, fmtDate } from '@/lib/api';
 
 export default function Certificates() {
@@ -47,7 +48,7 @@ export default function Certificates() {
         <select aria-label="Status" value={status} onChange={(e) => { setStatus(e.target.value); setPage(1); }}>
           <option value="">All statuses</option><option>ACTIVE</option><option>REVOKED</option><option>EXPIRED</option>
         </select>
-        <div><button type="button" className="secondary" onClick={exportExcel}>Download Excel</button></div>
+        <div><button type="button" className="flow" onClick={exportExcel}>Download Excel <Icon name="download" size={18} /></button></div>
       </div>
       {error && <p className="error">{error}</p>}
       <div className="table-wrap"><table>
