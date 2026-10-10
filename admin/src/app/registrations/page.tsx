@@ -37,9 +37,9 @@ export default function Registrations() {
         <tbody>
           {data?.items.map((r) => (
             <tr key={r.id}>
-              <td>{r.fullName}</td><td>{r.phone}</td><td>{r.eventName}</td><td>{r.certificateNumber ?? '—'}</td><td>{fmtDate(r.createdAt)}</td>
-              <td>{r.certificateStatus ? <span className={`badge ${r.certificateStatus}`}>{r.certificateStatus}</span> : '—'}</td>
-              <td><button className="danger" onClick={() => remove(r.id)}>Delete</button></td>
+              <td data-label="Name">{r.fullName}</td><td data-label="Phone">{r.phone}</td><td data-label="Event">{r.eventName}</td><td data-label="Certificate">{r.certificateNumber ?? '—'}</td><td data-label="Date">{fmtDate(r.createdAt)}</td>
+              <td data-label="Status">{r.certificateStatus ? <span className={`badge ${r.certificateStatus}`}>{r.certificateStatus}</span> : '—'}</td>
+              <td className="actions"><button className="danger" onClick={() => remove(r.id)}>Delete</button></td>
             </tr>
           ))}
           {data && data.items.length === 0 && <tr><td colSpan={7}>No registrations found.</td></tr>}

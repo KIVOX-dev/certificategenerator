@@ -66,9 +66,9 @@ export default function Certificates() {
         <tbody>
           {data?.items.map((c) => (
             <tr key={c.id}>
-              <td>{c.certificateNumber}</td><td>{c.recipientName}</td><td>{c.phone}</td><td>{c.eventName}</td><td>{fmtDate(c.issuedAt)}</td>
-              <td><span className={`badge ${c.status}`}>{c.status}</span></td>
-              <td className="nowrap">
+              <td data-label="Number">{c.certificateNumber}</td><td data-label="Name">{c.recipientName}</td><td data-label="Phone">{c.phone}</td><td data-label="Event">{c.eventName}</td><td data-label="Issued">{fmtDate(c.issuedAt)}</td>
+              <td data-label="Status"><span className={`badge ${c.status}`}>{c.status}</span></td>
+              <td className="nowrap actions">
                 <a href={`/api/admin/certificates/${c.id}/preview`} target="_blank" rel="noopener">View</a> ·{' '}
                 <a href={`/api/admin/certificates/${c.id}/pdf`}>Download</a> ·{' '}
                 {c.storedStatus === 'REVOKED'

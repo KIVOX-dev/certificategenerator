@@ -42,9 +42,9 @@ This also deletes its ${count} issued certificate(s) and all registrations. Thei
         <tbody>
           {data?.items.map((e) => (
             <tr key={e.id}>
-              <td>{e.name}</td><td><code>{e.eventCode}</code></td><td>{e.organizationName}</td><td>{fmtDate(e.issueDate)}</td>
-              <td><span className={`badge ${e.status}`}>{e.status}</span></td><td>{e.certificateCount}</td>
-              <td className="nowrap">
+              <td data-label="Name">{e.name}</td><td data-label="Code"><code>{e.eventCode}</code></td><td data-label="Organization">{e.organizationName}</td><td data-label="Event date">{fmtDate(e.issueDate)}</td>
+              <td data-label="Status"><span className={`badge ${e.status}`}>{e.status}</span></td><td data-label="Certificates">{e.certificateCount}</td>
+              <td className="nowrap actions">
                 <Link href={`/events/${e.id}`}>View event</Link>{' '}
                 <button type="button" className="link-danger" onClick={() => remove(e)} aria-label={`Delete ${e.name}`}>Delete</button>
               </td>

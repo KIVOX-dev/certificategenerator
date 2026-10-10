@@ -15,8 +15,8 @@ export default function Templates() {
       <div className="table-wrap"><table>
         <thead><tr><th>Name</th><th>Type</th><th>Default</th><th>Updated</th><th></th></tr></thead>
         <tbody>{list.map((t) => (
-          <tr key={t.id}><td>{t.name}</td><td>{t.type}</td><td>{t.isDefault ? '✓ Default' : ''}</td><td>{fmtDate(t.updatedAt)}</td>
-            <td>{!t.isDefault && <button className="secondary" onClick={() => makeDefault(t.id)}>Make default</button>}</td></tr>
+          <tr key={t.id}><td data-label="Name">{t.name}</td><td data-label="Type">{t.type}</td><td data-label="Default">{t.isDefault ? '✓ Default' : ''}</td><td data-label="Updated">{fmtDate(t.updatedAt)}</td>
+            <td className="actions">{!t.isDefault && <button className="secondary" onClick={() => makeDefault(t.id)}>Make default</button>}</td></tr>
         ))}</tbody>
       </table></div>
     </>
