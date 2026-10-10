@@ -4,10 +4,14 @@ import { api, fmtDate } from '@/lib/api';
 
 export default function Registrations() {
   const [q, setQ] = useState('');
+  const [eventId, setEventId] = useState('');
+  const [events, setEvents] = useState<{ id: string; name: string }[]>([]);
   const [page, setPage] = useState(1);
   const [data, setData] = useState<{ items: any[]; total: number; limit: number } | null>(null);
 
-  const load = useCallback(() => api(`/registrations?q=${encodeURIComponent(q)}&page=${page}`).then(setData).catch(() => undefined), [q, page]);
+  useEffect(() => { api('/events?limit=100').then((r) => setEvents(r.items)).catch(() => undefined); }, []);
+
+  const load = useCallback(() => api(`/registrations?q=${encodeURIComponent(q)}&eventId=${eventId}&page=${page}`).then(setData).catch(() => undefined), [q, eventId, page]);
   useEffect(() => { const id = setTimeout(load, 250); return () => clearTimeout(id); }, [load]);
 
   async function remove(id: string) {
@@ -19,7 +23,15 @@ export default function Registrations() {
   return (
     <>
       <h1>Registrations</h1>
-      <input aria-label="Search registrations" placeholder="Search by name or phone..." value={q} onChange={(e) => { setQ(e.target.value); setPage(1); }} className="mb-12" />
+      <div className="grid noprint mb-12">
+        <div className="card stat"><b>{data ? data.total : '…'}</b>{eventId || q ? 'Matching registrations' : 'Total registrations'}</div>
+      </div>
+      <div className="row noprint mb-12">
+        <input aria-label="Search registrations" placeholder="Search by name or phone..." value={q} onChange={(e) => { setQ(e.target.value); setPage(1); }} />
+        <select aria-label="Event" value={eventId} onChange={(e) => { setEventId(e.target.value); setPage(1); }}>
+          <option value="">All events</option>{events.map((ev) => <option key={ev.id} value={ev.id}>{ev.name}</option>)}
+        </select>
+      </div>
       <div className="table-wrap"><table>
         <thead><tr><th>Name</th><th>Phone</th><th>Event</th><th>Certificate</th><th>Date</th><th>Status</th><th></th></tr></thead>
         <tbody>

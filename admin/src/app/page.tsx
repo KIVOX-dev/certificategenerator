@@ -39,7 +39,7 @@ export default function Dashboard() {
             <h2>Certificate status</h2>
             <Donut slices={[
               { label: 'Active', value: stats.activeCertificates, color: '#1f7a54' },
-              { label: 'Revoked', value: stats.revokedCertificates, color: '#b2372b' },
+              { label: 'Revoked', value: stats.revokedCertificates, color: '#e5132b' },
               { label: 'Expired', value: stats.expiredCertificates, color: '#9b6829' },
             ]} />
           </section>

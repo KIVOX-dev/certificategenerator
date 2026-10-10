@@ -47,6 +47,9 @@ export default function Certificates() {
   return (
     <>
       <h1>Certificates</h1>
+      <div className="grid noprint mb-12">
+        <div className="card stat"><b>{data ? data.total : '…'}</b>{eventId || status || q ? 'Matching certificates' : 'Total certificates'}</div>
+      </div>
       <div className="row noprint mb-12">
         <input aria-label="Search certificates" placeholder="Search certificates... (name, phone, certificate number, event)" value={q} onChange={(e) => { setQ(e.target.value); setPage(1); }} />
         <select aria-label="Status" value={status} onChange={(e) => { setStatus(e.target.value); setPage(1); }}>
