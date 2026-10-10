@@ -10,12 +10,12 @@ import * as QRCode from 'qrcode';
   const out = process.argv[2] ?? '.';
   mkdirSync(out, { recursive: true });
   const pdf = new PdfService();
-  const qr = await QRCode.toDataURL('https://example.com/certificate/kcsrsgg8z3cd8d55', { errorCorrectionLevel: 'M', margin: 2, width: 400 });
+  const qr = await QRCode.toDataURL('https://certificategenerator-brown.vercel.app/certificate/kcsrsgg8z3cd8d55', { errorCorrectionLevel: 'M', margin: 2, width: 400 });
   const { pdf: p, preview } = await pdf.render(
     {
       certificateTitle: 'Certificate of Participation', recipientName: process.argv[3] ?? 'Ramesh Kumar', eventName: 'Community Street Clean-Up Drive',
       eventDescription: '', organizationName: 'We The Leaders', issueDate: '08 October 2026', certificateNumber: 'WTL-CSTN-00001',
-      verificationUrl: 'https://example.com/certificate/kcsrsgg8z3cd8d55', qrDataUrl: qr,
+      verificationUrl: 'https://certificategenerator-brown.vercel.app/certificate/kcsrsgg8z3cd8d55', qrDataUrl: qr,
     },
     { type: 'IMAGE', templateData: buildVolunteerTemplate() },
   );
