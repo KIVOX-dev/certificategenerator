@@ -13,7 +13,7 @@ import * as QRCode from 'qrcode';
   const qr = await QRCode.toDataURL('https://certificategenerator-brown.vercel.app/certificate/kcsrsgg8z3cd8d55', { errorCorrectionLevel: 'M', margin: 2, width: 400 });
   const { pdf: p, preview } = await pdf.render(
     {
-      certificateTitle: 'Certificate of Participation', recipientName: process.argv[3] ?? 'Ramesh Kumar', eventName: 'Community Street Clean-Up Drive',
+      certificateTitle: 'Certificate of Participation', recipientName: process.argv[3] ?? 'Ramesh Kumar', eventName: 'One Day For Nature - Cleaning Drive',
       eventDescription: '', organizationName: 'We The Leaders', issueDate: '08 October 2026', certificateNumber: 'WTL-CUDTN-00001',
       verificationUrl: 'https://certificategenerator-brown.vercel.app/certificate/kcsrsgg8z3cd8d55', qrDataUrl: qr,
     },
