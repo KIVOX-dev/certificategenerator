@@ -51,7 +51,6 @@ export default function Templates() {
       </table></div>
       <h2>Add template</h2>
       <form className="card" onSubmit={create}>
-        <p>HTML templates use placeholders such as <code>{'{{recipientName}}'}</code>, <code>{'{{eventName}}'}</code>, <code>{'{{certificateNumber}}'}</code>, <code>{'{{issueDate}}'}</code>, <code>{'{{organizationName}}'}</code>, <code>{'{{qrDataUrl}}'}</code>. IMAGE templates use a background image plus field positions in %. Templates apply to newly issued certificates; use “regenerate” in the API to re-render old ones.</p>
         <label htmlFor="tname">Name</label><input id="tname" name="name" required minLength={2} />
         <label htmlFor="ttype">Type</label>
         <select id="ttype" value={type} onChange={(e) => setType(e.target.value as any)}><option>HTML</option><option>IMAGE</option></select>
