@@ -40,29 +40,41 @@ This also deletes its ${count} issued certificate(s) and all registrations. Thei
     <>
       <h1>{ev.name}</h1>
       <div className="card">
-        <p><span className={`badge ${ev.status}`}>{ev.status}</span> &nbsp; {ev.organizationName} · Event date {fmtDate(ev.issueDate)} · Expiry {fmtDate(ev.expiryDate)}</p>
-        <p>Event code: <code>{ev.eventCode}</code></p>
-        <p>Registration link: <a href={ev.registrationUrl}>{ev.registrationUrl}</a></p>
-        <div className="noprint">
-          <button onClick={copy}>COPY REGISTRATION LINK</button>
-          <a className="btn" href={ev.qrCodeDataUrl} download={`qr-${ev.eventCode}.png`}>DOWNLOAD QR CODE</a>
+        <div className="detail-head"><span className={`badge ${ev.status}`}>{ev.status}</span><span className="muted">{Number(ev.certificateCount) || 0} certificate(s) issued</span></div>
+        <dl className="detail-list">
+          <div><dt>Organization</dt><dd>{ev.organizationName}</dd></div>
+          <div><dt>Event date</dt><dd>{fmtDate(ev.issueDate)}</dd></div>
+          <div><dt>Expiry</dt><dd>{fmtDate(ev.expiryDate)}</dd></div>
+          <div><dt>Event code</dt><dd><code>{ev.eventCode}</code></dd></div>
+        </dl>
+        <label htmlFor="reglink">Registration link</label>
+        <input id="reglink" className="link-box" readOnly value={ev.registrationUrl} onFocus={(e) => e.currentTarget.select()} />
+        <div className="btn-row noprint">
+          <button onClick={copy}>Copy link</button>
+          <a className="btn secondary" href={ev.qrCodeDataUrl} download={`qr-${ev.eventCode}.png`}>Download QR code</a>
           <button className="secondary" onClick={() => window.print()}>Print QR code</button>
-          <button className="danger" onClick={remove}>Delete event</button>
         </div>
         {msg && <p role="status" className="ok">{msg}</p>}
       </div>
-      <div className="card">
+      <div className="card center">
         <h2 className="mt-0">Scan to get your certificate</h2>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="qr" src={ev.qrCodeDataUrl} alt={`QR code for ${ev.registrationUrl}`} />
-        <p>{ev.name}</p>
+        <p className="muted">{ev.name}</p>
       </div>
       <div className="card noprint">
         <h2 className="mt-0">Registration status</h2>
-        {['DRAFT', 'ACTIVE', 'CLOSED', 'ARCHIVED'].map((s) => (
-          <button key={s} className={s === ev.status ? '' : 'secondary'} onClick={() => setStatus(s)}>{s}</button>
-        ))}
-        <p>Only ACTIVE events accept registrations.</p>
+        <div className="segmented" role="group" aria-label="Registration status">
+          {['DRAFT', 'ACTIVE', 'CLOSED', 'ARCHIVED'].map((st) => (
+            <button key={st} className={st === ev.status ? '' : 'secondary'} aria-pressed={st === ev.status} onClick={() => setStatus(st)}>{st}</button>
+          ))}
+        </div>
+        <p className="muted">Only ACTIVE events accept registrations.</p>
+      </div>
+      <div className="card danger-zone noprint">
+        <h2 className="mt-0">Delete event</h2>
+        <p className="muted">Permanently removes this event, its registrations and its issued certificates. Their QR codes stop working.</p>
+        <button className="danger" onClick={remove}>Delete event</button>
       </div>
     </>
   );
