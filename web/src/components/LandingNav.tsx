@@ -5,12 +5,14 @@ import { useState } from 'react';
 const links = [
   { href: '#about', label: 'About' },
   { href: '#works', label: 'Our Works' },
+  { href: '#involved', label: 'Get Involved' },
   { href: '#register', label: 'Event Registration' },
   { href: '#certificates', label: 'Certificates' },
+  { href: '#faq', label: 'FAQ' },
 ];
 
 /** Landing-page menu: inline links on desktop, a toggle button on phones. */
-export function LandingNav({ mainSite }: { mainSite: string }) {
+export function LandingNav() {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
   return (
@@ -30,7 +32,7 @@ export function LandingNav({ mainSite }: { mainSite: string }) {
           <a key={l.href} href={l.href} onClick={close}>{l.label}</a>
         ))}
         <Link className="cbe-btn small" href="/get-certificate" onClick={close}>Get Certificate</Link>
-        <a className="cbe-btn small ghost" href={mainSite} onClick={close}>Join</a>
+        <a className="cbe-btn small ghost" href="#register" onClick={close}>Join</a>
       </nav>
     </div>
   );
