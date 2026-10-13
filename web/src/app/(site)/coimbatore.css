@@ -304,3 +304,8 @@ img { max-width: 100%; }
 .cbe-tile .cbe-btn { align-self: flex-start; margin-top: 12px; }
 @media (max-width: 640px) { .cbe-tile .cbe-btn { align-self: stretch; } }
 .cbe-section > .cbe-center .cbe-btn { min-width: 180px; }
+
+.cbe-desc { white-space: pre-line; }
+.cbe-desc.full { display: block; -webkit-line-clamp: unset; overflow: visible; }
+.cbe-more { margin-top: 6px; padding: 8px 0; min-height: 44px; background: none; border: 0; color: var(--primary); font: inherit; font-weight: 700; cursor: pointer; }
+.cbe-more:hover { text-decoration: underline; }

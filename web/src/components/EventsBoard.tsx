@@ -32,6 +32,22 @@ function useEvents() {
   return { events, failed };
 }
 
+/** Event description from the admin app: clamped to a few lines, with Read more for long text. */
+function Description({ text }: { text: string }) {
+  const [open, setOpen] = useState(false);
+  const long = text.length > 150 || text.split('\n').length > 3;
+  return (
+    <div>
+      <p className={`cbe-desc${open || !long ? ' full' : ''}`}>{text}</p>
+      {long && (
+        <button type="button" className="cbe-more" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
+          {open ? 'Show less' : 'Read more'}
+        </button>
+      )}
+    </div>
+  );
+}
+
 function EventCard({ e, past }: { e: PublicEvent; past: boolean }) {
   const d = e.date ? new Date(e.date) : null;
   const day = d ? d.toLocaleDateString('en-GB', { day: '2-digit', timeZone: 'Asia/Kolkata' }) : '';
@@ -48,7 +64,7 @@ function EventCard({ e, past }: { e: PublicEvent; past: boolean }) {
         {e.venue && <li><span>Venue</span>{e.venue}</li>}
         <li><span>By</span>{e.organizationName}</li>
       </ul>
-      {e.description && <p className="cbe-desc">{e.description}</p>}
+      {e.description && <Description text={e.description} />}
       {!past && <Link className="cbe-btn small" href={`/register/${encodeURIComponent(e.eventCode)}`}>Register</Link>}
     </article>
   );
