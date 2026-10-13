@@ -6,6 +6,7 @@ import './coimbatore.css';
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="cbe">
+      <div className="cbe-navbar">
       <header className="cbe-nav">
         <Link href="/" aria-label="We The Leaders home">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -13,6 +14,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         </Link>
         <LandingNav />
       </header>
+      </div>
 
       {children}
 
@@ -24,6 +26,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         <nav aria-label="Footer" className="cbe-foot-links">
           <Link href="/">Home</Link>
           <Link href="/about">About</Link>
+          <Link href="/vision-mission">Vision & Mission</Link>
           <Link href="/works">Our Works</Link>
           <Link href="/register">Event Registration</Link>
           <Link href="/get-certificate">Certificates</Link>

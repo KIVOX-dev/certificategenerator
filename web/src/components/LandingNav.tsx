@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 const links = [
   { href: '/about', label: 'About' },
+  { href: '/vision-mission', label: 'Vision & Mission' },
   { href: '/works', label: 'Our Works' },
   { href: '/register', label: 'Event Registration' },
   { href: '/get-certificate', label: 'Certificates' },
@@ -28,6 +29,7 @@ export function LandingNav() {
         onClick={() => setOpen((o) => !o)}
       >
         <span aria-hidden="true">{open ? '✕' : '☰'}</span>
+        <span className="cbe-burger-label">Menu</span>
       </button>
       <nav id="cbe-links" aria-label="Main menu" className={open ? 'open' : ''}>
         {links.map((l) => (
@@ -35,8 +37,8 @@ export function LandingNav() {
             {l.label}
           </Link>
         ))}
-        <Link className="cbe-btn small" href="/register" onClick={close}>Join an event</Link>
       </nav>
+      <Link className="cbe-btn small cbe-join" href="/register" onClick={close}>Join an event</Link>
     </div>
   );
 }

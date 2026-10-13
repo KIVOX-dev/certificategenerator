@@ -28,6 +28,7 @@ const steps = [
 
 const explore = [
   { href: '/about', title: 'About us', text: 'Our story, values and who we welcome.' },
+  { href: '/vision-mission', title: 'Vision & mission', text: 'Leadership at every level, and our values.' },
   { href: '/works', title: 'Our works', text: 'Drives, workshops and meet-ups across the city.' },
   { href: '/register', title: 'Event registration', text: 'Scan the QR code or enter your event code.' },
   { href: '/get-certificate', title: 'Certificates', text: 'Download or verify your certificate.' },
