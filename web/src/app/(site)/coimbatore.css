@@ -164,3 +164,41 @@ html { scroll-behavior: smooth; }
 .cbe-app p { margin: 0; color: var(--muted); }
 .cbe-app .cbe-actions.left { margin-top: 0; }
 .cbe-cta .cbe-actions { margin-top: 4px; }
+
+/* ---- small screens & touch ---- */
+.cbe-join-short { display: none; }
+.cbe-nav { min-width: 0; }
+.cbe-menu { min-width: 0; }
+@media (max-width: 640px) {
+  .cbe-join-long { display: none; }
+  .cbe-join-short { display: inline; }
+  .cbe-nav { padding: 10px 14px; gap: 10px; }
+  .cbe-nav img { max-width: 120px; }
+  .cbe-menu { gap: 8px; }
+  .cbe-btn.small { padding: 6px 18px; }
+}
+@media (max-width: 400px) {
+  .cbe-burger-label { display: none; }
+  .cbe-burger { padding: 0; min-width: 44px; }
+  .cbe-nav img { max-width: 104px; }
+  .cbe-hero { padding: 48px 16px 56px; }
+  .cbe-section { padding: 44px 16px; }
+  .cbe-theme { padding: 32px 22px; }
+  .cbe-app, .cbe-register { padding: 24px 18px; }
+  .cbe-actions .cbe-btn { width: 100%; }
+}
+@media (max-width: 640px) {
+  .cbe-actions { flex-direction: column; align-items: stretch; }
+  .cbe-actions.left { align-items: stretch; }
+  .cbe-events li { padding: 16px; }
+  .cbe-theme { padding: 36px 24px; }
+  .cbe-cta { padding: 44px 20px; }
+  .cbe-strip strong { font-size: 1.4rem; }
+}
+.cbe-btn.small { min-height: 44px; }
+.cbe-link { padding: 8px 0; }
+.cbe-foot-links a { display: inline-block; padding: 8px 0; }
+.cbe-menu nav a:not(.cbe-btn) { min-height: 44px; display: inline-flex; align-items: center; }
+.cbe-faq summary { min-height: 44px; display: flex; align-items: center; }
+img { max-width: 100%; }
+@media (min-width: 1600px) { .cbe-nav, .cbe-section, .cbe-footer { max-width: 1280px; } .cbe-hero h1 { font-size: 5.25rem; } }

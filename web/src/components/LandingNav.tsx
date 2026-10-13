@@ -38,7 +38,7 @@ export function LandingNav() {
           </Link>
         ))}
       </nav>
-      <a className="cbe-btn small cbe-join" href={site.join} target="_blank" rel="noopener noreferrer" onClick={close}>Join the Movement</a>
+      <a className="cbe-btn small cbe-join" href={site.join} target="_blank" rel="noopener noreferrer" onClick={close}><span className="cbe-join-long">Join the Movement</span><span className="cbe-join-short">Join</span></a>
     </div>
   );
 }
