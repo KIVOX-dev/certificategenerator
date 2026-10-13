@@ -128,10 +128,19 @@ describe('certificate platform (e2e)', () => {
     it('exposes only public fields and 404s unknown/draft events', async () => {
       const code = (global as any).__code;
       const res = await request(http).get(`/api/events/${code}`).expect(200);
-      expect(res.body).toEqual({ eventCode: code, name: 'First Aid Training Program', description: '', organizationName: 'ABC Foundation', venue: '', date: null, open: true });
+      expect(res.body).toEqual({ eventCode: code, name: 'First Aid Training Program', description: '', organizationName: 'ABC Foundation', venue: '', date: expect.any(String), open: true });
       await request(http).get('/api/events/NOPE1234').expect(404);
       const draft = await adminAgent.post('/api/admin/events').send({ name: 'Draft Event', organizationName: 'Org' }).expect(201);
       await request(http).get(`/api/events/${draft.body.eventCode}`).expect(404);
+    });
+    it('lists public events with date and venue, hiding drafts', async () => {
+      const made = await adminAgent.post('/api/admin/events').send({ name: 'Coimbatore Clean-up', organizationName: 'WTL', venue: 'Race Course', issueDate: '2026-11-02', status: 'ACTIVE' }).expect(201);
+      const hidden = await adminAgent.post('/api/admin/events').send({ name: 'Hidden Draft', organizationName: 'WTL', status: 'DRAFT' }).expect(201);
+      const res = await request(http).get('/api/events').expect(200);
+      const mine = res.body.find((e: any) => e.eventCode === made.body.eventCode);
+      expect(mine).toMatchObject({ name: 'Coimbatore Clean-up', venue: 'Race Course', open: true, certificateCount: 0 });
+      expect(new Date(mine.date).toISOString().slice(0, 10)).toBe('2026-11-02');
+      expect(res.body.some((e: any) => e.eventCode === hidden.body.eventCode)).toBe(false);
     });
     it('updates and lists events', async () => {
       await adminAgent.put(`/api/admin/events/${eventId}`).send({ description: 'Learn first aid' }).expect(200);

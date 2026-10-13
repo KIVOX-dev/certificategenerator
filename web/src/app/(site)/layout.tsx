@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { LandingNav } from '@/components/LandingNav';
 import './coimbatore.css';
@@ -9,8 +10,8 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <div className="cbe-navbar">
       <header className="cbe-nav">
         <Link href="/" aria-label="We The Leaders home">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="We The Leaders" width={168} height={37} />
+          {/* Source is 3360x738; next/image serves a resized WebP/AVIF at the displayed size. */}
+          <Image src="/logo.png" alt="We The Leaders" width={210} height={46} sizes="(max-width: 640px) 150px, 210px" priority />
         </Link>
         <LandingNav />
       </header>
