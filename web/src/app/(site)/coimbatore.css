@@ -6,15 +6,15 @@
 .cbe-navbar { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
 .cbe-nav {
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  max-width: 1100px; margin: 0 auto; padding: 14px 20px;
+  max-width: 1240px; margin: 0 auto; padding: 14px 20px;
 }
-.cbe-nav img { height: auto; max-width: 140px; }
+.cbe-nav img { height: auto; max-width: 140px; flex: none; }
 .cbe-nav { position: relative; }
 .cbe-menu { display: flex; align-items: center; gap: 14px; }
-.cbe-menu nav { display: flex; align-items: center; gap: 22px; font-size: 1rem; font-weight: 600; }
+.cbe-menu nav { display: flex; align-items: center; gap: 20px; white-space: nowrap; font-size: 1rem; font-weight: 600; }
 .cbe-menu nav a:not(.cbe-btn):hover { color: var(--primary); }
 .cbe-burger { display: none; align-items: center; gap: 8px; padding: 0 14px; font-weight: 700; font-size: 1rem; min-width: 48px; min-height: 48px; border: 1px solid var(--line); border-radius: 12px; background: #fff; color: var(--navy); font-size: 1.4rem; cursor: pointer; }
-@media (max-width: 860px) {
+@media (max-width: 1199px) {
   .cbe-burger { display: inline-flex; }
   .cbe-burger span:first-child { font-size: 1.3rem; line-height: 1; }
   .cbe-menu nav { display: none; position: absolute; top: calc(100% + 4px); left: 12px; right: 12px; z-index: 10; flex-direction: column; align-items: stretch; gap: 4px; padding: 12px; background: #fff; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 18px 40px -16px rgba(13, 37, 61, 0.3); }
@@ -29,7 +29,7 @@
   background: var(--primary); color: #fff !important; font-weight: 700; font-size: 1.05rem;
   border: 2px solid var(--primary); transition: background 0.15s, transform 0.15s;
 }
-.cbe-btn.small { min-height: 40px; padding: 6px 20px; font-size: 1rem; }
+.cbe-btn.small { white-space: nowrap; min-height: 40px; padding: 6px 20px; font-size: 1rem; }
 .cbe-btn.ghost { background: transparent; color: var(--primary) !important; }
 .cbe-btn.light { background: #fff; border-color: #fff; color: var(--primary-2) !important; }
 @media (hover: hover) { .cbe-btn:hover { background: var(--primary-2); border-color: var(--primary-2); transform: translateY(-1px); } .cbe-btn.light:hover { background: var(--primary-soft); border-color: var(--primary-soft); } .cbe-btn.ghost:hover { background: var(--primary-soft); } }
