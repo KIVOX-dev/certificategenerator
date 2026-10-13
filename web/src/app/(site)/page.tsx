@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 const highlights = [
   { label: 'Our focus', value: 'Leadership' },
   { label: 'Our spirit', value: 'Service' },
-  { label: 'Our home', value: 'Coimbatore' },
+  { label: 'Our constituency', value: 'Coimbatore' },
   { label: 'Open to', value: 'Everyone' },
 ];
 
