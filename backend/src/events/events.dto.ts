@@ -7,6 +7,7 @@ const objectId = z.string().regex(/^[a-f0-9]{24}$/i, 'Invalid id');
 const base = {
   name: z.string().trim().min(2).max(200),
   description: z.string().max(1000),
+  venue: z.string().trim().max(200),
   organizationName: z.string().trim().min(2).max(200),
   certificateTitle: z.string().trim().min(1).max(100),
   issueDate: date,
@@ -22,6 +23,7 @@ export const createEventSchema = z
   .object({
     ...base,
     description: base.description.optional(),
+    venue: base.venue.optional(),
     certificateTitle: base.certificateTitle.optional(),
     issueDate: base.issueDate.optional(),
     expiryDate: base.expiryDate.optional(),

@@ -9,6 +9,12 @@ import { EventsService } from './events.service';
 export class PublicEventsController {
   constructor(private events: EventsService) {}
 
+  /** Events the public can see on the website (everything except drafts and archived). */
+  @Get()
+  list() {
+    return this.events.publicList();
+  }
+
   @Get(':eventCode')
   get(@Param('eventCode') code: string) {
     return this.events.publicByCode(code);

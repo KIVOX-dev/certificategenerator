@@ -30,8 +30,30 @@ export class EventsService {
       name: e.name,
       description: e.description,
       organizationName: e.organizationName,
+      venue: e.venue ?? '',
+      date: e.issueDate ?? null,
       open: e.status === 'ACTIVE',
     };
+  }
+
+  /** Public events list (the website splits it into upcoming and previous). Drafts and archived events are hidden. */
+  async publicList() {
+    const items = await this.events.find({ status: { $in: ['ACTIVE', 'CLOSED'] } }).sort({ issueDate: 1, createdAt: -1 }).limit(100);
+    const counts = await this.certificates.aggregate<{ _id: unknown; n: number }>([
+      { $match: { eventId: { $in: items.map((i) => i._id) } } },
+      { $group: { _id: '$eventId', n: { $sum: 1 } } },
+    ]);
+    const byId = new Map(counts.map((c) => [String(c._id), c.n]));
+    return items.map((e) => ({
+      eventCode: e.eventCode,
+      name: e.name,
+      description: e.description,
+      organizationName: e.organizationName,
+      venue: e.venue ?? '',
+      date: e.issueDate ?? null,
+      open: e.status === 'ACTIVE',
+      certificateCount: byId.get(String(e._id)) ?? 0,
+    }));
   }
 
   async create(dto: Partial<Event> & { eventCode?: string }) {
@@ -107,6 +129,7 @@ export class EventsService {
       eventCode: e.eventCode,
       name: e.name,
       description: e.description,
+      venue: e.venue ?? '',
       organizationName: e.organizationName,
       certificateTitle: e.certificateTitle,
       issueDate: e.issueDate,

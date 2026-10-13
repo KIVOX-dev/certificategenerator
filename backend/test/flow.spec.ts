@@ -128,7 +128,7 @@ describe('certificate platform (e2e)', () => {
     it('exposes only public fields and 404s unknown/draft events', async () => {
       const code = (global as any).__code;
       const res = await request(http).get(`/api/events/${code}`).expect(200);
-      expect(res.body).toEqual({ eventCode: code, name: 'First Aid Training Program', description: '', organizationName: 'ABC Foundation', open: true });
+      expect(res.body).toEqual({ eventCode: code, name: 'First Aid Training Program', description: '', organizationName: 'ABC Foundation', venue: '', date: null, open: true });
       await request(http).get('/api/events/NOPE1234').expect(404);
       const draft = await adminAgent.post('/api/admin/events').send({ name: 'Draft Event', organizationName: 'Org' }).expect(201);
       await request(http).get(`/api/events/${draft.body.eventCode}`).expect(404);

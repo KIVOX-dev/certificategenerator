@@ -9,6 +9,11 @@ export interface PublicEvent {
   name: string;
   description: string;
   organizationName: string;
+  venue?: string;
+  /** Event date (ISO), when the admin set one. */
+  date?: string | null;
+  /** Certificates issued for this event (list endpoint only). */
+  certificateCount?: number;
   open: boolean;
 }
 export interface PublicCertificate {
@@ -36,6 +41,17 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     throw new ApiError(body.code ?? 'GENERIC', res.status);
   }
   return res.json();
+}
+
+let eventsCache: { at: number; p: Promise<PublicEvent[]> } | null = null;
+/** Public events list; shared between components on a page and refreshed every 30 seconds. */
+export function listEvents(): Promise<PublicEvent[]> {
+  if (!eventsCache || Date.now() - eventsCache.at > 30_000) {
+    const p = request<PublicEvent[]>('/api/events');
+    p.catch(() => { eventsCache = null; });
+    eventsCache = { at: Date.now(), p };
+  }
+  return eventsCache.p;
 }
 
 export const getEvent = (code: string) => request<PublicEvent>(`/api/events/${encodeURIComponent(code)}`);

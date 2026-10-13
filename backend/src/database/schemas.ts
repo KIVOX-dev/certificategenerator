@@ -23,6 +23,8 @@ export class Event {
   @Prop({ required: true, unique: true, uppercase: true, trim: true }) eventCode: string;
   @Prop({ required: true, trim: true, maxlength: 200 }) name: string;
   @Prop({ default: '', maxlength: 1000 }) description: string;
+  /** Where the event takes place; shown on the public events list. */
+  @Prop({ default: '', trim: true, maxlength: 200 }) venue: string;
   @Prop({ required: true, trim: true, maxlength: 200 }) organizationName: string;
   @Prop({ default: 'Certificate of Completion', maxlength: 100 }) certificateTitle: string;
   /** Short code used in certificate numbers, e.g. CUDTN -> WTL-CUDTN-00001. Derived from the event code when empty. */

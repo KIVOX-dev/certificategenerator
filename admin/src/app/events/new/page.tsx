@@ -18,7 +18,7 @@ export default function NewEvent() {
       name: get('name'), organizationName: get('organizationName'), status: get('status'),
       allowDuplicates: f.get('allowDuplicates') === 'on',
     };
-    for (const k of ['description', 'certificateTitle', 'issueDate', 'expiryDate', 'templateId', 'eventCode', 'certificateCode']) if (get(k)) json[k] = get(k);
+    for (const k of ['description', 'venue', 'certificateTitle', 'issueDate', 'expiryDate', 'templateId', 'eventCode', 'certificateCode']) if (get(k)) json[k] = get(k);
     setBusy(true);
     setError('');
     try {
@@ -37,6 +37,7 @@ export default function NewEvent() {
         <label htmlFor="name">Event name</label><input id="name" name="name" required minLength={2} />
         <label htmlFor="organizationName">Organization</label><input id="organizationName" name="organizationName" required minLength={2} />
         <label htmlFor="description">Description (printed on the certificate)</label><textarea id="description" name="description" rows={2} />
+        <label htmlFor="venue">Venue / place (shown on the website)</label><input id="venue" name="venue" maxLength={200} placeholder="e.g. Codissia Trade Fair Complex, Coimbatore" />
         <label htmlFor="certificateTitle">Certificate title</label><input id="certificateTitle" name="certificateTitle" placeholder="Certificate of Completion" />
         <div className="row">
           <div><label htmlFor="issueDate">Event / issue date</label><input id="issueDate" name="issueDate" type="date" /></div>

@@ -43,6 +43,7 @@ This also deletes its ${count} issued certificate(s) and all registrations. Thei
         <div className="detail-head"><span className={`badge ${ev.status}`}>{ev.status}</span><span className="muted">{Number(ev.certificateCount) || 0} certificate(s) issued</span></div>
         <dl className="detail-list">
           <div><dt>Organization</dt><dd>{ev.organizationName}</dd></div>
+          {ev.venue && <div><dt>Venue</dt><dd>{ev.venue}</dd></div>}
           <div><dt>Event date</dt><dd>{fmtDate(ev.issueDate)}</dd></div>
           <div><dt>Expiry</dt><dd>{fmtDate(ev.expiryDate)}</dd></div>
           <div><dt>Event code</dt><dd><code>{ev.eventCode}</code></dd></div>

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { approach, faqs, links, stats, statsNote, steps, upcoming } from '@/lib/site';
+import { EventsBoard, LiveStats } from '@/components/EventsBoard';
+import { approach, faqs, links, steps } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'We The Leaders Coimbatore – Local action. Measurable change.',
@@ -31,47 +32,15 @@ export default function Home() {
           <a className="cbe-btn" href={links.join} target="_blank" rel="noopener noreferrer">Join the Movement</a>
           <Link className="cbe-btn ghost" href="/register">Find an event</Link>
         </div>
-        <p className="cbe-count"><strong>19,40,000</strong> leaders registered so far</p>
         <p className="cbe-tamil" lang="ta">#அறம் செய விரும்பு</p>
       </section>
 
-      <section className="cbe-section tight" aria-labelledby="up-h">
-        <h2 id="up-h" className="cbe-h-sm">Coming up across Tamil Nadu</h2>
-        <ul className="cbe-events">
-          {upcoming.map((e) => (
-            <li key={e.title}>
-              <span className="cbe-date">{e.date}</span>
-              <div>
-                <span className="cbe-tag">{e.tag}</span>
-                <h3>{e.title}</h3>
-                <p>{e.place}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="cbe-section">
-        <div className="cbe-theme">
-          <div>
-            <p className="cbe-eyebrow light">This month · October 2026</p>
-            <h2>A safer Tamil Nadu, led by women</h2>
-            <p>
-              Every chapter runs a women-led safety audit, builds awareness and opens pathways to rights, confidence and
-              opportunity, then returns to document what changed.
-            </p>
-            <div className="cbe-actions left">
-              <a className="cbe-btn light" href={links.themeWomen} target="_blank" rel="noopener noreferrer">Open campaign brief</a>
-              <Link className="cbe-btn outline-light" href="/register">See events</Link>
-            </div>
-          </div>
-          <aside className="cbe-next">
-            <span>Next · November 2026</span>
-            <strong>Youth Skilling and Empowerment</strong>
-            <em>Skills, mentoring &amp; employment</em>
-            <a href={links.themeYouth} target="_blank" rel="noopener noreferrer">Preview theme &rarr;</a>
-          </aside>
-        </div>
+      <section id="events" className="cbe-section">
+        <p className="cbe-eyebrow">Coimbatore events</p>
+        <h2>What’s happening in Coimbatore</h2>
+        <p className="cbe-sub">Upcoming events you can join, and what we did previously.</p>
+        <EventsBoard limit={3} />
+        <p className="cbe-center"><Link className="cbe-btn small" href="/register">See all events</Link></p>
       </section>
 
       <section className="cbe-section alt">
@@ -81,18 +50,7 @@ export default function Home() {
           Every action uses one simple record: the problem, who took part, what changed, the evidence, and what happens
           next.
         </p>
-        <div className="cbe-strip" aria-label="Campaign impact">
-          {stats.map((s) => (
-            <div key={s.label}>
-              <strong>{s.value}</strong>
-              <span>{s.label}</span>
-            </div>
-          ))}
-        </div>
-        <p className="cbe-note">{statsNote}</p>
-        <p className="cbe-center">
-          <a className="cbe-link" href={links.impact} target="_blank" rel="noopener noreferrer">Explore the impact report &rarr;</a>
-        </p>
+        <LiveStats />
       </section>
 
       <section className="cbe-section">
@@ -147,7 +105,7 @@ export default function Home() {
             <Link key={e.href} href={e.href} className="cbe-card cbe-tile">
               <h3>{e.title}</h3>
               <p>{e.text}</p>
-              <span className="cbe-link">Open &rarr;</span>
+              <span className="cbe-btn small">Open</span>
             </Link>
           ))}
         </div>
