@@ -1,19 +1,21 @@
 'use client';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 const links = [
-  { href: '#about', label: 'About' },
-  { href: '#works', label: 'Our Works' },
-  { href: '#involved', label: 'Get Involved' },
-  { href: '#register', label: 'Event Registration' },
-  { href: '#certificates', label: 'Certificates' },
-  { href: '#faq', label: 'FAQ' },
+  { href: '/about', label: 'About' },
+  { href: '/works', label: 'Our Works' },
+  { href: '/register', label: 'Event Registration' },
+  { href: '/get-certificate', label: 'Certificates' },
+  { href: '/get-involved', label: 'Get Involved' },
+  { href: '/faq', label: 'FAQ' },
 ];
 
-/** Landing-page menu: inline links on desktop, a toggle button on phones. */
+/** Site menu: each item opens its own page. Inline links on desktop, a toggle button on phones. */
 export function LandingNav() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
   const close = () => setOpen(false);
   return (
     <div className="cbe-menu">
@@ -27,12 +29,13 @@ export function LandingNav() {
       >
         <span aria-hidden="true">{open ? '✕' : '☰'}</span>
       </button>
-      <nav id="cbe-links" aria-label="Page sections" className={open ? 'open' : ''}>
+      <nav id="cbe-links" aria-label="Main menu" className={open ? 'open' : ''}>
         {links.map((l) => (
-          <a key={l.href} href={l.href} onClick={close}>{l.label}</a>
+          <Link key={l.href} href={l.href} onClick={close} aria-current={pathname === l.href ? 'page' : undefined}>
+            {l.label}
+          </Link>
         ))}
-        <Link className="cbe-btn small" href="/get-certificate" onClick={close}>Get Certificate</Link>
-        <a className="cbe-btn small ghost" href="#register" onClick={close}>Join</a>
+        <Link className="cbe-btn small" href="/register" onClick={close}>Join an event</Link>
       </nav>
     </div>
   );
