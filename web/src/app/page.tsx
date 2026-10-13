@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { HomeEntry } from '@/components/HomeEntry';
+import { LandingNav } from '@/components/LandingNav';
 import './coimbatore.css';
 
 export const metadata: Metadata = {
@@ -23,18 +25,19 @@ const steps = [
   { title: 'Earn your certificate', text: 'Scan the QR code at the event to get your certificate instantly.' },
 ];
 
+const works = [
+  { title: 'Community service drives', text: 'Clean-ups, donation drives and awareness campaigns across Coimbatore.' },
+  { title: 'Leadership workshops', text: 'Hands-on sessions for students and young professionals.' },
+  { title: 'City meet-ups', text: 'Open events where changemakers meet, share ideas and start projects.' },
+];
+
 export default function Home() {
   return (
     <div className="cbe">
       <header className="cbe-nav">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/logo.png" alt="We The Leaders" width={168} height={37} />
-        <nav aria-label="Page sections">
-          <a href="#about">About</a>
-          <a href="#how">How it works</a>
-          <a href="#certificate">Certificate</a>
-          <a className="cbe-btn small" href={MAIN_SITE}>Join</a>
-        </nav>
+        <LandingNav mainSite={MAIN_SITE} />
       </header>
 
       <section className="cbe-hero">
@@ -64,6 +67,19 @@ export default function Home() {
         </div>
       </section>
 
+      <section id="works" className="cbe-section">
+        <h2>Our works</h2>
+        <p className="cbe-sub">What the Coimbatore community has been up to.</p>
+        <div className="cbe-grid">
+          {works.map((w) => (
+            <article key={w.title} className="cbe-card">
+              <h3>{w.title}</h3>
+              <p>{w.text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section id="how" className="cbe-section alt">
         <h2>How it works</h2>
         <ol className="cbe-steps">
@@ -76,10 +92,18 @@ export default function Home() {
         </ol>
       </section>
 
-      <section id="certificate" className="cbe-section">
+      <section id="register" className="cbe-section">
+        <div className="cbe-register">
+          <h2>Event registration</h2>
+          <p className="cbe-sub">Joining an event? Scan the QR code at the venue or enter your event code to register.</p>
+          <HomeEntry />
+        </div>
+      </section>
+
+      <section id="certificates" className="cbe-section">
         <div className="cbe-cta">
-          <h2>Attended an event?</h2>
-          <p>Scan the QR code shown at your event, or enter the event code, to get your certificate.</p>
+          <h2>Certificates</h2>
+          <p>Scan the QR code shown at your event, or enter the event code, to get your certificate. Already have one? Scan its QR code to verify it.</p>
           <Link className="cbe-btn light" href="/get-certificate">Get my certificate</Link>
         </div>
       </section>
