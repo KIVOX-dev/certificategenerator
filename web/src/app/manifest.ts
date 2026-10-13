@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: t('getCertificate'),
     short_name: t('homeTitle'),
-    start_url: '/',
+    start_url: '/get-certificate',
     scope: '/',
     display: 'standalone',
     orientation: 'portrait',

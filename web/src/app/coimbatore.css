@@ -1,0 +1,68 @@
+/* Coimbatore landing page. All selectors are prefixed .cbe so they don't leak into the certificate flow. */
+.cbe { width: 100%; flex: 1; }
+.cbe h1, .cbe h2, .cbe h3 { color: var(--navy); }
+.cbe a { color: inherit; text-decoration: none; }
+
+.cbe-nav {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  max-width: 1100px; margin: 0 auto; padding: 14px 20px;
+}
+.cbe-nav img { height: auto; max-width: 140px; }
+.cbe-nav nav { display: flex; align-items: center; gap: 22px; font-size: 1rem; font-weight: 600; }
+.cbe-nav nav a:not(.cbe-btn):hover { color: var(--primary); }
+@media (max-width: 640px) { .cbe-nav nav a:not(.cbe-btn) { display: none; } }
+
+.cbe-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 52px; padding: 12px 26px; border-radius: 99px;
+  background: var(--primary); color: #fff !important; font-weight: 700; font-size: 1.05rem;
+  border: 2px solid var(--primary); transition: background 0.15s, transform 0.15s;
+}
+.cbe-btn.small { min-height: 40px; padding: 6px 20px; font-size: 1rem; }
+.cbe-btn.ghost { background: transparent; color: var(--primary) !important; }
+.cbe-btn.light { background: #fff; border-color: #fff; color: var(--primary-2) !important; }
+@media (hover: hover) { .cbe-btn:hover { background: var(--primary-2); border-color: var(--primary-2); transform: translateY(-1px); } .cbe-btn.light:hover { background: var(--primary-soft); border-color: var(--primary-soft); } .cbe-btn.ghost:hover { background: var(--primary-soft); } }
+
+.cbe-hero {
+  text-align: center; padding: 72px 20px 80px;
+  background: radial-gradient(900px 420px at 50% -80px, var(--primary-soft), transparent 70%);
+}
+.cbe-eyebrow {
+  display: inline-block; margin: 0 0 20px; padding: 4px 14px; border-radius: 99px;
+  background: var(--primary-soft); color: var(--primary-2); font-weight: 700; font-size: 0.95rem;
+}
+.cbe-hero h1 { max-width: 14ch; margin: 0 auto 20px; font-size: clamp(2.6rem, 8vw, 4.75rem); line-height: 1.05; }
+.cbe-hero h1 em { font-style: normal; color: var(--primary); }
+.cbe-lead { max-width: 36rem; margin: 0 auto 32px; font-size: 1.25rem; color: var(--muted); }
+.cbe-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.cbe-tamil { margin: 36px 0 0; font-family: 'Noto Sans Tamil', 'Nirmala UI', 'Latha', system-ui, sans-serif; font-weight: 700; color: var(--primary); }
+
+.cbe-section { max-width: 1100px; margin: 0 auto; padding: 64px 20px; }
+.cbe-section.alt { max-width: none; background: #f7f8fc; }
+.cbe-section.alt > * { max-width: 1060px; margin-left: auto; margin-right: auto; }
+.cbe-section h2 { margin: 0 0 8px; font-size: clamp(1.8rem, 4vw, 2.5rem); letter-spacing: -0.03em; font-weight: 600; }
+.cbe-sub { color: var(--muted); margin-bottom: 32px; }
+
+.cbe-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.cbe-card { padding: 28px; border: 1px solid var(--line); border-radius: 20px; background: #fff; box-shadow: 0 12px 40px -22px rgba(13, 37, 61, 0.2); }
+.cbe-card h3, .cbe-steps h3 { margin: 12px 0 6px; font-size: 1.3rem; }
+.cbe-card p, .cbe-steps p { margin: 0; color: var(--muted); }
+.cbe-num { color: var(--primary); font-weight: 700; }
+
+.cbe-steps { list-style: none; counter-reset: s; margin: 32px auto 0; padding: 0 0 0 0; display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.cbe-steps li { counter-increment: s; position: relative; padding-top: 52px; }
+.cbe-steps li::before {
+  content: counter(s); position: absolute; top: 0; left: 0; width: 40px; height: 40px; border-radius: 50%;
+  background: var(--primary); color: #fff; display: grid; place-items: center; font-weight: 700;
+}
+
+.cbe-cta { text-align: center; padding: 56px 24px; border-radius: 28px; background: linear-gradient(135deg, var(--primary), var(--navy)); color: #fff; }
+.cbe-cta h2 { color: #fff; }
+.cbe-cta p { max-width: 32rem; margin: 0 auto 24px; color: rgba(255, 255, 255, 0.85); }
+
+.cbe-footer {
+  display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between;
+  max-width: 1100px; margin: 0 auto; padding: 24px 20px 36px; border-top: 1px solid var(--line);
+  color: var(--muted); font-size: 1rem;
+}
+.cbe-footer a:hover { color: var(--primary); }
