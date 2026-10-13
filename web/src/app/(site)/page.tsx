@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { approach, links, stats, statsNote, steps, upcoming } from '@/lib/site';
+import { approach, faqs, links, stats, statsNote, steps, upcoming } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'We The Leaders Coimbatore – Local action. Measurable change.',
@@ -15,7 +15,6 @@ const explore = [
   { href: '/register', title: 'Event registration', text: 'Scan the QR code or enter your event code.' },
   { href: '/get-certificate', title: 'Certificates', text: 'Download or verify your certificate.' },
   { href: '/get-involved', title: 'Get involved', text: 'Join the movement and take part in the next action.' },
-  { href: '/faq', title: 'FAQ', text: 'Answers to common questions.' },
 ];
 
 export default function Home() {
@@ -162,6 +161,18 @@ export default function Home() {
             <a className="cbe-btn light" href={links.join} target="_blank" rel="noopener noreferrer">Join the Movement</a>
             <a className="cbe-btn outline-light" href={links.instagram} target="_blank" rel="noopener noreferrer">@wetheleadersfoundation</a>
           </div>
+        </div>
+      </section>
+
+      <section id="faq" className="cbe-section alt">
+        <h2>Frequently asked questions</h2>
+        <div className="cbe-faq">
+          {faqs.map((f) => (
+            <details key={f.q}>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))}
         </div>
       </section>
     </>

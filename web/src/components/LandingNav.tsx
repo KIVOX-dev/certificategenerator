@@ -10,7 +10,6 @@ const links = [
   { href: '/register', label: 'Event Registration' },
   { href: '/get-certificate', label: 'Certificates' },
   { href: '/get-involved', label: 'Get Involved' },
-  { href: '/faq', label: 'FAQ' },
 ];
 
 /** Site menu: each item opens its own page. Inline links on desktop, a toggle button on phones. */
@@ -28,8 +27,9 @@ export function LandingNav() {
         aria-label={open ? 'Close menu' : 'Open menu'}
         onClick={() => setOpen((o) => !o)}
       >
-        <span aria-hidden="true">{open ? '✕' : '☰'}</span>
-        <span className="cbe-burger-label">Menu</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true" focusable="false">
+          {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
+        </svg>
       </button>
       <nav id="cbe-links" aria-label="Main menu" className={open ? 'open' : ''}>
         {links.map((l) => (

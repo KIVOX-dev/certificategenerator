@@ -30,7 +30,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           <Link href="/register">Event Registration</Link>
           <Link href="/get-certificate">Certificates</Link>
           <Link href="/get-involved">Get Involved</Link>
-          <Link href="/faq">FAQ</Link>
+          <Link href="/#faq">FAQ</Link>
         </nav>
         <small>© We The Leaders. All rights reserved.</small>
       </footer>

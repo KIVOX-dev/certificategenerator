@@ -8,7 +8,10 @@ export default {
     return [{ source: '/api/:path*', destination: `${API_URL}/api/:path*` }];
   },
   async redirects() {
-    return [{ source: '/about', destination: '/vision-mission', permanent: true }];
+    return [
+      { source: '/about', destination: '/vision-mission', permanent: true },
+      { source: '/faq', destination: '/#faq', permanent: true },
+    ];
   },
   async headers() {
     return [
