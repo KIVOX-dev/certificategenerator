@@ -206,3 +206,67 @@ img { max-width: 100%; }
 .cbe-burger { width: 48px; height: 48px; }
 .cbe-next a { display: inline-block; padding: 8px 0; }
 .cbe-nav > a:first-child { display: inline-flex; align-items: center; min-height: 44px; }
+
+/* ---- phone pass: compact type, tighter rhythm, calmer dropdown ---- */
+.cbe { overflow-x: clip; -webkit-text-size-adjust: 100%; }
+.cbe-menu nav a[aria-current='page'] { font-weight: 800; }
+@media (max-width: 640px) {
+  .cbe { font-size: 1rem; line-height: 1.5; }
+  .cbe-navbar { padding-top: env(safe-area-inset-top, 0); }
+  .cbe-nav { padding: 8px 16px; }
+  .cbe-burger { width: 44px; height: 44px; border-radius: 12px; }
+  .cbe-menu nav { left: 10px; right: 10px; padding: 8px; gap: 0; }
+  .cbe-menu nav a:not(.cbe-btn) { min-height: 48px; padding: 0 14px; font-size: 1.05rem; border-bottom: 1px solid var(--line-soft, #eff1f5); border-radius: 0; }
+  .cbe-menu nav a:not(.cbe-btn):last-child { border-bottom: 0; }
+  .cbe-menu nav a[aria-current='page'] { background: var(--primary-soft); color: var(--primary-2); border-radius: 10px; }
+
+  .cbe-hero { padding: 32px 18px 40px; }
+  .cbe-eyebrow { font-size: 0.82rem; margin-bottom: 14px; padding: 3px 12px; }
+  .cbe-hero h1 { max-width: none; font-size: clamp(2.2rem, 10.5vw, 2.9rem); line-height: 1.08; margin-bottom: 14px; }
+  .cbe-lead { font-size: 1.05rem; margin-bottom: 22px; }
+  .cbe-btn { min-height: 52px; font-size: 1rem; }
+  .cbe-count { margin-top: 20px; font-size: 0.95rem; }
+  .cbe-tamil { margin-top: 20px; font-size: 1rem; }
+
+  .cbe-section { padding: 40px 18px; }
+  .cbe-section.tight { padding-top: 4px; padding-bottom: 24px; }
+  .cbe-section h2 { font-size: 1.55rem; line-height: 1.2; }
+  .cbe-sub { font-size: 1rem; margin-bottom: 20px; }
+  .cbe-h-sm { font-size: 0.85rem !important; }
+  .cbe-grid, .cbe-grid.four, .cbe-events, .cbe-steps, .cbe-vm { gap: 12px; }
+  .cbe-card { padding: 20px; border-radius: 18px; }
+  .cbe-card h3, .cbe-steps h3 { font-size: 1.15rem; }
+  .cbe-card p, .cbe-steps p, .cbe-events p { font-size: 0.98rem; }
+  .cbe-events li { gap: 12px; }
+  .cbe-date { min-width: 56px; font-size: 0.85rem; padding: 8px 6px; }
+  .cbe-theme { padding: 28px 20px; border-radius: 22px; gap: 20px; }
+  .cbe-next { padding: 18px; }
+  .cbe-strip { grid-template-columns: repeat(2, 1fr); margin-left: 0; margin-right: 0; border-radius: 16px; }
+  .cbe-strip div { padding: 16px 8px; }
+  .cbe-strip strong { font-size: 1.3rem; }
+  .cbe-strip span { font-size: 0.82rem; }
+  .cbe-vm-card { padding: 26px 20px; border-radius: 22px; }
+  .cbe-vm-card p:not(.cbe-num) { font-size: 1.02rem; }
+  .cbe-vm-letter { font-size: 6.5rem; top: -10px; }
+  .cbe-pagehead { padding: 32px 18px 4px; }
+  .cbe-pagehead h1 { font-size: clamp(1.8rem, 8vw, 2.3rem); }
+  .cbe-app { padding: 22px 18px; border-radius: 20px; }
+  .cbe-register { padding: 20px 14px; border-radius: 20px; }
+  .cbe-cta { padding: 36px 18px; border-radius: 22px; }
+  .cbe-cta p, .cbe-theme p { font-size: 1rem; }
+  .cbe-faq details { padding: 2px 16px; }
+  .cbe-faq summary { font-size: 1rem; padding: 10px 0; }
+  .cbe-footer { padding: 28px 18px calc(28px + env(safe-area-inset-bottom, 0)); }
+  .cbe-foot-links { gap: 0 18px; }
+}
+@media (max-width: 360px) {
+  .cbe-section { padding: 34px 14px; }
+  .cbe-hero { padding: 28px 14px 34px; }
+  .cbe-hero h1 { font-size: 2.05rem; }
+  .cbe-strip { grid-template-columns: 1fr 1fr; }
+}
+/* Landscape phones: don't let the sticky header eat the screen. */
+@media (max-height: 480px) and (orientation: landscape) {
+  .cbe-navbar { position: static; }
+  .cbe-hero { padding-top: 24px; }
+}
