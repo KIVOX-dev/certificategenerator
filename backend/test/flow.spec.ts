@@ -142,6 +142,16 @@ describe('certificate platform (e2e)', () => {
       expect(new Date(mine.date).toISOString().slice(0, 10)).toBe('2026-11-02');
       expect(res.body.some((e: any) => e.eventCode === hidden.body.eventCode)).toBe(false);
     });
+    it('edits description, venue and dates, and can clear the expiry', async () => {
+      const made = await adminAgent.post('/api/admin/events').send({ name: 'Editable', organizationName: 'WTL', issueDate: '2026-12-01', expiryDate: '2027-12-01', status: 'ACTIVE' }).expect(201);
+      const id = made.body.id;
+      const res = await adminAgent.put().send({ name: 'Edited name', description: 'New description', venue: 'Gandhipuram', expiryDate: null }).expect(200);
+      expect(res.body).toMatchObject({ name: 'Edited name', description: 'New description', venue: 'Gandhipuram', expiryDate: null });
+      expect(res.body.eventCode).toBe(made.body.eventCode);
+      const pub = await request(http).get().expect(200);
+      expect(pub.body).toMatchObject({ description: 'New description', venue: 'Gandhipuram' });
+      await adminAgent.put().send({ name: 'x' }).expect(400);
+    });
     it('updates and lists events', async () => {
       await adminAgent.put(`/api/admin/events/${eventId}`).send({ description: 'Learn first aid' }).expect(200);
       const list = await adminAgent.get('/api/admin/events').expect(200);

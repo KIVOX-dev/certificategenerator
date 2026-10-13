@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { LogoLoader } from '@/components/LogoLoader';
@@ -41,6 +42,7 @@ This also deletes its ${count} issued certificate(s) and all registrations. Thei
       <h1>{ev.name}</h1>
       <div className="card">
         <div className="detail-head"><span className={`badge ${ev.status}`}>{ev.status}</span><span className="muted">{Number(ev.certificateCount) || 0} certificate(s) issued</span></div>
+        {ev.description && <p className="event-desc">{ev.description}</p>}
         <dl className="detail-list">
           <div><dt>Organization</dt><dd>{ev.organizationName}</dd></div>
           {ev.venue && <div><dt>Venue</dt><dd>{ev.venue}</dd></div>}
@@ -51,7 +53,8 @@ This also deletes its ${count} issued certificate(s) and all registrations. Thei
         <label htmlFor="reglink">Registration link</label>
         <input id="reglink" className="link-box" readOnly value={ev.registrationUrl} onFocus={(e) => e.currentTarget.select()} />
         <div className="btn-row noprint">
-          <button onClick={copy}>Copy link</button>
+          <Link className="btn" href={`/events/${id}/edit`}>Edit event</Link>
+          <button className="secondary" onClick={copy}>Copy link</button>
           <a className="btn secondary" href={ev.qrCodeDataUrl} download={`qr-${ev.eventCode}.png`}>Download QR code</a>
           <button className="secondary" onClick={() => window.print()}>Print QR code</button>
         </div>

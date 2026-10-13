@@ -36,4 +36,8 @@ export const createEventSchema = z
   })
   .strict();
 
-export const updateEventSchema = z.object(base).partial().strict();
+/** Same fields, all optional. expiryDate may be null to remove the expiry. */
+export const updateEventSchema = z
+  .object({ ...base, expiryDate: base.expiryDate.nullable() })
+  .partial()
+  .strict();

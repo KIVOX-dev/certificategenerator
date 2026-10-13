@@ -46,6 +46,7 @@ This also deletes its ${count} issued certificate(s) and all registrations. Thei
               <td data-label="Status"><span className={`badge ${e.status}`}>{e.status}</span></td><td data-label="Certificates">{e.certificateCount}</td>
               <td className="nowrap actions">
                 <Link href={`/events/${e.id}`}>View event</Link>{' '}
+                <Link href={`/events/${e.id}/edit`} aria-label={`Edit ${e.name}`}>Edit</Link>{' '}
                 <button type="button" className="link-danger" onClick={() => remove(e)} aria-label={`Delete ${e.name}`}>Delete</button>
               </td>
             </tr>

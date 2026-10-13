@@ -154,3 +154,4 @@ input.link-box { margin-bottom:12px; color:var(--primary); font-size:14px; text-
   .detail-list { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
 @media print { .card { border:0; } }
+.event-desc { white-space: pre-wrap; overflow-wrap: anywhere; margin: 0 0 16px; color: var(--muted); }
