@@ -36,7 +36,7 @@ export default function NewEvent() {
       <form className="card" onSubmit={submit}>
         <label htmlFor="name">Event name</label><input id="name" name="name" required minLength={2} />
         <label htmlFor="organizationName">Organization</label><input id="organizationName" name="organizationName" required minLength={2} />
-        <label htmlFor="description">Description (printed on the certificate)</label><textarea id="description" name="description" rows={2} />
+        <label htmlFor="description">Description (shown on the website only)</label><textarea id="description" name="description" rows={2} />
         <label htmlFor="venue">Venue / place (shown on the website)</label><input id="venue" name="venue" maxLength={200} placeholder="e.g. Codissia Trade Fair Complex, Coimbatore" />
         <label htmlFor="certificateTitle">Certificate title</label><input id="certificateTitle" name="certificateTitle" placeholder="Certificate of Completion" />
         <div className="row">

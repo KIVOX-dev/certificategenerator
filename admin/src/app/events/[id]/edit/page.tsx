@@ -57,7 +57,7 @@ export default function EditEvent() {
         <input id="name" name="name" required minLength={2} defaultValue={ev.name} />
         <label htmlFor="organizationName">Organization</label>
         <input id="organizationName" name="organizationName" required minLength={2} defaultValue={ev.organizationName} />
-        <label htmlFor="description">Description (shown on the website and printed on new certificates)</label>
+        <label htmlFor="description">Description (shown on the website only, not on certificates)</label>
         <textarea id="description" name="description" rows={5} maxLength={1000} defaultValue={ev.description ?? ''} />
         <label htmlFor="venue">Venue / place (shown on the website)</label>
         <input id="venue" name="venue" maxLength={200} defaultValue={ev.venue ?? ''} placeholder="e.g. Codissia Trade Fair Complex, Coimbatore" />
@@ -83,7 +83,7 @@ export default function EditEvent() {
           </div>
         </div>
         <label><input type="checkbox" name="allowDuplicates" className="check" defaultChecked={ev.allowDuplicates} /> Allow more than one certificate per phone number</label>
-        <p className="muted">Changes to the title, description and template apply to certificates issued from now on. Certificates already issued are not changed.</p>
+        <p className="muted">Changes to the title and template apply to certificates issued from now on. Certificates already issued are not changed.</p>
         {error && <p role="alert" className="error">{error}</p>}
         <div className="btn-row">
           <button disabled={busy}>{busy ? 'Saving…' : 'Save changes'}</button>

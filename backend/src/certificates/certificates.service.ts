@@ -80,7 +80,8 @@ export class CertificatesService {
       recipientName: registration.fullName === fullName || !event.allowDuplicates ? registration.fullName : fullName,
       normalizedPhone,
       eventName: event.name,
-      eventDescription: event.description ?? '',
+      // The event description is website-only; certificates are template-based and never print it.
+      eventDescription: '',
       organizationName: event.organizationName,
       certificateTitle: event.certificateTitle || 'Certificate of Completion',
       issueDate: event.issueDate ?? now,
