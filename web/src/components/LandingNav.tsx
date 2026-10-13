@@ -2,9 +2,9 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { links as site } from '@/lib/site';
 
 const links = [
-  { href: '/about', label: 'About' },
   { href: '/vision-mission', label: 'Vision & Mission' },
   { href: '/works', label: 'Our Works' },
   { href: '/register', label: 'Event Registration' },
@@ -38,7 +38,7 @@ export function LandingNav() {
           </Link>
         ))}
       </nav>
-      <Link className="cbe-btn small cbe-join" href="/register" onClick={close}>Join an event</Link>
+      <a className="cbe-btn small cbe-join" href={site.join} target="_blank" rel="noopener noreferrer" onClick={close}>Join the Movement</a>
     </div>
   );
 }

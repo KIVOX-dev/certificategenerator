@@ -25,7 +25,6 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         </div>
         <nav aria-label="Footer" className="cbe-foot-links">
           <Link href="/">Home</Link>
-          <Link href="/about">About</Link>
           <Link href="/vision-mission">Vision & Mission</Link>
           <Link href="/works">Our Works</Link>
           <Link href="/register">Event Registration</Link>

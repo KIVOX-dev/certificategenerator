@@ -7,6 +7,9 @@ export default {
   async rewrites() {
     return [{ source: '/api/:path*', destination: `${API_URL}/api/:path*` }];
   },
+  async redirects() {
+    return [{ source: '/about', destination: '/vision-mission', permanent: true }];
+  },
   async headers() {
     return [
       {
