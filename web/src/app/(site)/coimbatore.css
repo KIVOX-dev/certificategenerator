@@ -35,9 +35,15 @@
 @media (hover: hover) { .cbe-btn:hover { background: var(--primary-2); border-color: var(--primary-2); transform: translateY(-1px); } .cbe-btn.light:hover { background: var(--primary-soft); border-color: var(--primary-soft); } .cbe-btn.ghost:hover { background: var(--primary-soft); } }
 
 .cbe-hero {
+  position: relative; isolation: isolate; overflow: hidden;
   text-align: center; padding: 72px 20px 80px;
   background: radial-gradient(900px 420px at 50% -80px, var(--primary-soft), transparent 70%);
 }
+.cbe-hero > :not(.cbe-hero-video):not(.cbe-hero-scrim) { position: relative; z-index: 1; }
+.cbe-hero-video { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
+/* Translucent veil: the footage shows through, text stays readable. */
+.cbe-hero-scrim { position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(255, 255, 255, .9) 0%, rgba(247, 248, 252, .8) 55%, rgba(255, 255, 255, .95) 100%); }
+@media (prefers-reduced-motion: reduce) { .cbe-hero-video { display: none; } .cbe-hero { background: linear-gradient(rgba(255,255,255,.88), rgba(255,255,255,.88)), url('/hero/hero-poster.jpg') center / cover; } }
 .cbe-eyebrow {
   display: inline-block; margin: 0 0 20px; padding: 4px 14px; border-radius: 99px;
   background: var(--primary-soft); color: var(--primary-2); font-weight: 700; font-size: 0.95rem;

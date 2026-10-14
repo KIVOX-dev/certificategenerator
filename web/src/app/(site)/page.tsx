@@ -23,6 +23,10 @@ export default function Home() {
   return (
     <>
       <section className="cbe-hero">
+        <video className="cbe-hero-video" autoPlay muted loop playsInline preload="auto" poster="/hero/hero-poster.jpg" aria-hidden="true" tabIndex={-1}>
+          <source src="/hero/hero.mp4" type="video/mp4" />
+        </video>
+        <div className="cbe-hero-scrim" aria-hidden="true" />
         <p className="cbe-eyebrow">Coimbatore constituency</p>
         <h1>Local action. <em>Measurable change.</em></h1>
         <p className="cbe-lead">
