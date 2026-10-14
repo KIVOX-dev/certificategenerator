@@ -317,18 +317,6 @@ img { max-width: 100%; }
 .cbe-more { margin-top: 6px; padding: 8px 0; min-height: 44px; background: none; border: 0; color: var(--primary); font: inherit; font-weight: 700; cursor: pointer; }
 .cbe-more:hover { text-decoration: underline; }
 
-/* Impact stats: three cards with icon, count-up number and caption */
-.cbe-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1060px; margin: 28px auto 0; }
-.cbe-stat { position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; padding: 30px 20px 26px; background: #fff; border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 12px 40px -22px rgba(13, 37, 61, 0.22); }
-.cbe-stat::before { content: ''; position: absolute; inset: 0 0 auto; height: 4px; background: linear-gradient(90deg, var(--primary), #9b8cff); }
-.cbe-stat-icon { display: grid; place-items: center; width: 56px; height: 56px; margin-bottom: 10px; border-radius: 16px; background: var(--primary-soft); color: var(--primary); }
-.cbe-stat-icon.calendar { background: #e8f4ff; color: #1d7bd4; }
-.cbe-stat-icon.award { background: #fff2e3; color: #e07a14; }
-.cbe-stat strong { font-size: clamp(2.4rem, 5vw, 3.4rem); line-height: 1; letter-spacing: -0.03em; color: var(--navy); font-variant-numeric: tabular-nums; }
-.cbe-stat-label { margin-top: 6px; font-weight: 700; color: var(--navy); }
-.cbe-stat small { color: var(--muted); font-size: 0.9rem; }
-@media (max-width: 760px) { .cbe-stats { grid-template-columns: 1fr; gap: 14px; margin-left: 4px; margin-right: 4px; } .cbe-stat { padding: 24px 16px 20px; } .cbe-stat strong { font-size: 2.6rem; } }
-
 /* Hero text sits on the dark translucent video veil */
 .cbe-hero h1 { color: #fff; text-shadow: 0 2px 24px rgba(0, 0, 0, .25); }
 .cbe-hero h1 em { color: #c4baff; }
@@ -371,15 +359,17 @@ img { max-width: 100%; }
 .cbe-vid p { margin: 0 20px 20px; }
 @media (max-width: 760px) { .cbe-marquee { gap: 12px; } .cbe-marquee-track { gap: 12px; } }
 
-/* Impact stats, sharp variant: square corners, solid borders, hard offset shadow, bold numerals */
-.cbe-stats { gap: 24px; }
-.cbe-stat { border-radius: 4px; border: 1.5px solid var(--navy); box-shadow: 6px 6px 0 0 var(--navy); padding: 32px 20px 26px; transition: transform .15s ease, box-shadow .15s ease; }
-.cbe-stat::before { height: 6px; background: var(--primary); }
-@media (hover: hover) { .cbe-stat:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 0 var(--primary); } }
-.cbe-stat-icon { border-radius: 2px; width: 60px; height: 60px; border: 1.5px solid currentColor; background: #fff; }
-.cbe-stat-icon.calendar, .cbe-stat-icon.award { background: #fff; }
-.cbe-stat-icon svg { width: 30px; height: 30px; stroke-width: 2.2; }
-.cbe-stat strong { font-weight: 800; letter-spacing: -0.04em; }
-.cbe-stat-label { font-size: 0.95rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 800; }
-.cbe-stat small { color: #3d4b63; font-weight: 500; }
-@media (max-width: 760px) { .cbe-stat { box-shadow: 4px 4px 0 0 var(--navy); } }
+/* Impact stats: minimal. No boxes, thin dividers, large light numerals. */
+.cbe-stats { display: grid; grid-template-columns: repeat(3, 1fr); max-width: 1000px; margin: 40px auto 0; }
+.cbe-stat { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; padding: 12px 24px; }
+.cbe-stat + .cbe-stat { border-left: 1px solid var(--line); }
+.cbe-stat-icon { display: block; width: auto; height: auto; margin-bottom: 14px; background: none; color: var(--primary); opacity: .85; }
+.cbe-stat-icon svg { width: 26px; height: 26px; stroke-width: 1.6; }
+.cbe-stat strong { font-size: clamp(2.8rem, 6vw, 4.2rem); font-weight: 300; line-height: 1; letter-spacing: -0.04em; color: var(--navy); font-variant-numeric: tabular-nums; }
+.cbe-stat-label { margin-top: 8px; font-size: 1rem; font-weight: 600; color: var(--navy); }
+.cbe-stat small { font-size: 0.9rem; color: var(--muted); }
+@media (max-width: 760px) { .cbe-stats { grid-template-columns: 1fr; } .cbe-stat { padding: 22px 12px; } .cbe-stat + .cbe-stat { border-left: 0; border-top: 1px solid var(--line); } .cbe-stat strong { font-size: 3rem; } }
+
+
+/* Card photos keep a fixed shape: the width/height attributes must not stretch them, and a lone card in a wide grid must not get a huge image */
+.cbe-tile-img { height: auto; aspect-ratio: 16 / 9; max-height: 240px; }

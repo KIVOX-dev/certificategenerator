@@ -31,7 +31,7 @@ export function photoFor(key: string, subset?: readonly number[]) {
 }
 
 // Indices into workPhotos by theme.
-const CLEANUP = [1, 5, 9, 3]; // clean-up walk, coast, river, field action
+const CLEANUP = [1, 5, 3]; // people cleaning: clean-up walk, coast, field action
 const STAGE = [0, 2, 4, 6, 8, 10, 13, 15, 17, 18]; // conferences, pledges, stage and crowd shots
 const SPEAKER = [7, 11, 14, 16];
 
