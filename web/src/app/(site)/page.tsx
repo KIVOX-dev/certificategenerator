@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { EventsBoard, LiveStats } from '@/components/EventsBoard';
+import { FaqLoop } from '@/components/FaqLoop';
 import { approach, faqs, links, steps } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -124,14 +125,7 @@ export default function Home() {
 
       <section id="faq" className="cbe-section alt">
         <h2>Frequently asked questions</h2>
-        <div className="cbe-faq">
-          {faqs.map((f) => (
-            <details key={f.q}>
-              <summary>{f.q}</summary>
-              <p>{f.a}</p>
-            </details>
-          ))}
-        </div>
+        <FaqLoop items={faqs} />
       </section>
     </>
   );

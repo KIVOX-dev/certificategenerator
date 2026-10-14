@@ -100,10 +100,17 @@ html { scroll-behavior: smooth; }
 .cbe-link { display: inline-block; margin-top: 14px; font-weight: 700; color: var(--primary) !important; }
 .cbe-link:hover { text-decoration: underline; }
 .cbe-faq { max-width: 760px !important; margin: 24px auto 0; display: grid; gap: 10px; }
-.cbe-faq details { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 4px 20px; }
-.cbe-faq summary { cursor: pointer; padding: 14px 0; font-weight: 700; color: var(--navy); }
-.cbe-faq details[open] summary { color: var(--primary); }
-.cbe-faq p { margin: 0 0 16px; color: var(--muted); }
+.cbe-faq-item { position: relative; overflow: hidden; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 4px 20px; }
+.cbe-faq-item h3 { margin: 0; }
+.cbe-faq-item button { width: 100%; text-align: left; background: none; border: 0; font: inherit; font-weight: 700; color: var(--navy); cursor: pointer; padding: 14px 0; min-height: 44px; }
+.cbe-faq-item.open button { color: var(--primary); }
+.cbe-faq-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s ease; }
+.cbe-faq-item.open .cbe-faq-body { grid-template-rows: 1fr; }
+.cbe-faq-body p { overflow: hidden; margin: 0; color: var(--muted); }
+.cbe-faq-item.open .cbe-faq-body p { margin-bottom: 16px; }
+.cbe-faq-bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--primary); transform-origin: left; animation: cbe-faq-fill linear forwards; }
+@keyframes cbe-faq-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) { .cbe-faq-body { transition: none; } }
 .cbe-footer { display: grid; gap: 18px; max-width: 1100px; margin: 0 auto; padding: 36px 20px 40px; border-top: 1px solid var(--line); color: var(--muted); font-size: 1rem; }
 .cbe-foot-brand { display: flex; flex-direction: column; gap: 4px; }
 .cbe-foot-brand strong { color: var(--navy); }
@@ -199,7 +206,6 @@ html { scroll-behavior: smooth; }
 .cbe-link { padding: 8px 0; }
 .cbe-foot-links a { display: inline-block; padding: 8px 0; }
 .cbe-menu nav a:not(.cbe-btn) { min-height: 44px; display: inline-flex; align-items: center; }
-.cbe-faq summary { min-height: 44px; display: flex; align-items: center; }
 img { max-width: 100%; }
 @media (min-width: 1600px) { .cbe-nav, .cbe-section, .cbe-footer { max-width: 1280px; } .cbe-hero h1 { font-size: 5.25rem; } }
 
@@ -254,8 +260,8 @@ img { max-width: 100%; }
   .cbe-register { padding: 20px 14px; border-radius: 20px; }
   .cbe-cta { padding: 36px 18px; border-radius: 22px; }
   .cbe-cta p, .cbe-theme p { font-size: 1rem; }
-  .cbe-faq details { padding: 2px 16px; }
-  .cbe-faq summary { font-size: 1rem; padding: 10px 0; }
+  .cbe-faq-item { padding: 2px 16px; }
+  .cbe-faq-item button { font-size: 1rem; padding: 10px 0; }
   .cbe-footer { padding: 28px 18px calc(28px + env(safe-area-inset-bottom, 0)); }
   .cbe-foot-links { gap: 0 18px; }
 }
