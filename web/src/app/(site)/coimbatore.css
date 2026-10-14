@@ -331,5 +331,5 @@ img { max-width: 100%; }
 .cbe-hero .cbe-lead { color: rgba(255, 255, 255, .92); }
 .cbe-hero .cbe-tamil { color: #d6cfff; }
 .cbe-hero .cbe-eyebrow { background: rgba(255, 255, 255, .88); }
-.cbe-hero .cbe-btn.ghost { color: #fff; border-color: rgba(255, 255, 255, .85); background: rgba(255, 255, 255, .08); }
+.cbe-hero .cbe-btn.ghost { color: #fff !important; border-color: rgba(255, 255, 255, .85); background: rgba(255, 255, 255, .08); }
 @media (hover: hover) { .cbe-hero .cbe-btn.ghost:hover { background: rgba(255, 255, 255, .22); } }
