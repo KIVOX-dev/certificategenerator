@@ -370,3 +370,16 @@ img { max-width: 100%; }
 .cbe-vid h3 { margin: 16px 20px 4px; font-size: 1.15rem; }
 .cbe-vid p { margin: 0 20px 20px; }
 @media (max-width: 760px) { .cbe-marquee { gap: 12px; } .cbe-marquee-track { gap: 12px; } }
+
+/* Impact stats, sharp variant: square corners, solid borders, hard offset shadow, bold numerals */
+.cbe-stats { gap: 24px; }
+.cbe-stat { border-radius: 4px; border: 1.5px solid var(--navy); box-shadow: 6px 6px 0 0 var(--navy); padding: 32px 20px 26px; transition: transform .15s ease, box-shadow .15s ease; }
+.cbe-stat::before { height: 6px; background: var(--primary); }
+@media (hover: hover) { .cbe-stat:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 0 var(--primary); } }
+.cbe-stat-icon { border-radius: 2px; width: 60px; height: 60px; border: 1.5px solid currentColor; background: #fff; }
+.cbe-stat-icon.calendar, .cbe-stat-icon.award { background: #fff; }
+.cbe-stat-icon svg { width: 30px; height: 30px; stroke-width: 2.2; }
+.cbe-stat strong { font-weight: 800; letter-spacing: -0.04em; }
+.cbe-stat-label { font-size: 0.95rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 800; }
+.cbe-stat small { color: #3d4b63; font-weight: 500; }
+@media (max-width: 760px) { .cbe-stat { box-shadow: 4px 4px 0 0 var(--navy); } }
