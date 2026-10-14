@@ -14,7 +14,6 @@ export const workPhotos = [
   { src: '/works/p11.jpg', alt: "The crowd responding" },
   { src: '/works/p12.jpg', alt: "Speaking at the We The Leaders podium" },
   { src: '/works/p13.jpg', alt: "Front row pledge" },
-  { src: '/works/p14.jpg', alt: "Plastic wrappers collected during a clean-up" },
   { src: '/works/p15.jpg', alt: "Young leaders on stage" },
   { src: '/works/p16.jpg', alt: "Speaking at the podium" },
   { src: '/works/p17.jpg', alt: "Crowd at the barricade" },
@@ -23,11 +22,26 @@ export const workPhotos = [
   { src: '/works/p20.jpg', alt: "Speaker and the crowd" },
 ] as const;
 
-/** Stable pick from the pool, so a given event or card always shows the same photo. */
-export function photoFor(key: string, offset = 0) {
+/** Stable pick from the pool (or a subset of it), so a given key always shows the same photo. */
+export function photoFor(key: string, subset?: readonly number[]) {
   let h = 0;
   for (const ch of key) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
-  return workPhotos[(h + offset) % workPhotos.length];
+  const idx = subset?.length ? subset[h % subset.length] : h % workPhotos.length;
+  return workPhotos[idx];
+}
+
+// Indices into workPhotos by theme.
+const CLEANUP = [1, 5, 9, 3]; // clean-up walk, coast, river, field action
+const STAGE = [0, 2, 4, 6, 8, 10, 13, 15, 17, 18]; // conferences, pledges, stage and crowd shots
+const SPEAKER = [7, 11, 14, 16];
+
+/** Event photo that fits what the event is about, judged from its name and description. */
+export function eventPhoto(e: { eventCode: string; name: string; description?: string }) {
+  const text = `${e.name} ${e.description ?? ''}`.toLowerCase();
+  if (/clean|waste|plastic|garbage|litter|trash|coast|beach|river|pond|lake|canal|nature|environment|tree|plant|green/.test(text)) return photoFor(e.eventCode, CLEANUP);
+  if (/conference|maanadu|pledge|rally|award|inaugur|convention|summit/.test(text)) return photoFor(e.eventCode, STAGE);
+  if (/talk|speech|address|session|workshop|seminar|lecture/.test(text)) return photoFor(e.eventCode, SPEAKER);
+  return photoFor(e.eventCode);
 }
 
 export type WorkVideo =

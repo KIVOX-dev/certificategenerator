@@ -6,7 +6,7 @@ import { approach, faqs, links, steps } from '@/lib/site';
 import { workPhotos } from '@/lib/media';
 
 // Photo for each approach card, in the same order as `approach`.
-const approachPhotos = [14, 9, 6, 11, 13].map((i) => workPhotos[i]);
+const approachPhotos = [13, 9, 6, 11, 15].map((i) => workPhotos[i]);
 
 export const metadata: Metadata = {
   title: 'We The Leaders Coimbatore – Local action. Measurable change.',
