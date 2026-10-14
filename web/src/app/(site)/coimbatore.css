@@ -42,8 +42,8 @@
 .cbe-hero > :not(.cbe-hero-video):not(.cbe-hero-scrim) { position: relative; z-index: 1; }
 .cbe-hero-video { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
 /* Translucent veil: the footage shows through, text stays readable. */
-.cbe-hero-scrim { position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(255, 255, 255, .78) 0%, rgba(247, 248, 252, .66) 55%, rgba(255, 255, 255, .88) 100%); }
-@media (prefers-reduced-motion: reduce) { .cbe-hero-video { display: none; } .cbe-hero { background: linear-gradient(rgba(255,255,255,.88), rgba(255,255,255,.88)), url('/hero/hero-poster.jpg') center / cover; } }
+.cbe-hero-scrim { position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(13, 37, 61, .5) 0%, rgba(30, 48, 82, .58) 60%, rgba(13, 37, 61, .72) 100%); }
+@media (prefers-reduced-motion: reduce) { .cbe-hero-video { display: none; } .cbe-hero { background: linear-gradient(rgba(13,37,61,.6), rgba(13,37,61,.6)), url('/hero/hero-poster.jpg') center / cover; } }
 .cbe-eyebrow {
   display: inline-block; margin: 0 0 20px; padding: 4px 14px; border-radius: 99px;
   background: var(--primary-soft); color: var(--primary-2); font-weight: 700; font-size: 0.95rem;
@@ -98,11 +98,6 @@ html { scroll-behavior: smooth; }
 @media (hover: hover) { .cbe-tile:hover { border-color: var(--primary); transform: translateY(-2px); } }
 .cbe-tile { transition: border-color 0.15s, transform 0.15s; }
 
-.cbe-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; max-width: 1060px; margin: 0 20px; background: var(--line); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
-@media (min-width: 1100px) { .cbe-strip { margin: 0 auto; } }
-.cbe-strip div { display: flex; flex-direction: column; gap: 2px; padding: 20px; background: #fff; text-align: center; }
-.cbe-strip span { color: var(--muted); font-size: 0.9rem; }
-.cbe-strip strong { color: var(--primary); font-size: 1.4rem; letter-spacing: -0.02em; }
 .cbe-inline-ta { font-family: 'Noto Sans Tamil', 'Nirmala UI', 'Latha', system-ui, sans-serif; font-weight: 700; color: var(--primary); }
 .cbe-grid.four { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
 .cbe-card.flat { box-shadow: none; }
@@ -180,9 +175,6 @@ html { scroll-behavior: smooth; }
 .cbe-next a { margin-top: 8px; font-weight: 700; color: #fff !important; }
 .cbe-next a:hover { text-decoration: underline; }
 
-.cbe-strip { margin: 28px auto 0; }
-.cbe-strip strong { order: -1; font-size: 1.7rem; }
-.cbe-strip div { gap: 4px; }
 
 .cbe-cta .cbe-actions { margin-top: 4px; }
 
@@ -214,7 +206,6 @@ html { scroll-behavior: smooth; }
   .cbe-events li { padding: 16px; }
   .cbe-theme { padding: 36px 24px; }
   .cbe-cta { padding: 44px 20px; }
-  .cbe-strip strong { font-size: 1.4rem; }
 }
 .cbe-btn.small { min-height: 44px; }
 .cbe-link { padding: 8px 0; }
@@ -260,10 +251,6 @@ img { max-width: 100%; }
   .cbe-date { min-width: 56px; font-size: 0.85rem; padding: 8px 6px; }
   .cbe-theme { padding: 28px 20px; border-radius: 22px; gap: 20px; }
   .cbe-next { padding: 18px; }
-  .cbe-strip { grid-template-columns: repeat(2, 1fr); margin-left: 0; margin-right: 0; border-radius: 16px; }
-  .cbe-strip div { padding: 16px 8px; }
-  .cbe-strip strong { font-size: 1.3rem; }
-  .cbe-strip span { font-size: 0.82rem; }
   .cbe-vm-card { padding: 26px 20px; border-radius: 22px; }
   .cbe-vm-card p:not(.cbe-num) { font-size: 1.02rem; }
   .cbe-vm-letter { font-size: 6.5rem; top: -10px; }
@@ -280,7 +267,6 @@ img { max-width: 100%; }
   .cbe-section { padding: 34px 14px; }
   .cbe-hero { padding: 28px 14px 34px; }
   .cbe-hero h1 { font-size: 2.05rem; }
-  .cbe-strip { grid-template-columns: 1fr 1fr; }
 }
 /* Landscape phones: don't let the sticky header eat the screen. */
 @media (max-height: 480px) and (orientation: landscape) {
@@ -326,3 +312,24 @@ img { max-width: 100%; }
 .cbe-desc.full { display: block; -webkit-line-clamp: unset; overflow: visible; }
 .cbe-more { margin-top: 6px; padding: 8px 0; min-height: 44px; background: none; border: 0; color: var(--primary); font: inherit; font-weight: 700; cursor: pointer; }
 .cbe-more:hover { text-decoration: underline; }
+
+/* Impact stats: three cards with icon, count-up number and caption */
+.cbe-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1060px; margin: 28px auto 0; }
+.cbe-stat { position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; padding: 30px 20px 26px; background: #fff; border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 12px 40px -22px rgba(13, 37, 61, 0.22); }
+.cbe-stat::before { content: ''; position: absolute; inset: 0 0 auto; height: 4px; background: linear-gradient(90deg, var(--primary), #9b8cff); }
+.cbe-stat-icon { display: grid; place-items: center; width: 56px; height: 56px; margin-bottom: 10px; border-radius: 16px; background: var(--primary-soft); color: var(--primary); }
+.cbe-stat-icon.calendar { background: #e8f4ff; color: #1d7bd4; }
+.cbe-stat-icon.award { background: #fff2e3; color: #e07a14; }
+.cbe-stat strong { font-size: clamp(2.4rem, 5vw, 3.4rem); line-height: 1; letter-spacing: -0.03em; color: var(--navy); font-variant-numeric: tabular-nums; }
+.cbe-stat-label { margin-top: 6px; font-weight: 700; color: var(--navy); }
+.cbe-stat small { color: var(--muted); font-size: 0.9rem; }
+@media (max-width: 760px) { .cbe-stats { grid-template-columns: 1fr; gap: 14px; margin-left: 4px; margin-right: 4px; } .cbe-stat { padding: 24px 16px 20px; } .cbe-stat strong { font-size: 2.6rem; } }
+
+/* Hero text sits on the dark translucent video veil */
+.cbe-hero h1 { color: #fff; text-shadow: 0 2px 24px rgba(0, 0, 0, .25); }
+.cbe-hero h1 em { color: #c4baff; }
+.cbe-hero .cbe-lead { color: rgba(255, 255, 255, .92); }
+.cbe-hero .cbe-tamil { color: #d6cfff; }
+.cbe-hero .cbe-eyebrow { background: rgba(255, 255, 255, .88); }
+.cbe-hero .cbe-btn.ghost { color: #fff; border-color: rgba(255, 255, 255, .85); background: rgba(255, 255, 255, .08); }
+@media (hover: hover) { .cbe-hero .cbe-btn.ghost:hover { background: rgba(255, 255, 255, .22); } }

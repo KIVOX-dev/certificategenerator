@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { formatDate, listEvents, type PublicEvent } from '@/lib/api';
 
 const istDay = (d: Date | string) => new Date(d).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' }); // YYYY-MM-DD
@@ -109,15 +109,59 @@ export function LiveStats() {
   const { upcoming, previous } = splitEvents(events);
   const certs = events.reduce((n, e) => n + (e.certificateCount ?? 0), 0);
   const items = [
-    { value: String(previous.length), label: 'events completed' },
-    { value: String(upcoming.length), label: 'upcoming events' },
-    { value: certs.toLocaleString('en-IN'), label: 'certificates issued' },
-  ];
+    { value: previous.length, label: 'Events completed', hint: 'Community actions delivered', icon: 'check' },
+    { value: upcoming.length, label: 'Upcoming events', hint: 'Open for registration', icon: 'calendar' },
+    { value: certs, label: 'Certificates issued', hint: 'Volunteers recognised', icon: 'award' },
+  ] as const;
   return (
-    <div className="cbe-strip" aria-label="Coimbatore impact">
+    <div className="cbe-stats" aria-label="Coimbatore impact">
       {items.map((s) => (
-        <div key={s.label}><strong>{s.value}</strong><span>{s.label}</span></div>
+        <div key={s.label} className="cbe-stat">
+          <span className={`cbe-stat-icon ${s.icon}`} aria-hidden="true"><StatIcon name={s.icon} /></span>
+          <strong><CountUp to={s.value} /></strong>
+          <span className="cbe-stat-label">{s.label}</span>
+          <small>{s.hint}</small>
+        </div>
       ))}
     </div>
   );
+}
+
+/** Counts up to `to` the first time it scrolls into view; shows the final number straight away without motion or IntersectionObserver. */
+function CountUp({ to }: { to: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [n, setN] = useState(to);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || to === 0 || typeof IntersectionObserver === 'undefined' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setN(to);
+      return;
+    }
+    setN(0);
+    let raf = 0;
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      io.disconnect();
+      const start = performance.now();
+      const tick = (now: number) => {
+        const t = Math.min(1, (now - start) / 1200);
+        setN(Math.round(to * (1 - Math.pow(1 - t, 3))));
+        if (t < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    }, { threshold: 0.4 });
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(raf);
+    };
+  }, [to]);
+  return <span ref={ref}>{n.toLocaleString('en-IN')}</span>;
+}
+
+function StatIcon({ name }: { name: 'check' | 'calendar' | 'award' }) {
+  const p = { width: 26, height: 26, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' } as const;
+  if (name === 'check') return <svg {...p}><rect x="3" y="4.5" width="18" height="16" rx="3" /><path d="M3 9.5h18M8 3v3M16 3v3M8.5 15l2.5 2.5 4.5-5" /></svg>;
+  if (name === 'calendar') return <svg {...p}><rect x="3" y="4.5" width="18" height="16" rx="3" /><path d="M3 9.5h18M8 3v3M16 3v3M12 13v4M10 15h4" /></svg>;
+  return <svg {...p}><circle cx="12" cy="9" r="5.5" /><path d="M8.7 13.6 7.5 21l4.5-2.5 4.5 2.5-1.2-7.4M10 9l1.5 1.5L14.5 7.5" /></svg>;
 }
