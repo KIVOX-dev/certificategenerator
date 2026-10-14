@@ -172,7 +172,7 @@ jobs:
       - name: Wait for the new version and verify production
         env:
           SITE_URL: ${{ vars.SITE_URL || 'https://certificategenerator-brown.vercel.app' }} # override with a repo variable if the domain changes
-          API_URL: ${{ vars.API_URL || 'https://certificategenerator-aheq.onrender.com' }}
+          API_URL: ${{ vars.API_URL || 'https://certificategenerator-wxx3.onrender.com' }}
           SMOKE_EVENT_CODE: ${{ vars.SMOKE_EVENT_CODE || 'CLEANUP2026' }}
           EXPECT_COMMIT: ${{ github.sha }}
         run: node scripts/smoke-prod.mjs
