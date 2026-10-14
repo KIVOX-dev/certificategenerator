@@ -25,7 +25,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           <div className="cbe-foot-brand">
             <Link href="/" className="cbe-foot-logo" aria-label="We The Leaders home">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo-header.png" alt="We The Leaders" width={210} height={46} loading="lazy" decoding="async" />
+              <img src="/logo-footer.png" alt="We The Leaders" width={210} height={46} loading="lazy" decoding="async" />
             </Link>
             <strong>We The Leaders · Coimbatore</strong>
             <span lang="ta">#அறம் செய விரும்பு</span>
