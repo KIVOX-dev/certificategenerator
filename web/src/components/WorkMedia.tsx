@@ -5,7 +5,8 @@ import { workPhotos, workVideos, type WorkVideo } from '@/lib/media';
 
 /** Two rows of field photos that scroll continuously in opposite directions; pauses on hover or focus. */
 export function PhotoMarquee() {
-  const rows = [workPhotos.slice(0, 10), workPhotos.slice(10)];
+  const half = Math.ceil(workPhotos.length / 2);
+  const rows = [workPhotos.slice(0, half), workPhotos.slice(half)];
   return (
     <div className="cbe-marquee" aria-label="Photos from our work">
       {rows.map((row, r) => (

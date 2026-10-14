@@ -3,10 +3,10 @@ import Link from 'next/link';
 import { EventsBoard, LiveStats } from '@/components/EventsBoard';
 import { FaqLoop } from '@/components/FaqLoop';
 import { approach, faqs, links, steps } from '@/lib/site';
-import { workPhotos } from '@/lib/media';
+import { mainPhoto } from '@/lib/media';
 
 // Photo for each approach card, in the same order as `approach`.
-const approachPhotos = [13, 9, 6, 11, 15].map((i) => workPhotos[i]);
+const approachPhotos = ['p24.jpg', 'p21.jpg', 'p22.jpg', 'p27.jpg', 'p25.jpg'].map(mainPhoto);
 
 export const metadata: Metadata = {
   title: 'We The Leaders Coimbatore – Local action. Measurable change.',
@@ -16,11 +16,11 @@ export const metadata: Metadata = {
 };
 
 const explore = [
-  { href: '/vision-mission', title: 'Vision & mission', text: 'Leadership at every level, and the values behind it.', img: '/explore/vision.jpg' },
-  { href: '/works', title: 'Our works', text: 'Monthly campaigns and the impact they delivered.', img: '/explore/works.jpg' },
-  { href: '/register', title: 'Event registration', text: 'Scan the QR code or enter your event code.', img: '/explore/register.jpg' },
-  { href: '/get-certificate', title: 'Certificates', text: 'Download or verify your certificate.', img: '/explore/certificates.jpg' },
-  { href: '/get-involved', title: 'Get involved', text: 'Join the movement and take part in the next action.', img: '/explore/involved.jpg' },
+  { href: '/vision-mission', title: 'Vision & mission', text: 'Leadership at every level, and the values behind it.', img: '/works/p28.jpg' },
+  { href: '/works', title: 'Our works', text: 'Monthly campaigns and the impact they delivered.', img: '/works/p25.jpg' },
+  { href: '/register', title: 'Event registration', text: 'Scan the QR code or enter your event code.', img: '/works/p26.jpg' },
+  { href: '/get-certificate', title: 'Certificates', text: 'Download or verify your certificate.', img: '/works/p29.jpg' },
+  { href: '/get-involved', title: 'Get involved', text: 'Join the movement and take part in the next action.', img: '/works/p23.jpg' },
 ];
 
 export default function Home() {
