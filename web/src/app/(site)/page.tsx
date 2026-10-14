@@ -12,11 +12,11 @@ export const metadata: Metadata = {
 };
 
 const explore = [
-  { href: '/vision-mission', title: 'Vision & mission', text: 'Leadership at every level, and the values behind it.' },
-  { href: '/works', title: 'Our works', text: 'Monthly campaigns and the impact they delivered.' },
-  { href: '/register', title: 'Event registration', text: 'Scan the QR code or enter your event code.' },
-  { href: '/get-certificate', title: 'Certificates', text: 'Download or verify your certificate.' },
-  { href: '/get-involved', title: 'Get involved', text: 'Join the movement and take part in the next action.' },
+  { href: '/vision-mission', title: 'Vision & mission', text: 'Leadership at every level, and the values behind it.', img: '/explore/vision.jpg' },
+  { href: '/works', title: 'Our works', text: 'Monthly campaigns and the impact they delivered.', img: '/explore/works.jpg' },
+  { href: '/register', title: 'Event registration', text: 'Scan the QR code or enter your event code.', img: '/explore/register.jpg' },
+  { href: '/get-certificate', title: 'Certificates', text: 'Download or verify your certificate.', img: '/explore/certificates.jpg' },
+  { href: '/get-involved', title: 'Get involved', text: 'Join the movement and take part in the next action.', img: '/explore/involved.jpg' },
 ];
 
 export default function Home() {
@@ -90,6 +90,8 @@ export default function Home() {
         <div className="cbe-grid">
           {explore.map((e) => (
             <Link key={e.href} href={e.href} className="cbe-card cbe-tile">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="cbe-tile-img" src={e.img} alt="" width={720} height={405} loading="lazy" decoding="async" />
               <h3>{e.title}</h3>
               <p>{e.text}</p>
               <span className="cbe-btn small">Open</span>

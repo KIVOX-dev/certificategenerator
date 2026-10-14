@@ -84,7 +84,10 @@ html { scroll-behavior: smooth; }
 .cbe-prose { max-width: 720px; margin: 0 auto; font-size: 1.2rem; }
 .cbe-prose p { color: var(--muted); }
 .cbe-note { text-align: center; color: var(--muted); margin: 24px 0 0; }
-.cbe-tile { display: block; }
+.cbe-tile { display: block; overflow: hidden; }
+.cbe-tile-img { display: block; width: calc(100% + 56px); max-width: none; margin: -28px -28px 18px; aspect-ratio: 16 / 9; object-fit: cover; background: var(--line); transition: transform .4s ease; }
+@media (hover: hover) { .cbe-tile:hover .cbe-tile-img { transform: scale(1.04); } }
+@media (max-width: 640px) { .cbe-tile-img { width: calc(100% + 40px); margin: -20px -20px 14px; } }
 .cbe-tile .cbe-link { margin-top: 12px; }
 @media (hover: hover) { .cbe-tile:hover { border-color: var(--primary); transform: translateY(-2px); } }
 .cbe-tile { transition: border-color 0.15s, transform 0.15s; }
