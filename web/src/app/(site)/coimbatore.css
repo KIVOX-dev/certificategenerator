@@ -340,3 +340,33 @@ img { max-width: 100%; }
 
 @media (max-width: 640px) { .cbe-hero { min-height: clamp(460px, calc(100svh - 72px), 760px); padding: 40px 18px 56px; } }
 @media (max-height: 560px) and (orientation: landscape) { .cbe-hero { min-height: 0; padding: 40px 20px 56px; } }
+
+/* Photo on any card (approach, events): reuses .cbe-tile-img, so the card just needs to clip it */
+.cbe-photo-card { overflow: hidden; }
+@media (hover: hover) { .cbe-photo-card:hover .cbe-tile-img { transform: scale(1.04); } }
+
+/* Running photo display: two rows scrolling in opposite directions, full viewport width */
+.cbe { overflow-x: clip; }
+.cbe-marquee { width: 100vw; margin: 28px 0 0 calc(50% - 50vw); display: grid; gap: 16px; }
+.cbe-marquee-row { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.cbe-marquee-track { display: flex; gap: 16px; width: max-content; margin: 0; padding: 0; list-style: none; animation: cbe-scroll 70s linear infinite; }
+.cbe-marquee-row.reverse .cbe-marquee-track { animation-direction: reverse; animation-duration: 80s; }
+.cbe-marquee-row:hover .cbe-marquee-track, .cbe-marquee-row:focus-within .cbe-marquee-track { animation-play-state: paused; }
+.cbe-marquee-track li { flex: none; width: clamp(220px, 26vw, 340px); aspect-ratio: 8 / 5; border-radius: 18px; overflow: hidden; background: var(--line); box-shadow: 0 10px 30px -18px rgba(13, 37, 61, .45); }
+.cbe-marquee-track img { display: block; width: 100%; height: 100%; object-fit: cover; user-select: none; }
+@keyframes cbe-scroll { to { transform: translateX(calc(-50% - 8px)); } }
+@media (prefers-reduced-motion: reduce) { .cbe-marquee-row { overflow-x: auto; mask-image: none; -webkit-mask-image: none; } .cbe-marquee-track { animation: none; } .cbe-marquee-track li[aria-hidden="true"] { display: none; } }
+
+/* Video gallery */
+.cbe-videos { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 20px; max-width: 1060px; margin: 28px auto 0; }
+.cbe-vid { padding: 0; overflow: hidden; }
+.cbe-vid-media { position: relative; aspect-ratio: 16 / 9; background: #0d253d; }
+.cbe-vid-media video, .cbe-vid-frame, .cbe-vid-poster { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; object-fit: cover; }
+.cbe-vid-poster { padding: 0; cursor: pointer; background: none; }
+.cbe-vid-poster img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
+@media (hover: hover) { .cbe-vid-poster:hover img { transform: scale(1.04); } }
+.cbe-play { position: absolute; left: 50%; top: 50%; width: 68px; height: 68px; margin: -34px 0 0 -34px; border-radius: 50%; background: rgba(86, 59, 255, .92); box-shadow: 0 8px 24px rgba(0, 0, 0, .35); }
+.cbe-play::after { content: ''; position: absolute; left: 27px; top: 21px; border-style: solid; border-width: 13px 0 13px 22px; border-color: transparent transparent transparent #fff; }
+.cbe-vid h3 { margin: 16px 20px 4px; font-size: 1.15rem; }
+.cbe-vid p { margin: 0 20px 20px; }
+@media (max-width: 760px) { .cbe-marquee { gap: 12px; } .cbe-marquee-track { gap: 12px; } }

@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { formatDate, listEvents, type PublicEvent } from '@/lib/api';
+import { photoFor } from '@/lib/media';
 
 const istDay = (d: Date | string) => new Date(d).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' }); // YYYY-MM-DD
 
@@ -53,7 +54,9 @@ function EventCard({ e, past }: { e: PublicEvent; past: boolean }) {
   const day = d ? d.toLocaleDateString('en-GB', { day: '2-digit', timeZone: 'Asia/Kolkata' }) : '';
   const month = d ? d.toLocaleDateString('en-GB', { month: 'short', timeZone: 'Asia/Kolkata' }) : '';
   return (
-    <article className={`cbe-card cbe-event${past ? ' closed' : ''}`}>
+    <article className={`cbe-card cbe-event cbe-photo-card${past ? ' closed' : ''}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className="cbe-tile-img" src={photoFor(e.eventCode).src} alt="" width={800} height={500} loading="lazy" decoding="async" />
       <div className="cbe-event-top">
         {d ? <span className="cbe-cal" aria-hidden="true"><b>{day}</b>{month}</span> : <span />}
         <span className={`cbe-status ${past ? 'closed' : 'open'}`}>{past ? 'Completed' : 'Registration open'}</span>

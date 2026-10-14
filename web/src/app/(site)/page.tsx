@@ -3,6 +3,10 @@ import Link from 'next/link';
 import { EventsBoard, LiveStats } from '@/components/EventsBoard';
 import { FaqLoop } from '@/components/FaqLoop';
 import { approach, faqs, links, steps } from '@/lib/site';
+import { workPhotos } from '@/lib/media';
+
+// Photo for each approach card, in the same order as `approach`.
+const approachPhotos = [14, 9, 6, 11, 13].map((i) => workPhotos[i]);
 
 export const metadata: Metadata = {
   title: 'We The Leaders Coimbatore – Local action. Measurable change.',
@@ -67,7 +71,9 @@ export default function Home() {
         </p>
         <div className="cbe-grid">
           {approach.map((a, i) => (
-            <article key={a.title} className="cbe-card">
+            <article key={a.title} className="cbe-card cbe-photo-card">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="cbe-tile-img" src={approachPhotos[i % approachPhotos.length].src} alt="" width={800} height={500} loading="lazy" decoding="async" />
               <span className="cbe-num">0{i + 1}</span>
               <h3>{a.title}</h3>
               <p>{a.text}</p>
