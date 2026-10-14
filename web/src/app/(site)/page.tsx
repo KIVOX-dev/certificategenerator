@@ -85,20 +85,6 @@ export default function Home() {
       </section>
 
       <section className="cbe-section">
-        <div className="cbe-app">
-          <div>
-            <p className="cbe-eyebrow">Mobile app</p>
-            <h2>Get We The Leaders on your phone</h2>
-            <p>Find your constituency and join the next action.</p>
-          </div>
-          <div className="cbe-actions left">
-            <a className="cbe-btn" href={links.appStore} target="_blank" rel="noopener noreferrer">App Store</a>
-            <a className="cbe-btn" href={links.playStore} target="_blank" rel="noopener noreferrer">Google Play</a>
-          </div>
-        </div>
-      </section>
-
-      <section className="cbe-section">
         <h2>Explore</h2>
         <p className="cbe-sub">Everything you need, a tap away.</p>
         <div className="cbe-grid">
