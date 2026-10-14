@@ -39,7 +39,7 @@ jobs:
       PUPPETEER_SKIP_DOWNLOAD: 'true' # Chrome is installed (and cached) by the explicit step below
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with: { node-version: '${{ env.NODE_VERSION }}', cache: npm }
       - run: npm ci
       - name: Cache Chrome for Puppeteer
@@ -62,7 +62,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with: { node-version: '${{ env.NODE_VERSION }}', cache: npm }
       - run: npm ci
       - run: npx tsc --noEmit
@@ -79,7 +79,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with: { node-version: '${{ env.NODE_VERSION }}', cache: npm }
       - run: npm ci
       - run: npx tsc --noEmit
@@ -97,7 +97,7 @@ jobs:
         working-directory: mobile
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -134,7 +134,7 @@ jobs:
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with: { node-version: '${{ env.NODE_VERSION }}', cache: npm }
       - run: npm ci --ignore-scripts
       - name: Production dependency audit (fails on critical)
@@ -167,7 +167,7 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with: { node-version: '${{ env.NODE_VERSION }}' }
       - name: Wait for the new version and verify production
         env:
