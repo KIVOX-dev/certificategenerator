@@ -49,26 +49,42 @@ function Description({ text }: { text: string }) {
   );
 }
 
+/** Photo for an event: /events/<EVENTCODE>.jpg if one has been added to the site, otherwise a themed field photo. */
+function EventImage({ e }: { e: PublicEvent }) {
+  const fallback = eventPhoto(e).src;
+  const [src, setSrc] = useState(`/events/${encodeURIComponent(e.eventCode)}.jpg`);
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={src} alt="" width={800} height={500} loading="lazy" decoding="async" onError={() => src !== fallback && setSrc(fallback)} />
+  );
+}
+
+const icon = { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true } as const;
+
 function EventCard({ e, past }: { e: PublicEvent; past: boolean }) {
   const d = e.date ? new Date(e.date) : null;
   const day = d ? d.toLocaleDateString('en-GB', { day: '2-digit', timeZone: 'Asia/Kolkata' }) : '';
   const month = d ? d.toLocaleDateString('en-GB', { month: 'short', timeZone: 'Asia/Kolkata' }) : '';
   return (
-    <article className={`cbe-card cbe-event cbe-photo-card${past ? ' closed' : ''}`}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img className="cbe-tile-img" src={eventPhoto(e).src} alt="" width={800} height={500} loading="lazy" decoding="async" />
-      <div className="cbe-event-top">
-        {d ? <span className="cbe-cal" aria-hidden="true"><b>{day}</b>{month}</span> : <span />}
+    <article className={`cbe-card cbe-ev${past ? ' closed' : ''}`}>
+      <div className="cbe-ev-media">
+        <EventImage e={e} />
+        {d && <span className="cbe-ev-date" aria-hidden="true"><b>{day}</b>{month}</span>}
         <span className={`cbe-status ${past ? 'closed' : 'open'}`}>{past ? 'Completed' : 'Registration open'}</span>
       </div>
-      <h3>{e.name}</h3>
-      <ul className="cbe-meta">
-        {e.date && <li><span>Date</span>{formatDate(e.date)}</li>}
-        {e.venue && <li><span>Venue</span>{e.venue}</li>}
-        <li><span>By</span>{e.organizationName}</li>
-      </ul>
-      {e.description && <Description text={e.description} />}
-      {!past && <Link className="cbe-btn small" href={`/register/${encodeURIComponent(e.eventCode)}`}>Register</Link>}
+      <div className="cbe-ev-body">
+        <h3>{e.name}</h3>
+        <ul className="cbe-ev-meta">
+          {e.date && <li><svg {...icon}><rect x="3" y="4.5" width="18" height="16" rx="3" /><path d="M3 9.5h18M8 3v3M16 3v3" /></svg>{formatDate(e.date)}</li>}
+          {e.venue && <li><svg {...icon}><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.5" /></svg>{e.venue}</li>}
+          <li><svg {...icon}><circle cx="12" cy="8" r="3.5" /><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" /></svg>{e.organizationName}</li>
+        </ul>
+        {e.description && <Description text={e.description} />}
+        <div className="cbe-ev-foot">
+          {!past && <Link className="cbe-btn small" href={`/register/${encodeURIComponent(e.eventCode)}`}>Register</Link>}
+          {past && !!e.certificateCount && <span className="cbe-ev-certs">{e.certificateCount.toLocaleString('en-IN')} certificates issued</span>}
+        </div>
+      </div>
     </article>
   );
 }
